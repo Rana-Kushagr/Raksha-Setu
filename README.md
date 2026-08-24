@@ -1,12 +1,15 @@
-﻿# RakshaSetu (रक्षासेतु)
+# RakshaSetu (रक्षासेतु)
 
 <h3 align="center">🚨 India's Most Advanced Offline Emergency First-Aid Companion</h3>
 
-[![PWA](https://img.shields.io/badge/Offline-PWA%20Ready-22c55e?style=for-the-badge)](https://github.com/Rana-Kushagr/Raksha-Setu)
-[![Bilingual](https://img.shields.io/badge/Languages-Hindi%20%2B%20English-ff6600?style=for-the-badge)](https://github.com/Rana-Kushagr/Raksha-Setu)
+[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-Try%20Now-00d4aa?style=for-the-badge)](https://rana-kushagr.github.io/Raksha-Setu/)
+[![PWA](https://img.shields.io/badge/Offline-PWA%20Ready-22c55e?style=for-the-badge)](https://rana-kushagr.github.io/Raksha-Setu/)
+[![Bilingual](https://img.shields.io/badge/Languages-Hindi%20%2B%20English-ff6600?style=for-the-badge)](https://rana-kushagr.github.io/Raksha-Setu/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://github.com/Rana-Kushagr/Raksha-Setu)
 
 > **Panic-proof • Bilingual Hindi+English • Works 100% Offline • Life-saving AI**
+
+**🌐 Live Demo:** [https://rana-kushagr.github.io/Raksha-Setu/](https://rana-kushagr.github.io/Raksha-Setu/)
 
 ---
 
@@ -81,17 +84,18 @@ Size:            ~280KB total (no frameworks, no external dependencies)
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start & Live Demo
 
-`ash
-# Option 1: Open directly in Chrome
-# Just open index.html — no server needed!
+**👉 Live Website:** [https://rana-kushagr.github.io/Raksha-Setu/](https://rana-kushagr.github.io/Raksha-Setu/)
 
-# Option 2: Local server (for full PWA / offline features)
+```bash
+# Option 1: Open live website directly in any browser
+# https://rana-kushagr.github.io/Raksha-Setu/
+
+# Option 2: Run locally (no build tools needed!)
 node server.js
-# or
-npx serve .
-`
+# or open index.html directly in Chrome
+```
 
 ---
 
