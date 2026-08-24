@@ -424,6 +424,9 @@
           <button onclick="switchTab('triage')" class="tab-btn nav-tab nav-tab-active rounded-lg px-3.5 py-2 text-[12px] font-semibold flex items-center gap-1.5" data-tab="triage">
             <i data-lucide="stethoscope" class="w-3.5 h-3.5"></i> <span data-i18n="navTriage">Triage Guide</span>
           </button>
+          <button onclick="switchTab('allergies')" class="tab-btn nav-tab rounded-lg px-3.5 py-2 text-[12px] font-semibold flex items-center gap-1.5" data-tab="allergies">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span data-i18n="navAllergies">Allergies &amp; Pitt</span>
+          </button>
           <button onclick="switchTab('wounds')" class="tab-btn nav-tab rounded-lg px-3.5 py-2 text-[12px] font-semibold flex items-center gap-1.5" data-tab="wounds">
             <i data-lucide="bandage" class="w-3.5 h-3.5"></i> <span data-i18n="navWounds">Wound Care</span>
           </button>
@@ -638,6 +641,353 @@
 
         <div id="protocols-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ================= TAB: ALLERGIES & PITT GUIDEBOOK ================= -->
+      <section id="tab-allergies" class="tab-content hidden space-y-6">
+        <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
+          
+          <!-- Header Banner -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/08 pb-5">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full bg-rose-950 text-rose-400 border border-rose-800 text-xs font-black uppercase tracking-wider">🌿 Traditional &amp; Clinical First-Aid</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">🌿 Allergies &amp; Pitt (पित्ती) Guidebook</h2>
+              </div>
+              <p class="text-sm text-slate-300 mt-1">Instant identification, verified Indian home remedies (घरेलू नुस्खे), OTC first-aid &amp; emergency red-flag warnings for all common allergies.</p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-xs font-mono text-white/40">6 Core Guides • Bilingual Audio</span>
+            </div>
+          </div>
+
+          <!-- Allergy Category Selector Chips -->
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            <button onclick="filterAllergyCategory('all')" class="allergy-chip chip-active px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition" data-acat="all">✨ All Allergies (सभी)</button>
+            <button onclick="filterAllergyCategory('skin')" class="allergy-chip chip-inactive px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition" data-acat="skin">🌸 Pitt &amp; Skin (पित्ती/चकत्ते)</button>
+            <button onclick="filterAllergyCategory('food')" class="allergy-chip chip-inactive px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition" data-acat="food">🥜 Food Allergies (भोजन)</button>
+            <button onclick="filterAllergyCategory('respiratory')" class="allergy-chip chip-inactive px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition" data-acat="respiratory">💨 Dust &amp; Pollen (धूल-जुकाम)</button>
+            <button onclick="filterAllergyCategory('insect')" class="allergy-chip chip-inactive px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition" data-acat="insect">🐝 Insect Stings (कीड़े-डंक)</button>
+            <button onclick="filterAllergyCategory('drug_eye')" class="allergy-chip chip-inactive px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition" data-acat="drug_eye">💊 Medicines &amp; Eyes (दवा व आंखें)</button>
+          </div>
+
+          <!-- Allergy Cards Grid -->
+          <div id="allergies-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+            <!-- 1. PITT / HIVES / URTICARIA -->
+            <div class="allergy-card glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4 border border-rose-500/20" data-category="skin">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/25">🌸 SKIN &amp; PITT</span>
+                  <span class="text-xs font-mono text-white/35">Common in India</span>
+                </div>
+                <div>
+                  <h3 class="font-brand text-lg font-bold text-white">पित्ती (PITT / Hives / Urticaria)</h3>
+                  <p class="text-xs text-rose-300 font-medium">Sudden red, raised, intensely itchy wheals &amp; flare-ups</p>
+                </div>
+                
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1.5 text-xs text-white/70">
+                  <strong class="text-white/90 block font-semibold">⚡ आम कारण (Triggers):</strong>
+                  <p>गर्म तासीर का खाना, धूप, अचानक पसीना, ठंडा पानी, दवाओं की प्रतिक्रिया या वायरल इन्फेक्शन।</p>
+                </div>
+
+                <!-- Local Home Remedies -->
+                <div class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-800/40 space-y-2 text-xs">
+                  <strong class="text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span>🥥</span> <span>देसी व घरेलू नुस्खे (Local Remedies):</span>
+                  </strong>
+                  <ul class="space-y-1.5 text-emerald-200/90 list-disc list-inside">
+                    <li><strong>नारियल तेल + देसी कपूर:</strong> शुद्ध नारियल तेल या देसी घी में थोड़ा कपूर मिलाकर चकत्तों पर मलें — खुजली व जलन में तुरंत ठंडक।</li>
+                    <li><strong>नीम के पानी से धुलाई:</strong> नीम की पत्तियां उबालकर ठंडा करें और उस पानी से हल्के हाथ से धोएं।</li>
+                    <li><strong>बर्फ की सिकाई:</strong> कपड़े में बर्फ लपेटकर 10-15 मिनट रखें (गर्म पानी से बचें)।</li>
+                    <li><strong>एलोवेरा जेल:</strong> ताजा एलोवेरा गूदा लगाने से चकत्ते शांत होते हैं।</li>
+                  </ul>
+                </div>
+
+                <!-- OTC & Red Flags -->
+                <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-800/40 text-xs space-y-1">
+                  <strong class="text-amber-300 font-bold">💊 प्राथमिक दवा व सावधानी:</strong>
+                  <p class="text-amber-200/90">सिट्रिजिन (Cetirizine 10mg) या एविल (Avil)। नाखूनों से न खरोंचें व ढीले सूती कपड़े पहनें।</p>
+                  <p class="text-red-400 font-bold pt-1">🚨 खतरे की घंटी: यदि होंठ, जीभ या गले में सूजन आए और सांस फूले तो तुरंत 112 डायल करें!</p>
+                </div>
+              </div>
+
+              <!-- Audio Buttons -->
+              <div class="pt-3 border-t border-white/08 flex gap-2">
+                <button onclick="speakAllergyGuide('pitt', 'hi')" class="flex-1 py-2 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-1 transition" style="background:linear-gradient(135deg,#00d4aa,#009977);">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी में सुनें</span>
+                </button>
+                <button onclick="speakAllergyGuide('pitt', 'en')" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold flex items-center justify-center gap-1 transition">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. FOOD ALLERGIES -->
+            <div class="allergy-card glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4 border border-amber-500/20" data-category="food">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25">🥜 FOOD ALLERGY</span>
+                  <span class="text-xs font-mono text-white/35">Dietary Trigger</span>
+                </div>
+                <div>
+                  <h3 class="font-brand text-lg font-bold text-white">भोजन एलर्जी (Food Allergies)</h3>
+                  <p class="text-xs text-amber-300 font-medium">Peanuts, Milk, Fish, Eggs, Brinjal (बैंगन), Arbi, Gluten</p>
+                </div>
+                
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1.5 text-xs text-white/70">
+                  <strong class="text-white/90 block font-semibold">⚡ लक्षण (Symptoms):</strong>
+                  <p>मुंह व होंठों में खुजली, पेट में मरोड़/दर्द, उल्टी, दस्त, शरीर पर लाल दाने व बेचैनी।</p>
+                </div>
+
+                <!-- Local Home Remedies -->
+                <div class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-800/40 space-y-2 text-xs">
+                  <strong class="text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span>🌿</span> <span>घरेलू उपाय (Home Management):</span>
+                  </strong>
+                  <ul class="space-y-1.5 text-emerald-200/90 list-disc list-inside">
+                    <li><strong>संदिग्ध भोजन तुरंत रोकें:</strong> जिस खाने से एलर्जी का शक हो, उसे तुरंत बंद करें।</li>
+                    <li><strong>अजवाइन व काला नमक पानी:</strong> पेट दर्द में गुनगुने पानी में आधा चम्मच अजवाइन व काला नमक लें।</li>
+                    <li><strong>ओआरएस (ORS) या नारियल पानी:</strong> उल्टी/दस्त की स्थिति में पानी की कमी रोकने के लिए घूंट-घूंट पिएं।</li>
+                    <li><strong>पुदीना व अदरक का रस:</strong> मिचली व पेट की जलन शांत करने में सहायक।</li>
+                  </ul>
+                </div>
+
+                <!-- OTC & Red Flags -->
+                <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-800/40 text-xs space-y-1">
+                  <strong class="text-amber-300 font-bold">💊 प्राथमिक उपचार:</strong>
+                  <p class="text-amber-200/90">हल्की एलर्जी में एंटीहिस्टामाइन दवा। दोबारा वह खाना कभी न खाएं।</p>
+                  <p class="text-red-400 font-bold pt-1">🚨 खतरे की घंटी: निगलने में रुकावट, चक्कर या बेहोशी होने पर तुरंत 112 कॉल करें (Anaphylaxis)।</p>
+                </div>
+              </div>
+
+              <!-- Audio Buttons -->
+              <div class="pt-3 border-t border-white/08 flex gap-2">
+                <button onclick="speakAllergyGuide('food', 'hi')" class="flex-1 py-2 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-1 transition" style="background:linear-gradient(135deg,#00d4aa,#009977);">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी में सुनें</span>
+                </button>
+                <button onclick="speakAllergyGuide('food', 'en')" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold flex items-center justify-center gap-1 transition">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 3. DUST, POLLEN & RESPIRATORY -->
+            <div class="allergy-card glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4 border border-sky-500/20" data-category="respiratory">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/25">💨 DUST &amp; POLLEN</span>
+                  <span class="text-xs font-mono text-white/35">Rhinitis / Sinus</span>
+                </div>
+                <div>
+                  <h3 class="font-brand text-lg font-bold text-white">धूल व पराग एलर्जी (Dust &amp; Pollen)</h3>
+                  <p class="text-xs text-sky-300 font-medium">Allergic Rhinitis, Sneezing, Runny Nose, Itchy Eyes</p>
+                </div>
+                
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1.5 text-xs text-white/70">
+                  <strong class="text-white/90 block font-semibold">⚡ आम कारण (Triggers):</strong>
+                  <p>घर की धूल (Dust Mites), फूलों के पराग (Pollen), गाड़ियों का धुआं, पालतू जानवरों के बाल व सीलन।</p>
+                </div>
+
+                <!-- Local Home Remedies -->
+                <div class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-800/40 space-y-2 text-xs">
+                  <strong class="text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span>☕</span> <span>देसी नुस्खे (Traditional Relief):</span>
+                  </strong>
+                  <ul class="space-y-1.5 text-emerald-200/90 list-disc list-inside">
+                    <li><strong>तुलसी व अदरक की भाप (Steam):</strong> उबलते पानी में तुलसी के पत्ते व विक्स/अजवाइन डालकर गहरी भाप लें — बंद नाक खुलेगी।</li>
+                    <li><strong>हल्दी वाला दूध (Golden Milk):</strong> रात में गर्म दूध में 1/2 चम्मच हल्दी व चुटकी भर काली मिर्च मिलाकर पिएं।</li>
+                    <li><strong>जल नेति या सेलाइन स्प्रे:</strong> गुनगुने हल्के नमकीन पानी से नाक की सफाई करें ताकि धूल कण धुल जाएं।</li>
+                    <li><strong>शहद व अदरक का रस:</strong> 1 चम्मच शहद में अदरक का रस मिलाकर चाटने से गले की खराश मिटती है।</li>
+                  </ul>
+                </div>
+
+                <!-- OTC & Red Flags -->
+                <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-800/40 text-xs space-y-1">
+                  <strong class="text-amber-300 font-bold">💊 मेडिकल फर्स्ट-एड:</strong>
+                  <p class="text-amber-200/90">Fexofenadine 120mg या Cetirizine। बाहर जाते समय N95 मास्क पहनें।</p>
+                  <p class="text-red-400 font-bold pt-1">🚨 खतरे की घंटी: सीने में सीटी जैसी आवाज (Wheezing) या सांस फूलने पर तुरंत इनहेलर लें व अस्पताल जाएं।</p>
+                </div>
+              </div>
+
+              <!-- Audio Buttons -->
+              <div class="pt-3 border-t border-white/08 flex gap-2">
+                <button onclick="speakAllergyGuide('respiratory', 'hi')" class="flex-1 py-2 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-1 transition" style="background:linear-gradient(135deg,#00d4aa,#009977);">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी में सुनें</span>
+                </button>
+                <button onclick="speakAllergyGuide('respiratory', 'en')" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold flex items-center justify-center gap-1 transition">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 4. INSECT BITES & STINGS -->
+            <div class="allergy-card glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4 border border-emerald-500/20" data-category="insect">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">🐝 INSECT BITES</span>
+                  <span class="text-xs font-mono text-white/35">Bite / Sting</span>
+                </div>
+                <div>
+                  <h3 class="font-brand text-lg font-bold text-white">कीड़े व डंक (Insect Stings &amp; Bites)</h3>
+                  <p class="text-xs text-emerald-300 font-medium">Bee (मधुमक्खी), Wasp (ततैया), Red Ants, Mosquitoes</p>
+                </div>
+                
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1.5 text-xs text-white/70">
+                  <strong class="text-white/90 block font-semibold">⚡ लक्षण (Symptoms):</strong>
+                  <p>अत्यधिक तेज दर्द, सुई चुभने जैसी जलन, डंक का निशान, लाली व आसपास तेजी से सूजन।</p>
+                </div>
+
+                <!-- Local Home Remedies -->
+                <div class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-800/40 space-y-2 text-xs">
+                  <strong class="text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span>🧊</span> <span>घरेलू उपाय (Home Remedies):</span>
+                  </strong>
+                  <ul class="space-y-1.5 text-emerald-200/90 list-disc list-inside">
+                    <li><strong>डंक खुरचें (Don't Squeeze):</strong> क्रेडिट कार्ड या कुंद चाकू से डंक खुरचकर निकालें, कभी अंगुलियों से दबाएं नहीं।</li>
+                    <li><strong>बेकिंग सोडा का लेप:</strong> 1 चम्मच बेकिंग सोडा में थोड़ा पानी मिलाकर गाढ़ा पेस्ट लगाएं (मधुमक्खी का एसिड न्यूट्रल करता है)।</li>
+                    <li><strong>बर्फ की सिकाई:</strong> 15 मिनट कपड़े में बर्फ रखकर सिकाई करें ताकि जहर आसपास न फैले।</li>
+                    <li><strong>तुलसी का रस या प्याज:</strong> डंक वाली जगह पर प्याज का टुकड़ा या तुलसी का रस रगड़ने से जलन में आराम मिलता है।</li>
+                  </ul>
+                </div>
+
+                <!-- OTC & Red Flags -->
+                <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-800/40 text-xs space-y-1">
+                  <strong class="text-amber-300 font-bold">💊 फर्स्ट-एड दवा:</strong>
+                  <p class="text-amber-200/90">कैलामाइन लोशन लगाएं व दर्द के लिए पैरासिटामोल / एंटी-एलर्जी ले सकते हैं।</p>
+                  <p class="text-red-400 font-bold pt-1">🚨 खतरे की घंटी: गले में सूजन, चक्कर, बोलने में लड़खड़ाहट होने पर 112 डायल करें।</p>
+                </div>
+              </div>
+
+              <!-- Audio Buttons -->
+              <div class="pt-3 border-t border-white/08 flex gap-2">
+                <button onclick="speakAllergyGuide('insect', 'hi')" class="flex-1 py-2 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-1 transition" style="background:linear-gradient(135deg,#00d4aa,#009977);">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी में सुनें</span>
+                </button>
+                <button onclick="speakAllergyGuide('insect', 'en')" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold flex items-center justify-center gap-1 transition">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 5. DRUG & MEDICINE ALLERGY -->
+            <div class="allergy-card glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4 border border-purple-500/20" data-category="drug_eye">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/25">💊 DRUG REACTION</span>
+                  <span class="text-xs font-mono text-white/35">Critical Alert</span>
+                </div>
+                <div>
+                  <h3 class="font-brand text-lg font-bold text-white">दवाओं से एलर्जी (Drug Allergies)</h3>
+                  <p class="text-xs text-purple-300 font-medium">Penicillin, Painkillers (NSAIDs), Sulfa, Antibiotics</p>
+                </div>
+                
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1.5 text-xs text-white/70">
+                  <strong class="text-white/90 block font-semibold">⚡ लक्षण (Symptoms):</strong>
+                  <p>दवा लेने के कुछ मिनट या घंटों में पूरे शरीर पर लाल दाने, बुखार, चेहरे पर सूजन या फफोले पड़ना।</p>
+                </div>
+
+                <!-- Protocol Steps -->
+                <div class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-800/40 space-y-2 text-xs">
+                  <strong class="text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span>🛑</span> <span>तत्काल कदम (Immediate Action):</span>
+                  </strong>
+                  <ul class="space-y-1.5 text-emerald-200/90 list-disc list-inside">
+                    <li><strong>दवा तुरंत बंद करें:</strong> किसी भी हाल में वह दवा दोबारा न लें।</li>
+                    <li><strong>दवा का पत्ता/डिब्बा संभालें:</strong> डॉक्टर को दिखाने के लिए दवा का नाम व रैपर साथ रखें।</li>
+                    <li><strong>भरपूर पानी पिएं:</strong> यदि मरीज होश में है तो पानी पिएं ताकि दवा का असर जल्दी बाहर निकले।</li>
+                    <li><strong>मेडिकल आईडी नोट करें:</strong> भविष्य के लिए अपने मेडिकल कार्ड में इस दवा का नाम दर्ज करें।</li>
+                  </ul>
+                </div>
+
+                <!-- Red Flag -->
+                <div class="p-3 rounded-xl bg-red-950/30 border border-red-800/40 text-xs space-y-1">
+                  <strong class="text-red-400 font-bold">🚨 आपातकालीन चेतावनी (Hospital Alert):</strong>
+                  <p class="text-red-200/90">होठों व आंखों पर छाले, छिलती त्वचा या सांस में तकलीफ (Stevens-Johnson syndrome) जानलेवा हो सकती है — तुरंत नजदीकी अस्पताल के इमरजेंसी वार्ड पहुंचें!</p>
+                </div>
+              </div>
+
+              <!-- Audio Buttons -->
+              <div class="pt-3 border-t border-white/08 flex gap-2">
+                <button onclick="speakAllergyGuide('drug', 'hi')" class="flex-1 py-2 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-1 transition" style="background:linear-gradient(135deg,#00d4aa,#009977);">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी में सुनें</span>
+                </button>
+                <button onclick="speakAllergyGuide('drug', 'en')" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold flex items-center justify-center gap-1 transition">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 6. EYE ALLERGY / CONJUNCTIVITIS -->
+            <div class="allergy-card glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4 border border-teal-500/20" data-category="drug_eye">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/25">👁️ EYE ALLERGY</span>
+                  <span class="text-xs font-mono text-white/35">Allergic Eye</span>
+                </div>
+                <div>
+                  <h3 class="font-brand text-lg font-bold text-white">आंखों की एलर्जी (Eye Allergy)</h3>
+                  <p class="text-xs text-teal-300 font-medium">Allergic Conjunctivitis, Red Eyes, Itching &amp; Grittiness</p>
+                </div>
+                
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1.5 text-xs text-white/70">
+                  <strong class="text-white/90 block font-semibold">⚡ आम कारण (Triggers):</strong>
+                  <p>धूल, परागकण, धुआं, स्विमिंग पूल का क्लोरीन, मेकअप उत्पाद या कॉन्टैक्ट लेंस।</p>
+                </div>
+
+                <!-- Local Home Remedies -->
+                <div class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-800/40 space-y-2 text-xs">
+                  <strong class="text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span>🌹</span> <span>देसी व घरेलू देखभाल (Eye Care):</span>
+                  </strong>
+                  <ul class="space-y-1.5 text-emerald-200/90 list-disc list-inside">
+                    <li><strong>ठंडे पानी के छींटे:</strong> साफ व ठंडे पानी से आंखों को हल्के छींटे मारें (रगड़ें नहीं)।</li>
+                    <li><strong>शुद्ध गुलाब जल पैड:</strong> रुई को ठंडे गुलाब जल में भिगोकर 10 मिनट बंद पलकों पर रखें।</li>
+                    <li><strong>खीरे की स्लाइस:</strong> ठंडी खीरे की स्लाइस आंखों पर रखने से जलन व सूजन शांत होती है।</li>
+                    <li><strong>लेंस न पहनें:</strong> एलर्जी ठीक होने तक कॉन्टैक्ट लेंस का प्रयोग बंद रखें।</li>
+                  </ul>
+                </div>
+
+                <!-- OTC & Red Flags -->
+                <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-800/40 text-xs space-y-1">
+                  <strong class="text-amber-300 font-bold">💊 सुरक्षित आई ड्रॉप्स:</strong>
+                  <p class="text-amber-200/90">लुब्रिकेटिंग आर्टिफिशियल टीयर्स (Carboxymethylcellulose drops) या Olopatadine drops डॉक्टर की सलाह से डालें।</p>
+                  <p class="text-red-400 font-bold pt-1">❌ कभी भी गंदे हाथों से आंखें न मसलें (कॉर्निया को नुकसान पहुंच सकता है)।</p>
+                </div>
+              </div>
+
+              <!-- Audio Buttons -->
+              <div class="pt-3 border-t border-white/08 flex gap-2">
+                <button onclick="speakAllergyGuide('eye', 'hi')" class="flex-1 py-2 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-1 transition" style="background:linear-gradient(135deg,#00d4aa,#009977);">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी में सुनें</span>
+                </button>
+                <button onclick="speakAllergyGuide('eye', 'en')" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold flex items-center justify-center gap-1 transition">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Emergency Action Box -->
+          <div class="p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);">
+            <div class="flex items-center gap-3">
+              <span style="font-size:24px;">🚨</span>
+              <div>
+                <h4 class="font-brand text-white font-bold text-sm">गंभीर एलर्जी (Anaphylaxis Emergency)?</h4>
+                <p class="text-xs text-white/50 mt-0.5">यदि सांस नली में रुकावट, गले में सूजन या बेहोशी हो, तो घरेलू नुस्खों में समय न गंवाएं — तुरंत 112 डायल करें।</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <button onclick="openNearbyHospitals()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold transition">🏥 Nearby ERs</button>
+              <a href="tel:112" class="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-lg" style="background:linear-gradient(135deg,#ff0033,#ff5500);">
+                <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+                <span>Call 112 SOS</span>
+              </a>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -1806,6 +2156,10 @@
           <i data-lucide="stethoscope" class="w-4 h-4"></i>
           <span>Triage</span>
         </button>
+        <button onclick="switchTab('allergies')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="allergies">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>Allergies</span>
+        </button>
         <button onclick="switchTab('wounds')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="wounds">
           <i data-lucide="bandage" class="w-4 h-4"></i>
           <span>Wounds</span>
@@ -1841,6 +2195,7 @@
         langBtn: "हिंदी (Switch to Hindi)",
         
         navTriage: "Triage Guide",
+        navAllergies: "Allergies & Pitt",
         navWounds: "Wound Materials",
         navVisuals: "Visual Animations",
         navCPR: "CPR Panic Guide",
@@ -1957,6 +2312,7 @@
         langBtn: "English (अंग्रेज़ी में बदलें)",
         
         navTriage: "प्राथमिक चिकित्सा",
+        navAllergies: "एलर्जी व पित्ती",
         navWounds: "घाव एवं सामग्री",
         navVisuals: "सचित्र डेमो",
         navCPR: "सीपीआर गाइड",
@@ -2368,6 +2724,57 @@
         : `${title}. Step 1: Washing: ${wash}. Medication: ${dis}. Warning: ${never}`;
 
       playEmergencyVoice(speech, lang);
+    }
+
+    function speakAllergyGuide(type, lang = 'hi') {
+      const allergyGuides = {
+        pitt: {
+          hi: 'पित्ती और लाल चकत्ते का घरेलू उपचार: शुद्ध नारियल तेल या देसी घी में थोड़ा कपूर मिलाकर लगाने से तुरंत ठंडक मिलती है। नीम की पत्तियों के पानी से हल्के हाथ से धोएं। कपड़े में बर्फ लपेटकर 10 मिनट सिकाई करें। गर्म पानी बिल्कुल न लगाएं। यदि होंठ या गले में सूजन आए तो तुरंत 112 कॉल करें।',
+          en: 'Pitt and Hives first aid: Mix crushed camphor in pure coconut oil or Desi Ghee and apply gently for immediate cooling relief. Wash with cooled neem water. Apply cold ice compress for 10 minutes. Avoid hot water. If throat or lips swell, call 112 immediately for Anaphylaxis.'
+        },
+        food: {
+          hi: 'भोजन एलर्जी का उपचार: जिस खाने से एलर्जी हुई हो उसे तुरंत बंद करें। पेट दर्द में गुनगुने पानी में अजवाइन और काला नमक लें। उल्टी या दस्त में ओआरएस या नारियल पानी घूंट-घूंट पिएं। यदि सांस लेने या निगलने में कठिनाई हो तो तुरंत अस्पताल जाएं।',
+          en: 'Food allergy care: Immediately stop consuming the suspected food. Drink warm water with ajwain and black salt for cramps. Sip ORS or coconut water for dehydration. If difficulty swallowing or breathing occurs, call 112 immediately.'
+        },
+        respiratory: {
+          hi: 'धूल व पराग एलर्जी का उपचार: तुलसी और अदरक की भाप लें जिससे बंद नाक खुलेगी। रात में गर्म हल्दी वाला दूध पिएं। गुनगुने नमकीन पानी से नाक की सफाई करें। बाहर जाते समय N95 मास्क पहनें। सांस फूलने पर तुरंत इनहेलर लें।',
+          en: 'Dust and pollen allergy care: Inhale steam with tulsi and ginger to open airways. Drink warm turmeric milk at night. Use saline nasal rinse to wash out pollen. Wear an N95 mask outdoors. If wheezing occurs, use your inhaler.'
+        },
+        insect: {
+          hi: 'कीड़े और मधुमक्खी के डंक का उपचार: डंक को किसी कार्ड से खुरचें, कभी उंगलियों से न दबाएं। बेकिंग सोडा का गाढ़ा पेस्ट डंक पर लगाएं। 15 मिनट बर्फ की सिकाई करें ताकि जहर न फैले। तुलसी के पत्तों का रस लगाएं।',
+          en: 'Insect and bee sting first aid: Scrape the stinger off with a card, never squeeze it. Apply a thick baking soda paste. Apply ice compress for 15 minutes to reduce venom spread. Apply tulsi leaf juice for soothing.'
+        },
+        drug: {
+          hi: 'दवा से एलर्जी का उपचार: जिस दवा से एलर्जी हुई हो उसे तुरंत लेना बंद करें। दवा का रैपर संभाल कर रखें और तुरंत इमरजेंसी डॉक्टर को दिखाएं। बहुत सारा पानी पिएं।',
+          en: 'Drug allergy emergency: Immediately stop taking the suspected medicine. Keep the medicine box to show the doctor. Drink plenty of water and seek emergency medical care immediately.'
+        },
+        eye: {
+          hi: 'आंखों की एलर्जी का उपचार: ठंडे साफ पानी के हल्के छींटे मारें। रुई को ठंडे गुलाब जल में भिगोकर बंद पलकों पर रखें। आंखें कभी न मसलें। लुब्रिकेटिंग आई ड्रॉप्स डालें।',
+          en: 'Eye allergy first aid: Splash cool clean water gently. Place cotton pads soaked in chilled rose water over closed eyelids. Never rub eyes. Use lubricating artificial tear drops.'
+        }
+      };
+
+      const entry = allergyGuides[type] || allergyGuides.pitt;
+      const speech = lang === 'hi' ? entry.hi : entry.en;
+      playEmergencyVoice(speech, lang);
+    }
+
+    function filterAllergyCategory(cat) {
+      document.querySelectorAll('.allergy-chip').forEach(btn => {
+        if (btn.dataset.acat === cat) {
+          btn.className = 'allergy-chip chip-active px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition';
+        } else {
+          btn.className = 'allergy-chip chip-inactive px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition';
+        }
+      });
+      document.querySelectorAll('.allergy-card').forEach(card => {
+        if (cat === 'all' || card.dataset.category === cat) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      lucide.createIcons();
     }
 
     function speakDemoVoice(key, lang = 'hi') {
