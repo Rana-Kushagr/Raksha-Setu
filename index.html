@@ -3881,57 +3881,154 @@
     // =========================================================================
     let voiceRecognition = null;
 
+    // ── Voice Search Status Toast ──────────────────────────────────────────
+    function showVoiceToast(msg, type = 'info', durationMs = 2800) {
+      let toast = document.getElementById('voice-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'voice-toast';
+        toast.style.cssText = `
+          position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
+          z-index:9999; padding:10px 20px; border-radius:14px; font-size:13px;
+          font-weight:700; font-family:'JetBrains Mono',monospace; text-align:center;
+          max-width:88vw; white-space:nowrap; pointer-events:none;
+          transition:opacity 0.25s ease; box-shadow:0 8px 32px rgba(0,0,0,0.5);`;
+        document.body.appendChild(toast);
+      }
+      const colors = {
+        info:    { bg:'rgba(6,20,42,0.95)',   border:'#3b82f6', color:'#93c5fd' },
+        listen:  { bg:'rgba(6,42,20,0.95)',   border:'#22c55e', color:'#86efac' },
+        success: { bg:'rgba(6,30,20,0.95)',   border:'#10b981', color:'#6ee7b7' },
+        error:   { bg:'rgba(42,6,6,0.95)',    border:'#ef4444', color:'#fca5a5' },
+        warn:    { bg:'rgba(42,30,0,0.95)',   border:'#f59e0b', color:'#fde68a' }
+      };
+      const c = colors[type] || colors.info;
+      toast.style.background = c.bg;
+      toast.style.border = `1.5px solid ${c.border}`;
+      toast.style.color = c.color;
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, durationMs);
+    }
+
     function startVoiceSearch() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const btn = document.getElementById('voice-search-btn');
+      const isHi = currentLang === 'hi';
 
+      // ── Browser support check ──────────────────────────────────────────
       if (!SpeechRecognition) {
-        alert(currentLang === 'hi'
-          ? 'आवाज खोज इस ब्राउज़र में समर्थित नहीं है। कृपया Chrome का उपयोग करें।'
-          : 'Voice search is not supported in this browser. Please use Chrome or Edge.');
+        showVoiceToast(
+          isHi ? '❌ आवाज खोज इस ब्राउज़र में काम नहीं करती। Chrome या Edge खोलें।'
+               : '❌ Voice search not supported. Please use Chrome or Edge.',
+          'error', 4000);
         return;
       }
 
+      // ── Toggle off if already listening ────────────────────────────────
       if (voiceRecognition) {
-        voiceRecognition.stop();
+        voiceRecognition.abort();
         voiceRecognition = null;
-        if (btn) btn.classList.remove('listening');
+        if (btn) { btn.classList.remove('listening'); btn.textContent = '🎙️'; }
+        showVoiceToast(isHi ? '🛑 सुनना बंद किया' : '🛑 Stopped listening', 'warn', 1500);
         return;
       }
 
+      // ── Request mic permission explicitly first ─────────────────────────
+      if (navigator.permissions) {
+        navigator.permissions.query({ name: 'microphone' }).then(result => {
+          if (result.state === 'denied') {
+            showVoiceToast(
+              isHi ? '❌ माइक्रोफोन की अनुमति अवरुद्ध है। ब्राउज़र सेटिंग में Allow करें।'
+                   : '❌ Microphone blocked. Go to browser settings → Allow microphone.',
+              'error', 5000);
+            return;
+          }
+          _doStartVoice(SpeechRecognition, btn, isHi);
+        }).catch(() => _doStartVoice(SpeechRecognition, btn, isHi));
+      } else {
+        _doStartVoice(SpeechRecognition, btn, isHi);
+      }
+    }
+
+    function _doStartVoice(SpeechRecognition, btn, isHi) {
       try {
         voiceRecognition = new SpeechRecognition();
-        voiceRecognition.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
-        voiceRecognition.interimResults = false;
-        voiceRecognition.maxAlternatives = 1;
+        voiceRecognition.lang = isHi ? 'hi-IN' : 'en-IN';
+        voiceRecognition.interimResults = true;   // Show live transcript as you speak
+        voiceRecognition.continuous = false;
+        voiceRecognition.maxAlternatives = 3;
 
-        if (btn) btn.classList.add('listening');
+        if (btn) { btn.classList.add('listening'); btn.textContent = '🔴'; }
+        showVoiceToast(
+          isHi ? '🎙️ सुन रहे हैं… बोलिए (हिंदी या English)' : '🎙️ Listening… Speak now',
+          'listen', 8000);
 
+        const searchInput = document.getElementById('triage-search');
+
+        // ── Live interim transcript in the search box ──────────────────
         voiceRecognition.onresult = (e) => {
-          const transcript = e.results[0][0].transcript;
-          const searchInput = document.getElementById('triage-search');
+          let interimText = '';
+          let finalText = '';
+
+          for (let i = e.resultIndex; i < e.results.length; i++) {
+            const t = e.results[i][0].transcript;
+            if (e.results[i].isFinal) finalText += t;
+            else interimText += t;
+          }
+
+          // Show interim in search box immediately
           if (searchInput) {
-            searchInput.value = transcript;
+            searchInput.value = finalText || interimText;
             filterProtocols();
           }
-          if (btn) btn.classList.remove('listening');
-          voiceRecognition = null;
+
+          if (finalText) {
+            showVoiceToast(`✅ "${finalText}"`, 'success', 2500);
+            if (btn) { btn.classList.remove('listening'); btn.textContent = '🎙️'; }
+            voiceRecognition = null;
+          }
         };
 
-        voiceRecognition.onerror = () => {
-          if (btn) btn.classList.remove('listening');
+        // ── Error handler with clear Hindi/English messages ─────────────
+        voiceRecognition.onerror = (e) => {
+          if (btn) { btn.classList.remove('listening'); btn.textContent = '🎙️'; }
           voiceRecognition = null;
+
+          const messages = {
+            'not-allowed': isHi
+              ? '❌ माइक्रोफोन अनुमति से मना किया। ब्राउज़र में Allow करें।'
+              : '❌ Microphone permission denied. Allow in browser settings.',
+            'no-speech': isHi
+              ? '🤫 आवाज नहीं सुनी। फिर से कोशिश करें।'
+              : '🤫 No speech detected. Try again.',
+            'audio-capture': isHi
+              ? '❌ माइक्रोफोन नहीं मिला। डिवाइस में माइक जाँचें।'
+              : '❌ No microphone found. Check your device.',
+            'network': isHi
+              ? '📵 नेटवर्क समस्या। ऑफलाइन मोड में आवाज सीमित है।'
+              : '📵 Network error. Voice may not work offline.',
+            'aborted': null  // Silent — user cancelled
+          };
+
+          const msg = messages[e.error];
+          if (msg) showVoiceToast(msg, 'error', 4000);
         };
 
         voiceRecognition.onend = () => {
-          if (btn) btn.classList.remove('listening');
+          if (btn) { btn.classList.remove('listening'); btn.textContent = '🎙️'; }
           voiceRecognition = null;
         };
 
         voiceRecognition.start();
+
       } catch (err) {
-        if (btn) btn.classList.remove('listening');
+        if (btn) { btn.classList.remove('listening'); btn.textContent = '🎙️'; }
         voiceRecognition = null;
+        showVoiceToast(
+          isHi ? `❌ त्रुटि: ${err.message}` : `❌ Error: ${err.message}`,
+          'error', 4000);
       }
     }
 
