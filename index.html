@@ -471,6 +471,7 @@
               <div id="triage-timer-pill" class="flex items-center gap-2 glass-card px-3 py-2 rounded-xl border border-white/06 shrink-0" title="Active Triage Duration. Auto-112 escalation triggers at 10-12 mins.">
                 <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
                 <span class="text-[11px] font-mono text-white/60">Triage: <strong id="triage-timer-display" class="text-amber-400">00:00</strong></span>
+                <button onclick="resetTriageTimer()" class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/05 text-white/60 border border-white/10 hover:bg-white/10 hover:text-white transition" title="Reset emergency session timer">↺ Reset</button>
                 <button onclick="fastForwardDemoTimer()" class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500 hover:text-white transition" title="Fast-forward to 10 mins for demo testing">⚡ Test 10m</button>
               </div>
 
@@ -1138,8 +1139,13 @@
 
     <!-- ================= 10-MINUTE AUTO-CALL EMERGENCY INTERCEPTOR ================= -->
     <div id="autocall-modal" class="fixed inset-0 z-[9000] bg-black/90 backdrop-blur-2xl hidden items-center justify-center p-4">
-      <div class="glass-card max-w-lg w-full rounded-3xl border-2 border-red-500 overflow-hidden shadow-2xl p-6 sm:p-8 text-center space-y-6 animate-fadeup" style="background:linear-gradient(160deg,#1c0505,#0a0202);box-shadow:0 0 120px rgba(255,0,51,0.6);">
+      <div class="glass-card max-w-lg w-full rounded-3xl border-2 border-red-500 overflow-hidden shadow-2xl p-6 sm:p-8 text-center space-y-6 animate-fadeup relative" style="background:linear-gradient(160deg,#1c0505,#0a0202);box-shadow:0 0 120px rgba(255,0,51,0.6);">
         
+        <!-- Top-Right Close / Cancel Button -->
+        <button onclick="cancelAutoCall()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white flex items-center justify-center transition" title="Cancel Auto-Call">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
         <div class="w-20 h-20 rounded-full mx-auto flex items-center justify-center neon-red text-4xl splash-ring" style="background:rgba(255,0,51,0.25);">
           🚨
         </div>
@@ -1152,7 +1158,7 @@
             Urgent: Automatic 112 Dialing
           </h2>
           <p class="text-xs sm:text-sm text-red-200/80 leading-relaxed font-sans">
-            You have been actively searching for medical procedures for over 10 minutes. If the patient is not stabilizing, professional emergency response is strictly critical.
+            You have been searching for procedures for over 10 minutes. If the patient is not stabilizing, professional emergency medical response is strictly critical.
           </p>
         </div>
 
@@ -1162,19 +1168,25 @@
           <div id="autocall-countdown" class="font-brand text-3xl font-black text-white text-red-400 font-mono animate-pulse">10s</div>
         </div>
 
-        <!-- Call Buttons -->
+        <!-- Call & Cancel Buttons -->
         <div class="space-y-3">
           <a href="tel:112" onclick="triggerDirect112Call()" class="w-full py-4 rounded-2xl text-white font-brand font-bold text-base flex items-center justify-center gap-3 shadow-xl hover:scale-105 transition" style="background:linear-gradient(135deg,#ff0033,#ff5500);box-shadow:0 10px 40px rgba(255,0,51,0.5);">
             <i data-lucide="phone-call" class="w-5 h-5"></i>
             <span>CALL 112 IMMEDIATELY NOW</span>
           </a>
 
-          <div class="flex items-center gap-3">
-            <button onclick="snoozeAutoCall(5)" class="flex-1 py-2.5 rounded-xl bg-white/05 hover:bg-white/10 text-white/70 border border-white/10 text-xs font-semibold transition">
+          <!-- Prominent Cancel Button -->
+          <button onclick="cancelAutoCall()" class="w-full py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-brand font-bold text-sm border border-white/20 flex items-center justify-center gap-2 transition active:scale-95 shadow-md">
+            <span>🛑</span>
+            <span>CANCEL AUTO-CALL (I Have This Under Control)</span>
+          </button>
+
+          <div class="flex items-center gap-3 pt-1">
+            <button onclick="snoozeAutoCall(5)" class="flex-1 py-2 rounded-xl bg-white/05 hover:bg-white/10 text-white/60 hover:text-white border border-white/08 text-xs font-semibold transition">
               ⏱️ Snooze 5 Mins
             </button>
-            <button onclick="cancelAutoCall()" class="flex-1 py-2.5 rounded-xl bg-white/05 hover:bg-white/10 text-white/50 hover:text-white border border-white/10 text-xs font-semibold transition">
-              ✕ Dismiss (Drill/Trained)
+            <button onclick="cancelAutoCall()" class="flex-1 py-2 rounded-xl bg-white/05 hover:bg-white/10 text-white/60 hover:text-white border border-white/08 text-xs font-semibold transition">
+              ✕ Cancel (Training Drill)
             </button>
           </div>
         </div>
@@ -3349,7 +3361,36 @@
         clearInterval(autoCallCountdownInterval);
         autoCallCountdownInterval = null;
       }
-      autoCallTriggered = true;
+      autoCallTriggered = true; // prevent re-triggering during this session
+      const modal = document.getElementById('autocall-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      
+      const pill = document.getElementById('triage-timer-display');
+      if (pill) {
+        pill.textContent = 'Canceled';
+        setTimeout(() => {
+          if (pill) pill.textContent = '00:00';
+          triageElapsedSeconds = 0;
+        }, 1800);
+      }
+    }
+
+    function resetTriageTimer() {
+      triageElapsedSeconds = 0;
+      autoCallTriggered = false;
+      if (autoCallCountdownInterval) {
+        clearInterval(autoCallCountdownInterval);
+        autoCallCountdownInterval = null;
+      }
+      const pill = document.getElementById('triage-timer-display');
+      if (pill) {
+        pill.textContent = '00:00';
+        pill.className = 'text-amber-400 font-bold';
+      }
       const modal = document.getElementById('autocall-modal');
       if (modal) {
         modal.classList.add('hidden');
