@@ -1,7 +1,7 @@
 {
-  "name": "RakshaSetu - Offline Emergency & First-Aid Triager",
+  "name": "RakshaSetu - Real 3D Video Emergency & First-Aid Triager",
   "short_name": "RakshaSetu",
-  "description": "Offline-first emergency first-aid, CPR audio-visual guide, and SOS beacon.",
+  "description": "Offline-first emergency first-aid, CPR audio metronome, and SOS beacon.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#090d16",
