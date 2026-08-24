@@ -638,11 +638,19 @@
               </div>
             </div>
 
-            <!-- Result -->
-            <div id="wound-photo-result" class="hidden p-4 rounded-2xl" style="background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);">
+            <div id="wound-photo-result" class="hidden p-4 rounded-2xl space-y-3" style="background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);">
               <p class="section-label mb-1" style="color:rgba(0,212,170,0.8)">WOUND IDENTIFIED</p>
               <p id="wound-result-text" class="font-brand text-white font-semibold text-sm"></p>
               <button id="wound-result-btn" onclick="" class="mt-2 text-xs font-mono text-teal-400 hover:underline">→ Open full wound guide</button>
+              <!-- Medical Disclaimer -->
+              <div style="margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);display:flex;gap:8px;align-items:flex-start;">
+                <span style="font-size:15px;flex-shrink:0;">⚠️</span>
+                <div>
+                  <p style="font-size:11px;font-weight:800;color:#fca5a5;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;margin-bottom:3px;">AI CAUTION — NOT A DIAGNOSIS</p>
+                  <p style="font-size:10.5px;color:rgba(255,255,255,0.5);line-height:1.5;">This is an <strong style="color:rgba(255,255,255,0.75);">offline first-aid guide only</strong>. The AI may be incorrect. Please contact a <strong style="color:rgba(255,255,255,0.75);">certified doctor or hospital</strong> as soon as possible for proper medical assessment.</p>
+                  <p style="font-size:10px;color:rgba(252,165,165,0.6);margin-top:4px;font-family:'JetBrains Mono',monospace;">यह AI गलत भी हो सकता है। तुरंत डॉक्टर से मिलें।</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1623,21 +1631,33 @@
         <div class="p-6 overflow-y-auto space-y-6 flex-1 text-sm" id="modal-body"></div>
 
         <!-- Modal Footer Actions -->
-        <div class="p-4 border-t border-white/08 flex flex-col sm:flex-row items-center justify-between gap-3" style="background:rgba(2,3,8,0.95)">
-          <div class="flex items-center gap-2 w-full sm:w-auto">
-            <button onclick="openNearbyHospitals()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/05 hover:bg-white/10 text-white/70 border border-white/10 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
-              <span>🏥</span>
-              <span>Nearby ERs</span>
-            </button>
-            <button onclick="speakCurrentModal(currentLang)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-teal-500/30 text-teal-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition hover:bg-teal-500/10">
-              <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-              <span>Replay Audio</span>
-            </button>
+        <div class="p-4 border-t border-white/08 flex flex-col gap-3" style="background:rgba(2,3,8,0.95)">
+
+          <!-- ⚠️ Medical Disclaimer -->
+          <div style="padding:8px 12px;border-radius:10px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.22);display:flex;gap:7px;align-items:flex-start;">
+            <span style="font-size:13px;flex-shrink:0;margin-top:1px;">⚠️</span>
+            <p style="font-size:10px;color:rgba(252,165,165,0.6);line-height:1.55;font-family:'JetBrains Mono',monospace;">
+              <strong style="color:#fca5a5;">First-aid only — not a substitute for professional care.</strong> Contact a certified doctor or hospital as soon as possible.
+              &nbsp;<span style="color:rgba(252,165,165,0.45);">| यह केवल प्राथमिक चिकित्सा है। तुरंत डॉक्टर से मिलें।</span>
+            </p>
           </div>
-          <a href="tel:112" class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-white font-brand font-bold text-xs flex items-center justify-center gap-2 shadow-lg hover:scale-105 transition" style="background:linear-gradient(135deg,#ff0033,#ff5500);">
-            <i data-lucide="phone-call" class="w-4 h-4"></i>
-            <span>Call 112 National Ambulance</span>
-          </a>
+
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <button onclick="openNearbyHospitals()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/05 hover:bg-white/10 text-white/70 border border-white/10 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                <span>🏥</span>
+                <span>Nearby ERs</span>
+              </button>
+              <button onclick="speakCurrentModal(currentLang)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-teal-500/30 text-teal-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition hover:bg-teal-500/10">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                <span>Replay Audio</span>
+              </button>
+            </div>
+            <a href="tel:112" class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-white font-brand font-bold text-xs flex items-center justify-center gap-2 shadow-lg hover:scale-105 transition" style="background:linear-gradient(135deg,#ff0033,#ff5500);">
+              <i data-lucide="phone-call" class="w-4 h-4"></i>
+              <span>Call 112 National Ambulance</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1666,6 +1686,17 @@
       <!-- Helper info -->
       <div class="px-4 pt-2">
         <p class="text-[10px] font-mono text-white/30 uppercase tracking-wider">Works 100% Offline • Supports English &amp; Hindi (हिंदी)</p>
+      </div>
+
+      <!-- AI Disclaimer strip -->
+      <div class="px-4 pt-2 pb-1">
+        <div style="padding:8px 12px;border-radius:10px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.25);display:flex;gap:7px;align-items:flex-start;">
+          <span style="font-size:13px;flex-shrink:0;margin-top:1px;">⚠️</span>
+          <p style="font-size:10px;color:rgba(252,165,165,0.65);line-height:1.55;font-family:'JetBrains Mono',monospace;">
+            <strong style="color:#fca5a5;">AI may be wrong.</strong> This is first-aid guidance only — not a medical diagnosis. <strong style="color:rgba(255,255,255,0.6);">See a doctor as soon as possible.</strong>
+            &nbsp;|&nbsp; <span style="color:rgba(252,165,165,0.5);">यह AI गलत हो सकता है। तुरंत डॉक्टर से मिलें।</span>
+          </p>
+        </div>
       </div>
 
       <!-- Results list -->
