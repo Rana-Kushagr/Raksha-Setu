@@ -1285,11 +1285,51 @@
       lucide.createIcons();
     }
 
-    function speakWoundGuide(type, lang = 'hi') {
-      const guide = WOUND_GUIDES[type] || WOUND_GUIDES.gravel;
+    // High-Priority Emergency Voice Audio Engine (Maximum Loudness, Fast Urgent Cadence & Chime)
+    function playEmergencyVoice(text, lang = 'hi') {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
 
+      // Play pre-speech attention wake-up chime
+      playAttentionAlert();
+
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.volume = 1.0; // 100% Max Loudness
+        utterance.rate = 1.12;   // Fast, crisp, urgent pacing
+        utterance.pitch = 1.08;  // Clear treble resonance to cut through noise
+        utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
+
+        const voices = window.speechSynthesis.getVoices();
+        if (voices.length > 0) {
+          const matching = voices.find(v => (lang === 'hi' ? v.lang.includes('hi') : (v.lang.includes('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Neural')))));
+          if (matching) utterance.voice = matching;
+        }
+
+        window.speechSynthesis.speak(utterance);
+      }, 120);
+    }
+
+    function playAttentionAlert() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1320, audioCtx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.7, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.14);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.14);
+      } catch (e) {}
+    }
+
+    function speakWoundGuide(type, lang = 'hi') {
+      const guide = WOUND_GUIDES[type] || WOUND_GUIDES.gravel;
       const title = lang === 'hi' ? guide.title_hi : guide.title_en;
       const wash = lang === 'hi' ? guide.wash_material_hi : guide.wash_material_en;
       const dis = lang === 'hi' ? guide.disinfectant_hi : guide.disinfectant_en;
@@ -1299,16 +1339,10 @@
         ? `${title}। पहला कदम: घाव की सफाई: ${wash}। दवा: ${dis}। ध्यान दें: ${never}`
         : `${title}. Step 1: Washing: ${wash}. Medication: ${dis}. Warning: ${never}`;
 
-      const utterance = new SpeechSynthesisUtterance(speech);
-      utterance.rate = 0.95;
-      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
-      window.speechSynthesis.speak(utterance);
+      playEmergencyVoice(speech, lang);
     }
 
     function speakDemoVoice(key, lang = 'hi') {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-
       const scripts = {
         cpr: {
           en: 'CPR Chest Compressions: Place the heel of your palm in the exact center of the chest. Interlock your other hand. Keep elbows locked straight at 90 degrees. Push down 2 inches hard and fast at 110 beats per minute. Do 30 compressions.',
@@ -1329,24 +1363,15 @@
       };
 
       const text = (scripts[key] && scripts[key][lang]) ? scripts[key][lang] : scripts[key]['en'];
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.95;
-      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
-      window.speechSynthesis.speak(utterance);
+      playEmergencyVoice(text, lang);
     }
 
     function speakCPRPanicGuide(lang = 'hi') {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-
       const text = lang === 'hi'
-        ? 'घबराएं नहीं। शांत रहें। पहला कदम: 112 पर कॉल करें और फोन स्पीकर पर रखें। दूसरा कदम: मरीज को जमीन पर सीधा लिटाएं। तीसरा कदम: अपने दोनों हाथ सीने के ठीक बीच में रखें। चौथा कदम: स्टार्ट बीट बटन दबाएं और हर बीप की आवाज पर जोर से सीना दबाएं।'
-        : 'Do not panic. Stay calm. Step 1: Call 112 on speakerphone. Step 2: Lay the person flat on hard ground. Step 3: Lock your hands in the exact center of chest. Step 4: Press Start Beat and push down on every single beep sound!';
+        ? 'घबराएं नहीं! शांत रहें। पहला कदम: 112 पर कॉल करें और फोन स्पीकर पर रखें। दूसरा कदम: मरीज को जमीन पर सीधा लिटाएं। तीसरा कदम: अपने दोनों हाथ सीने के ठीक बीच में रखें। चौथा कदम: स्टार्ट बीट बटन दबाएं और हर बीप की आवाज पर जोर से सीना दबाएं!'
+        : 'Do not panic! Stay calm. Step 1: Call 112 on speakerphone. Step 2: Lay the person flat on hard ground. Step 3: Lock your hands in the exact center of chest. Step 4: Press Start Beat and push down on every single beep sound!';
 
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.95;
-      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
-      window.speechSynthesis.speak(utterance);
+      playEmergencyVoice(text, lang);
     }
   </script>
 
@@ -2107,10 +2132,7 @@
         ? `${title}। पहला कदम: ${dos.join('। अगला कदम: ')}`
         : `${title}. Step 1. ${dos.join('. Next Step: ')}`;
 
-      const utterance = new SpeechSynthesisUtterance(fullSpeechText);
-      utterance.rate = 0.95;
-      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
-      window.speechSynthesis.speak(utterance);
+      playEmergencyVoice(fullSpeechText, lang);
     }
 
     function playBeep(pitch = 800) {
@@ -2121,12 +2143,12 @@
         const gain = audioCtx.createGain();
         osc.type = 'sine';
         osc.frequency.setValueAtTime(pitch, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.85, audioCtx.currentTime); // Boosted loud gain
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.1);
+        osc.stop(audioCtx.currentTime + 0.12);
       } catch (e) {}
     }
 
