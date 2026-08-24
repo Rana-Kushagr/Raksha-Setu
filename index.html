@@ -2813,12 +2813,53 @@
         ],
         donts_hi: [
           '❌ मरीज को अचानक खड़ा न करें या चलने न दें (ब्लड प्रेशर शून्य हो सकता है)।',
-          '❌ एपिनेफ्रिन में देरी करके साधारण एलर्जी की गोलियों के भरोसे न बैठें।',
-          '❌ मरीज को अकेला न छोड़ें।'
         ]
       },
 
-      // 4. Diabetic Emergency
+      // 4. PITT (Hives / Urticaria / Skin Allergy & Local Remedies)
+      {
+        id: 'pitt',
+        category: 'medical',
+        severity: 'medium',
+        icon: 'sparkles',
+        color: 'rose',
+        title_en: 'PITT (Hives / Urticaria & Skin Allergy)',
+        title_hi: 'पित्ती (PITT - पित्त उछलना / Hives / लाल चकत्ते)',
+        tag_en: 'Desi Remedies • Cold Compress • Anti-Itch',
+        tag_hi: 'घरेलू उपचार • कपूर-नारियल तेल • ठंडी सिकाई',
+        summary_en: 'Sudden red, raised, intensely itchy welts (Pitt / Hives) triggered by allergens, heat, or food. Local Indian home remedies provide fast, soothing relief.',
+        summary_hi: 'शरीर पर अचानक लाल उभरे हुए खुजलीदार चकत्ते (पित्ती उछलना)। देसी कपूर, नारियल तेल व घरेलू नुस्खों से तुरंत राहत पाएं।',
+        dos_en: [
+          '🥥 Coconut Oil + Camphor (कपूर): Mix a pinch of crushed camphor in pure coconut oil or Desi Ghee and apply gently over hives for instant cooling and anti-itch relief.',
+          '🌿 Neem Water Wash: Boil fresh neem leaves in water, let it cool completely, and sponge/wash the affected skin to reduce histamine irritation and prevent infection.',
+          '🧊 Cold Compress: Apply an ice pack wrapped in a clean cloth or a cold wet towel for 10-15 minutes to soothe burning flare-ups.',
+          '🧴 Aloe Vera Gel / Baking Soda: Apply fresh aloe vera pulp or a mild baking soda/water paste to calm intense itching.',
+          '💊 Anti-Allergy Medication: Take an OTC antihistamine (e.g., Cetirizine 10mg or Avil) as advised by a doctor/pharmacist.',
+          '🚨 EMERGENCY RED FLAG: If hives spread with swelling of lips, tongue, or throat causing difficulty breathing, this is ANAPHYLAXIS — call 112 immediately!'
+        ],
+        dos_hi: [
+          '🥥 नारियल तेल + देसी कपूर: शुद्ध नारियल तेल या देसी घी में थोड़ा कपूर मिलाकर चकत्तों पर लगाएं — खुजली व जलन में तुरंत ठंडक मिलेगी।',
+          '🌿 नीम के पानी से धुलाई: नीम की पत्तियों को पानी में उबालकर ठंडा करें और उस पानी से हल्के हाथ से धोएं।',
+          '🧊 बर्फ की सिकाई: कपड़े में बर्फ लपेटकर 10-15 मिनट चकत्तों पर सिकाई करें (गर्म पानी बिल्कुल न लगाएं)।',
+          '🧴 एलोवेरा या बेकिंग सोडा लेप: ताजा एलोवेरा जेल या पानी में थोड़ा बेकिंग सोडा घोलकर लगाने से जलन रुकती है।',
+          '💊 एंटी-एलर्जी दवा: डॉक्टर/फार्मासिस्ट की सलाह से सिट्रिजिन (Cetirizine) या एविल (Avil) ले सकते हैं।',
+          '🚨 खतरे की चेतावनी: यदि पित्ती के साथ होंठ, जीभ या गले में सूजन आए और सांस फूले, तो यह गंभीर एलर्जी (Anaphylaxis) है — तुरंत 112 डायल करें!'
+        ],
+        donts_en: [
+          '❌ DO NOT take hot showers or baths (heat triggers massive histamine release and worsens itching).',
+          '❌ DO NOT scratch or rub vigorously with fingernails (it spreads hives and damages the skin barrier).',
+          '❌ DO NOT wear tight, synthetic, or woollen clothing (wear loose, breathable cotton).',
+          '❌ DO NOT consume spicy, deep-fried, sour, or stale foods during active flare-ups.'
+        ],
+        donts_hi: [
+          '❌ गर्म पानी से न नहाएं (गर्म पानी से पित्ती और तेजी से भड़कती है)।',
+          '❌ नाखूनों से रगड़कर न खरोंचें (खरोंचने से चकत्ते पूरे शरीर पर फैल जाते हैं)।',
+          '❌ तंग, गर्म या सिंथेटिक कपड़े न पहनें — केवल ढीले सूती (कॉटन) कपड़े पहनें।',
+          '❌ तीखा, ज्यादा खट्टा, तला-भुना या बासी खाना न खाएं।'
+        ]
+      },
+
+      // 5. Diabetic Emergency
       {
         id: 'diabetic_emergency',
         category: 'medical',
@@ -4329,8 +4370,10 @@
                                           'गला रुकना','सांस नहीं','दम घुटना','चोकिंग'] },
       { id: 'severe-bleeding', keywords: ['bleeding','blood','cut','wound','hemorrhage','blood loss','won\'t stop','spurting',
                                           'खून','चोट','रक्तस्राव','कटा'] },
-      { id: 'anaphylaxis',     keywords: ['allergic reaction','anaphylaxis','swollen','hives','throat swelling','epipen','bee sting',
+      { id: 'anaphylaxis',     keywords: ['allergic reaction','anaphylaxis','swollen','throat swelling','epipen','bee sting',
                                           'एलर्जी','सूजन','गले में सूजन'] },
+      { id: 'pitt',            keywords: ['pitt','pitti','hives','urticaria','rash','itching','red spots','skin allergy','welts','khujli','skin irritation',
+                                          'पित्त','पित्ती','पित्ती उछलना','चकत्ते','खुजली','लाल दाने','स्किन एलर्जी','घरेलू नुस्खे'] },
       { id: 'drowning',        keywords: ['drowning','water','submerged','cannot swim','rescue','lake','river','flood',
                                           'डूबना','पानी में','नदी','तालाब'] },
       { id: 'burns',           keywords: ['burn','fire','chemical','hot water','scalded','blister','skin damage',
@@ -4357,7 +4400,7 @@
                                           'साँप','कुत्ता','काटना','बिच्छू','कीड़ा'] },
     ];
 
-    const CRITICAL_PROTOCOLS = ['heart-attack','stroke','drowning','anaphylaxis','choking','electric-shock','severe-bleeding'];
+    const CRITICAL_PROTOCOLS = ['heart-attack','stroke','drowning','anaphylaxis','choking','electric-shock','severe-bleeding','heart_attack','severe_bleeding','electric_shock'];
 
     function runSymptomCheck() {
       const input = (document.getElementById('ai-symptom-input').value || '').toLowerCase().trim();
@@ -4376,7 +4419,7 @@
       if (scored.length === 0) {
         resultsDiv.innerHTML = `<div class="p-4 rounded-xl text-center space-y-2" style="background:rgba(255,255,255,0.03);">
           <p class="text-xs text-white/50">No exact match for "${input}"</p>
-          <p class="text-[11px] text-white/35">Try typing keywords like: <em>chest pain, bleeding, burn, fracture, unconscious</em></p>
+          <p class="text-[11px] text-white/35">Try typing keywords like: <em>pitt, hives, chest pain, bleeding, burn, rash</em></p>
         </div>`;
         return;
       }
@@ -4389,14 +4432,14 @@
       }
 
       resultsDiv.innerHTML = scored.map((entry, idx) => {
-        const protocol = EMERGENCY_PROTOCOLS.find(p => p.id === entry.id);
+        const protocol = EMERGENCY_PROTOCOLS.find(p => p.id === entry.id || p.id === entry.id.replace(/-/g, '_') || p.id.replace(/_/g, '-') === entry.id);
         if (!protocol) return '';
         const title = currentLang === 'hi' ? protocol.title_hi : protocol.title_en;
         const summary = currentLang === 'hi' ? protocol.summary_hi : protocol.summary_en;
-        const isCrit = CRITICAL_PROTOCOLS.includes(entry.id);
+        const isCrit = CRITICAL_PROTOCOLS.includes(entry.id) || protocol.severity === 'critical';
         const confidence = idx === 0 ? '🔴 High Match' : idx === 1 ? '🟡 Probable' : '🟢 Related';
 
-        return `<div class="ai-match-card" onclick="toggleAIPanel(); openProtocolModal('${entry.id}')">
+        return `<div class="ai-match-card" onclick="toggleAIPanel(); openProtocolModal('${protocol.id}')">
           <div class="flex items-center justify-between mb-1">
             <span class="font-brand text-[13px] font-semibold text-white">${title}</span>
             <span class="font-mono text-[9px] font-bold ${isCrit ? 'text-red-400' : 'text-amber-400'}">${confidence}</span>
@@ -4847,7 +4890,7 @@
     };
     // Add emoji shortcuts to protocols for recently viewed chips
     EMERGENCY_PROTOCOLS.forEach(p => {
-      const emojiMap = { 'heart-attack':'❤️','stroke':'🧠','choking':'🫁','severe-bleeding':'🩸','anaphylaxis':'🐝','drowning':'🌊','burns':'🔥','fracture':'🦴','seizure':'⚡','poisoning':'☠️','head-injury':'🤕','heatstroke':'☀️','hypothermia':'❄️','electric-shock':'⚡','diabetic':'🍬','asthma':'😮‍💨','animal-bites':'🐍' };
+      const emojiMap = { 'heart-attack':'❤️','heart_attack':'❤️','stroke':'🧠','choking':'🫁','severe-bleeding':'🩸','severe_bleeding':'🩸','anaphylaxis':'🐝','pitt':'🌿','drowning':'🌊','burns':'🔥','fracture':'🦴','seizure':'⚡','poisoning':'☠️','head-injury':'🤕','head_injury':'🤕','heatstroke':'☀️','hypothermia':'❄️','electric-shock':'⚡','electric_shock':'⚡','diabetic':'🍬','diabetic_emergency':'🍬','asthma':'😮‍💨','animal-bites':'🐍','bites_stings':'🐍' };
       p.icon_emoji = emojiMap[p.id] || '🏥';
     });
     renderRecentlyViewed(); // render on load
