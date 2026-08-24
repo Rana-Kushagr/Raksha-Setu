@@ -2,10 +2,9 @@
 
 <h3 align="center">🚨 India's Most Advanced Offline Emergency First-Aid Companion</h3>
 
-[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-Try%20Now-00d4aa?style=for-the-badge)](https://rana-kushagr.github.io/Raksha-Setu/)
-[![PWA](https://img.shields.io/badge/Offline-PWA%20Ready-22c55e?style=for-the-badge)](https://rana-kushagr.github.io/Raksha-Setu/)
-[![Bilingual](https://img.shields.io/badge/Languages-Hindi%20%2B%20English-ff6600?style=for-the-badge)]()
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)]()
+[![PWA](https://img.shields.io/badge/Offline-PWA%20Ready-22c55e?style=for-the-badge)](https://github.com/Rana-Kushagr/Raksha-Setu)
+[![Bilingual](https://img.shields.io/badge/Languages-Hindi%20%2B%20English-ff6600?style=for-the-badge)](https://github.com/Rana-Kushagr/Raksha-Setu)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://github.com/Rana-Kushagr/Raksha-Setu)
 
 > **Panic-proof • Bilingual Hindi+English • Works 100% Offline • Life-saving AI**
 
@@ -93,8 +92,6 @@ node server.js
 # or
 npx serve .
 `
-
-**Live demo:** [rana-kushagr.github.io/Raksha-Setu](https://rana-kushagr.github.io/Raksha-Setu/)
 
 ---
 
