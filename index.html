@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#dc2626">
-  <meta name="description" content="RakshaSetu - Emergency First-Aid Triage, Wound Material Advisor, Voice Coach & Visual Video Tutorials.">
-  <title>RakshaSetu (रक्षासेतु) — Interactive First-Aid & Disaster Guide</title>
+  <meta name="description" content="RakshaSetu - Panic-Proof Emergency First-Aid Triager with Animated Visuals, Bilingual Voice Coach & 3D Disasters.">
+  <title>RakshaSetu (रक्षासेतु) — Emergency First-Aid & Visual Disaster Guide</title>
   
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -52,29 +52,38 @@
       pointer-events: none;
     }
 
-    /* Subtle readable glassmorphism cards */
+    /* High legibility glassmorphism */
     .glass-card {
-      background: rgba(8, 14, 28, 0.82);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    }
-    .glass-header {
-      background: rgba(6, 10, 22, 0.88);
+      background: rgba(8, 14, 28, 0.88);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+    }
+    .glass-header {
+      background: rgba(6, 10, 22, 0.92);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
     }
     .cpr-ring-active {
       box-shadow: 0 0 70px rgba(239, 68, 68, 0.95), inset 0 0 45px rgba(239, 68, 68, 0.6);
     }
-    .tutorial-anim-box {
-      background: radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95));
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .tutorial-canvas-container {
+      background: radial-gradient(circle at 50% 50%, #0f172a, #020617);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Animated Chest Pulse */
+    @keyframes chestCompression {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(0.88) translateY(6px); }
+    }
+    .compressing {
+      animation: chestCompression 0.54s infinite ease-in-out;
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-red-500 selection:text-white pb-24 md:pb-12 relative overflow-x-hidden">
@@ -85,28 +94,28 @@
   <!-- Content Layer -->
   <div class="relative z-10">
 
-    <!-- ================= TOP BAR (DISASTER LIVE SELECTOR) ================= -->
-    <div class="w-full bg-slate-950/85 border-b border-red-900/40 px-4 py-2 text-xs text-slate-300 backdrop-blur-md">
+    <!-- ================= TOP BAR (DISASTER LIVE SELECTOR & GLOBAL BILINGUAL SWITCH) ================= -->
+    <div class="w-full bg-slate-950/90 border-b border-red-900/40 px-4 py-2 text-xs text-slate-300 backdrop-blur-md">
       <div class="flex items-center gap-2 max-w-7xl mx-auto w-full justify-between">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-          <span class="font-bold text-slate-100">Live Disaster Scene: <span id="current-disaster-name" class="text-red-400 font-extrabold">⚡ Lightning Thunderstorm & Torrential Rain</span></span>
+          <span class="font-bold text-slate-100"><span data-i18n="liveDisaster">Live Disaster Scene:</span> <span id="current-disaster-name" class="text-red-400 font-extrabold">⚡ Lightning Thunderstorm & Torrential Rain</span></span>
         </div>
         
-        <!-- Live Disaster Environment Switcher -->
+        <!-- Live Disaster Environment Switcher & Language Switcher -->
         <div class="flex items-center gap-2">
-          <span class="text-[11px] text-slate-200 font-bold hidden sm:inline">Disaster Scene:</span>
+          <span class="text-[11px] text-slate-200 font-bold hidden sm:inline" data-i18n="sceneLabel">Scene:</span>
           <select id="disaster-select" onchange="changeDisasterScene(this.value)" class="bg-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl border border-red-500/60 text-white outline-none cursor-pointer hover:bg-slate-800 shadow-md transition">
-            <option value="storm">⚡ Lightning Storm & Rain</option>
-            <option value="wildfire">🔥 Raging Jungle Wildfire</option>
-            <option value="tsunami">🌊 Surging Ocean Tsunami</option>
-            <option value="volcano">🌋 Volcano Lava Eruption</option>
+            <option value="storm" data-i18n="sceneStorm">⚡ Lightning Storm & Rain</option>
+            <option value="wildfire" data-i18n="sceneWildfire">🔥 Raging Jungle Wildfire</option>
+            <option value="tsunami" data-i18n="sceneTsunami">🌊 Surging Ocean Tsunami</option>
+            <option value="volcano" data-i18n="sceneVolcano">🌋 Volcano Lava Eruption</option>
           </select>
 
           <!-- Language Switcher -->
-          <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-bold flex items-center gap-1 transition">
-            <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-            <span id="lang-label">हिंदी</span>
+          <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 text-white border border-red-400 text-xs font-black flex items-center gap-1.5 shadow-md transition active:scale-95">
+            <i data-lucide="languages" class="w-3.5 h-3.5"></i>
+            <span id="lang-label">हिंदी (Switch to Hindi)</span>
           </button>
         </div>
       </div>
@@ -126,36 +135,36 @@
               </h1>
               <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800/60 font-black tracking-wider uppercase">SOS 3D</span>
             </div>
-            <p class="text-[11px] text-slate-300 font-hindi -mt-0.5 font-medium">रक्षासेतु • सचित्र प्राथमिक चिकित्सा एवं आवाज गाइड</p>
+            <p id="app-tagline" class="text-[11px] text-slate-300 font-hindi -mt-0.5 font-medium">रक्षासेतु • सचित्र प्राथमिक चिकित्सा एवं आवाज गाइड</p>
           </div>
         </div>
 
         <!-- Desktop Navigation Tabs -->
         <nav class="hidden lg:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-700/80 shadow-xl">
           <button onclick="switchTab('triage')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition active-tab text-white bg-red-600 shadow-md flex items-center gap-1.5" data-tab="triage">
-            <i data-lucide="stethoscope" class="w-4 h-4"></i> <span>Triage Guide</span>
+            <i data-lucide="stethoscope" class="w-4 h-4"></i> <span data-i18n="navTriage">Triage Guide</span>
           </button>
           <button onclick="switchTab('wounds')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="wounds">
-            <i data-lucide="bandage" class="w-4 h-4 text-emerald-400"></i> <span>Wound Cleaning & Materials</span>
+            <i data-lucide="bandage" class="w-4 h-4 text-emerald-400"></i> <span data-i18n="navWounds">Wound Materials</span>
           </button>
           <button onclick="switchTab('tutorials')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="tutorials">
-            <i data-lucide="play-circle" class="w-4 h-4 text-amber-400"></i> <span>Visual Video Demos</span>
+            <i data-lucide="play-circle" class="w-4 h-4 text-amber-400"></i> <span data-i18n="navVisuals">Visual Animations</span>
           </button>
           <button onclick="switchTab('cpr')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="cpr">
-            <i data-lucide="heart-pulse" class="w-4 h-4 text-red-400"></i> <span>CPR Metronome</span>
+            <i data-lucide="heart-pulse" class="w-4 h-4 text-red-400"></i> <span data-i18n="navCPR">CPR Panic Guide</span>
           </button>
           <button onclick="switchTab('sos')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="sos">
-            <i data-lucide="radio" class="w-4 h-4 text-sky-400"></i> <span>GPS SOS</span>
+            <i data-lucide="radio" class="w-4 h-4 text-sky-400"></i> <span data-i18n="navSOS">GPS SOS</span>
           </button>
           <button onclick="switchTab('ice')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="ice">
-            <i data-lucide="contact" class="w-4 h-4 text-purple-400"></i> <span>Medical ID</span>
+            <i data-lucide="contact" class="w-4 h-4 text-purple-400"></i> <span data-i18n="navICE">Medical ID</span>
           </button>
         </nav>
 
         <!-- Emergency 112 Call Trigger -->
         <a href="tel:112" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 active:scale-95 text-white font-black text-sm shadow-xl shadow-red-900/60 flex items-center gap-2 transition animate-pulse">
           <i data-lucide="phone-call" class="w-4 h-4"></i>
-          <span>112 SOS</span>
+          <span data-i18n="call112">112 SOS</span>
         </a>
       </div>
     </header>
@@ -170,7 +179,7 @@
             <i data-lucide="siren" class="w-5 h-5"></i>
           </div>
           <div>
-            <div class="text-xs text-red-300 font-bold">National SOS</div>
+            <div class="text-xs text-red-300 font-bold" data-i18n="sosNational">National SOS</div>
             <div class="text-lg font-black text-white">112</div>
           </div>
         </a>
@@ -180,7 +189,7 @@
             <i data-lucide="ambulance" class="w-5 h-5"></i>
           </div>
           <div>
-            <div class="text-xs text-amber-300 font-bold">Ambulance</div>
+            <div class="text-xs text-amber-300 font-bold" data-i18n="sosAmbulance">Ambulance</div>
             <div class="text-lg font-black text-white">108 / 102</div>
           </div>
         </a>
@@ -190,7 +199,7 @@
             <i data-lucide="shield" class="w-5 h-5"></i>
           </div>
           <div>
-            <div class="text-xs text-blue-300 font-bold">Police</div>
+            <div class="text-xs text-blue-300 font-bold" data-i18n="sosPolice">Police</div>
             <div class="text-lg font-black text-white">100</div>
           </div>
         </a>
@@ -200,7 +209,7 @@
             <i data-lucide="flame" class="w-5 h-5"></i>
           </div>
           <div>
-            <div class="text-xs text-orange-300 font-bold">Fire Rescue</div>
+            <div class="text-xs text-orange-300 font-bold" data-i18n="sosFire">Fire Rescue</div>
             <div class="text-lg font-black text-white">101</div>
           </div>
         </a>
@@ -209,17 +218,16 @@
       <!-- ================= TAB 1: FIRST-AID & EMERGENCY TRIAGE ================= -->
       <section id="tab-triage" class="tab-content space-y-6">
         
-        <!-- Search & Filters -->
         <div class="glass-card p-5 sm:p-7 rounded-3xl space-y-4">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">⚡ Emergency First-Aid Triage</h2>
-              <p class="text-sm text-slate-300 mt-1">Instant action protocols with spoken voice commands & verified procedures.</p>
+              <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight" data-i18n="triageHeading">⚡ Emergency First-Aid Triage</h2>
+              <p class="text-sm text-slate-300 mt-1" data-i18n="triageSub">Instant action protocols with spoken voice commands & verified procedures.</p>
             </div>
             
             <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-2 rounded-2xl border border-slate-700">
               <i data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i>
-              <span class="text-xs font-bold text-slate-200">Voice Narrator</span>
+              <span class="text-xs font-bold text-slate-200" data-i18n="voiceNarrator">Voice Narrator</span>
               <label class="relative inline-flex items-center cursor-pointer ml-1">
                 <input type="checkbox" id="voice-toggle" class="sr-only peer" checked>
                 <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
@@ -233,15 +241,14 @@
           </div>
 
           <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-xs">
-            <button onclick="setSearchFilter('all')" class="chip-filter px-3.5 py-1.5 rounded-full bg-red-600 text-white font-bold whitespace-nowrap active-chip" data-category="all">All</button>
-            <button onclick="setSearchFilter('critical')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="critical">🚨 Critical</button>
-            <button onclick="setSearchFilter('trauma')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="trauma">🩸 Wounds & Bleeding</button>
-            <button onclick="setSearchFilter('environmental')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="environmental">🐍 Bites & Hazards</button>
-            <button onclick="setSearchFilter('medical')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="medical">🫀 Medical Emergencies</button>
+            <button onclick="setSearchFilter('all')" class="chip-filter px-3.5 py-1.5 rounded-full bg-red-600 text-white font-bold whitespace-nowrap active-chip" data-category="all" data-i18n="filterAll">All</button>
+            <button onclick="setSearchFilter('critical')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="critical" data-i18n="filterCritical">🚨 Critical</button>
+            <button onclick="setSearchFilter('trauma')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="trauma" data-i18n="filterTrauma">🩸 Wounds & Bleeding</button>
+            <button onclick="setSearchFilter('environmental')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="environmental" data-i18n="filterEnv">🐍 Bites & Hazards</button>
+            <button onclick="setSearchFilter('medical')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="medical" data-i18n="filterMed">🫀 Medical Emergencies</button>
           </div>
         </div>
 
-        <!-- Protocols Grid -->
         <div id="protocols-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- Rendered dynamically -->
         </div>
@@ -252,149 +259,220 @@
         <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
           <div>
             <div class="flex items-center gap-2">
-              <span class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-black uppercase tracking-wider">Clinical Guidance</span>
-              <h2 class="text-2xl sm:text-3xl font-black text-white">🩹 Smart Wound Cleaning & Material Selector</h2>
+              <span class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-black uppercase tracking-wider" data-i18n="woundBadge">Clinical Guidance</span>
+              <h2 class="text-2xl sm:text-3xl font-black text-white" data-i18n="woundHeading">🩹 Smart Wound Cleaning & Material Selector</h2>
             </div>
-            <p class="text-sm text-slate-300 mt-1">Select the cause of injury to see exact safe medical materials, dressing rules, and dangerous materials to avoid.</p>
+            <p class="text-sm text-slate-300 mt-1" data-i18n="woundSub">Select the cause of injury to see exact safe medical materials, dressing rules, and dangerous materials to avoid.</p>
           </div>
 
           <!-- Cause Selector Chips -->
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs font-bold">
             <button onclick="showWoundGuide('gravel')" class="wound-chip p-3 rounded-2xl bg-emerald-700 text-white border border-emerald-500 text-center shadow-lg transition active-wound-chip" data-wound="gravel">
-              🚗 Road Gravel / Scrape
+              <span data-i18n="wChipGravel">🚗 Road Gravel / Scrape</span>
             </button>
             <button onclick="showWoundGuide('glass')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="glass">
-              🔪 Deep Glass / Blade Cut
+              <span data-i18n="wChipGlass">🔪 Deep Glass / Cut</span>
             </button>
             <button onclick="showWoundGuide('puncture')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="puncture">
-              🔩 Rusty Nail Puncture
+              <span data-i18n="wChipNail">🔩 Rusty Nail Puncture</span>
             </button>
             <button onclick="showWoundGuide('animal')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="animal">
-              🐕 Animal / Dog Bite
+              <span data-i18n="wChipAnimal">🐕 Dog / Animal Bite</span>
             </button>
             <button onclick="showWoundGuide('burn')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="burn">
-              🔥 Fire / Chemical Burn
+              <span data-i18n="wChipBurn">🔥 Fire / Chemical Burn</span>
             </button>
             <button onclick="showWoundGuide('splinter')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="splinter">
-              🪵 Wood Splinter / Thorn
+              <span data-i18n="wChipSplinter">🪵 Wood Splinter / Thorn</span>
             </button>
           </div>
 
-          <!-- Dynamic Wound Detail Presentation -->
           <div id="wound-detail-panel" class="grid lg:grid-cols-12 gap-6 p-6 rounded-3xl bg-slate-900/90 border border-slate-800">
             <!-- Rendered dynamically -->
           </div>
         </div>
       </section>
 
-      <!-- ================= TAB 3: VISUAL VIDEO DEMOS & TUTORIALS ================= -->
+      <!-- ================= TAB 3: VISUAL VIDEO & ANIMATED DEMOS ================= -->
       <section id="tab-tutorials" class="tab-content hidden space-y-6">
         <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
           <div>
             <div class="flex items-center gap-2">
-              <span class="px-3 py-1 rounded-full bg-amber-950 text-amber-400 border border-amber-800 text-xs font-black uppercase tracking-wider">Step-by-Step Visuals</span>
-              <h2 class="text-2xl sm:text-3xl font-black text-white">🎬 Interactive Video & Visual Demos</h2>
+              <span class="px-3 py-1 rounded-full bg-amber-950 text-amber-400 border border-amber-800 text-xs font-black uppercase tracking-wider" data-i18n="visualsBadge">Step-by-Step Visual Simulations</span>
+              <h2 class="text-2xl sm:text-3xl font-black text-white" data-i18n="visualsHeading">🎬 Animated Visual Action Demos</h2>
             </div>
-            <p class="text-sm text-slate-300 mt-1">Watch exact hand positioning, pressure angles, and emergency bandaging simulations with audio voice coach.</p>
+            <p class="text-sm text-slate-300 mt-1" data-i18n="visualsSub">Real-time animated motion diagrams showing exact physical hand placement, angles, and life-saving movements with bilingual voice coaching.</p>
           </div>
 
-          <!-- Interactive Video Demo Cards -->
+          <!-- 4 Rich Animated Visual Demonstrations -->
           <div class="grid md:grid-cols-2 gap-6">
             
-            <!-- Demo 1: CPR Hand Technique -->
-            <div class="p-6 rounded-3xl tutorial-anim-box flex flex-col justify-between space-y-4">
+            <!-- Demo 1: CPR Hand Technique Animation -->
+            <div class="p-6 rounded-3xl tutorial-canvas-container flex flex-col justify-between space-y-4">
               <div>
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-black text-red-400 tracking-wider uppercase">Visual Technique 1</span>
-                  <button onclick="speakTutorial('cpr')" class="px-3 py-1 rounded-xl bg-red-950/80 border border-red-700 text-red-300 text-xs font-bold flex items-center gap-1">
-                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Play Audio Coach
-                  </button>
+                  <span class="text-xs font-black text-red-400 tracking-wider uppercase" data-i18n="vDemo1Badge">TECHNIQUE 1: CHEST CPR</span>
+                  <div class="flex items-center gap-1.5">
+                    <button onclick="speakDemoVoice('cpr', 'hi')" class="px-2.5 py-1 rounded-xl bg-red-950 border border-red-700 text-red-300 text-xs font-bold flex items-center gap-1 hover:bg-red-900">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी</span>
+                    </button>
+                    <button onclick="speakDemoVoice('cpr', 'en')" class="px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1 hover:bg-slate-800">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                    </button>
+                  </div>
                 </div>
-                <h3 class="text-xl font-extrabold text-white mt-1">Adult CPR Chest Compressions</h3>
-                <p class="text-xs text-slate-300 mt-1">Heel of palm on sternum center, interlocked fingers, arms locked at 90° angle, 2-inch depth.</p>
+                <h3 class="text-xl font-extrabold text-white mt-1" data-i18n="vDemo1Title">Adult CPR Chest Compressions</h3>
+                <p class="text-xs text-slate-300 mt-1" data-i18n="vDemo1Desc">Lock elbows straight at 90°. Push 2 inches down in center of chest between nipples at 110 beats per minute.</p>
               </div>
 
-              <!-- Animated Diagram Canvas -->
-              <div class="relative h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden">
-                <div class="flex flex-col items-center space-y-2">
-                  <div class="w-16 h-16 rounded-2xl bg-red-600/30 border-2 border-red-500 flex items-center justify-center text-white font-black animate-bounce">
-                    <i data-lucide="hand" class="w-8 h-8 text-red-400"></i>
-                  </div>
-                  <div class="text-xs font-mono text-emerald-400 font-bold">PUMP RATE: 110 BPM (2 inches)</div>
-                  <div class="text-[10px] text-slate-400">Elbows Locked • Full Recoil • 30 Compressions</div>
-                </div>
+              <!-- Animated Motion Simulation -->
+              <div class="relative h-56 rounded-2xl bg-slate-950 border border-red-900/40 flex flex-col items-center justify-center p-4 overflow-hidden">
+                <svg class="w-48 h-36" viewBox="0 0 200 150">
+                  <!-- Patient Chest Outline -->
+                  <path d="M 40 120 Q 100 95 160 120 L 160 140 L 40 140 Z" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                  <!-- Sternum Target with Pulsing Ring -->
+                  <circle cx="100" cy="110" r="18" fill="#7f1d1d" stroke="#ef4444" stroke-width="2" class="animate-ping" opacity="0.4"/>
+                  <circle cx="100" cy="110" r="12" fill="#dc2626"/>
+                  
+                  <!-- Rescuer Lock Arms & Hands Moving Down -->
+                  <g class="compressing" transform-origin="100 20">
+                    <!-- Forearms locked straight at 90 deg -->
+                    <line x1="85" y1="20" x2="95" y2="100" stroke="#f87171" stroke-width="8" stroke-linecap="round"/>
+                    <line x1="115" y1="20" x2="105" y2="100" stroke="#f87171" stroke-width="8" stroke-linecap="round"/>
+                    <!-- Interlocked Hands Heel -->
+                    <ellipse cx="100" cy="104" rx="14" ry="9" fill="#fca5a5" stroke="#ef4444" stroke-width="2"/>
+                    <!-- Arrow down -->
+                    <path d="M 100 45 L 100 75 M 95 70 L 100 75 L 105 70" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                  </g>
+                </svg>
+                <div class="text-xs font-mono text-emerald-400 font-extrabold mt-1">110 BPM RHYTHM • 2 INCH DEPTH (5-6 CM)</div>
+                <div class="text-[10px] text-slate-400" data-i18n="vDemo1Sub">Allow chest to recoil fully between compressions</div>
               </div>
             </div>
 
-            <!-- Demo 2: Tourniquet Application -->
-            <div class="p-6 rounded-3xl tutorial-anim-box flex flex-col justify-between space-y-4">
+            <!-- Demo 2: Tourniquet Windlass Stick Bleeding Control -->
+            <div class="p-6 rounded-3xl tutorial-canvas-container flex flex-col justify-between space-y-4">
               <div>
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-black text-amber-400 tracking-wider uppercase">Visual Technique 2</span>
-                  <button onclick="speakTutorial('tourniquet')" class="px-3 py-1 rounded-xl bg-amber-950/80 border border-amber-700 text-amber-300 text-xs font-bold flex items-center gap-1">
-                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Play Audio Coach
-                  </button>
+                  <span class="text-xs font-black text-amber-400 tracking-wider uppercase" data-i18n="vDemo2Badge">TECHNIQUE 2: BLEEDING STOP</span>
+                  <div class="flex items-center gap-1.5">
+                    <button onclick="speakDemoVoice('tourniquet', 'hi')" class="px-2.5 py-1 rounded-xl bg-amber-950 border border-amber-700 text-amber-300 text-xs font-bold flex items-center gap-1 hover:bg-amber-900">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी</span>
+                    </button>
+                    <button onclick="speakDemoVoice('tourniquet', 'en')" class="px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1 hover:bg-slate-800">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                    </button>
+                  </div>
                 </div>
-                <h3 class="text-xl font-extrabold text-white mt-1">Tourniquet Bleeding Control</h3>
-                <p class="text-xs text-slate-300 mt-1">Place 2-3 inches above wound, knot with stick, twist until arterial bleeding completely stops, secure stick.</p>
+                <h3 class="text-xl font-extrabold text-white mt-1" data-i18n="vDemo2Title">Emergency Tourniquet Windlass</h3>
+                <p class="text-xs text-slate-300 mt-1" data-i18n="vDemo2Desc">Wrap cloth 2-3 inches above wound, knot with a strong stick, twist until spurting blood stops, lock stick.</p>
               </div>
 
-              <div class="relative h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden">
-                <div class="flex flex-col items-center space-y-2">
-                  <div class="w-20 h-10 rounded-xl bg-amber-600/30 border-2 border-amber-500 flex items-center justify-center text-amber-300 font-black animate-pulse">
-                    TWIST & LOCK
-                  </div>
-                  <div class="text-xs font-mono text-amber-400 font-bold">2-3 INCHES ABOVE WOUND</div>
-                  <div class="text-[10px] text-slate-400">Never place on joint • Write exact application time</div>
-                </div>
+              <!-- Animated Windlass Stick Graphic -->
+              <div class="relative h-56 rounded-2xl bg-slate-950 border border-amber-900/40 flex flex-col items-center justify-center p-4 overflow-hidden">
+                <svg class="w-48 h-36" viewBox="0 0 200 150">
+                  <!-- Leg / Arm Limb -->
+                  <rect x="20" y="55" width="160" height="40" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                  <!-- Wound Site on Right -->
+                  <circle cx="150" cy="75" r="8" fill="#ef4444"/>
+                  <text x="140" y="112" fill="#ef4444" font-size="10" font-weight="bold">Wound</text>
+                  <!-- 2-3 Inches indicator -->
+                  <line x1="90" y1="40" x2="150" y2="40" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,3"/>
+                  <text x="96" y="34" fill="#f59e0b" font-size="9" font-weight="bold">2-3 inches above</text>
+
+                  <!-- Tourniquet Band Wrapped -->
+                  <rect x="85" y="50" width="14" height="50" rx="4" fill="#d97706" stroke="#fbbf24" stroke-width="2"/>
+                  
+                  <!-- Rotating Windlass Stick Animation -->
+                  <g class="animate-spin" style="animation-duration: 4s;" transform-origin="92 75">
+                    <line x1="92" y1="35" x2="92" y2="115" stroke="#78350f" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="92" cy="75" r="5" fill="#f59e0b"/>
+                  </g>
+                </svg>
+                <div class="text-xs font-mono text-amber-400 font-extrabold mt-1">TWIST STICK TIGHT UNTIL BLEEDING STOPS</div>
+                <div class="text-[10px] text-slate-400" data-i18n="vDemo2Sub">Never place over elbow/knee joints • Note application time</div>
               </div>
             </div>
 
-            <!-- Demo 3: Heimlich Choking Maneuver -->
-            <div class="p-6 rounded-3xl tutorial-anim-box flex flex-col justify-between space-y-4">
+            <!-- Demo 3: Heimlich Choking Maneuver Animation -->
+            <div class="p-6 rounded-3xl tutorial-canvas-container flex flex-col justify-between space-y-4">
               <div>
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-black text-purple-400 tracking-wider uppercase">Visual Technique 3</span>
-                  <button onclick="speakTutorial('heimlich')" class="px-3 py-1 rounded-xl bg-purple-950/80 border border-purple-700 text-purple-300 text-xs font-bold flex items-center gap-1">
-                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Play Audio Coach
-                  </button>
+                  <span class="text-xs font-black text-purple-400 tracking-wider uppercase" data-i18n="vDemo3Badge">TECHNIQUE 3: CHOKING RESCUE</span>
+                  <div class="flex items-center gap-1.5">
+                    <button onclick="speakDemoVoice('heimlich', 'hi')" class="px-2.5 py-1 rounded-xl bg-purple-950 border border-purple-700 text-purple-300 text-xs font-bold flex items-center gap-1 hover:bg-purple-900">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी</span>
+                    </button>
+                    <button onclick="speakDemoVoice('heimlich', 'en')" class="px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1 hover:bg-slate-800">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                    </button>
+                  </div>
                 </div>
-                <h3 class="text-xl font-extrabold text-white mt-1">Heimlich Maneuver (Abdominal Thrusts)</h3>
-                <p class="text-xs text-slate-300 mt-1">Stand behind victim, thumb side of fist just above navel, sharp inward & upward thrusts.</p>
+                <h3 class="text-xl font-extrabold text-white mt-1" data-i18n="vDemo3Title">Heimlich Abdominal Thrusts</h3>
+                <p class="text-xs text-slate-300 mt-1" data-i18n="vDemo3Desc">Stand behind victim. Place fist just above navel. Pull sharply inward and upward to pop out trapped object.</p>
               </div>
 
-              <div class="relative h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden">
-                <div class="flex flex-col items-center space-y-2">
-                  <div class="w-16 h-16 rounded-full bg-purple-600/30 border-2 border-purple-400 flex items-center justify-center text-white font-black animate-pulse">
-                    ⬆️ IN & UP
-                  </div>
-                  <div class="text-xs font-mono text-purple-400 font-bold">5 BACK BLOWS + 5 THRUSTS</div>
-                  <div class="text-[10px] text-slate-400">Target: Diaphragm upward push to dislodge airway object</div>
-                </div>
+              <!-- Animated Upward Thrust Graphic -->
+              <div class="relative h-56 rounded-2xl bg-slate-950 border border-purple-900/40 flex flex-col items-center justify-center p-4 overflow-hidden">
+                <svg class="w-48 h-36" viewBox="0 0 200 150">
+                  <!-- Victim Torso Side Profile -->
+                  <path d="M 90 20 Q 95 50 85 80 Q 90 120 85 145 L 60 145 L 60 20 Z" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                  <!-- Blocked Airway Object Flying Out -->
+                  <circle cx="75" cy="25" r="4" fill="#f59e0b" class="animate-ping"/>
+                  <path d="M 75 25 L 50 15" stroke="#f59e0b" stroke-width="2" stroke-dasharray="2,2"/>
+
+                  <!-- Rescuer Hand Fist Positioned on Navel -->
+                  <circle cx="88" cy="85" r="9" fill="#c084fc" stroke="#9333ea" stroke-width="2"/>
+                  
+                  <!-- Pulsing Inward & Upward Arrow -->
+                  <g class="animate-bounce">
+                    <path d="M 120 100 L 95 85 M 95 93 L 95 85 L 103 85" stroke="#a855f7" stroke-width="4" stroke-linecap="round"/>
+                    <text x="125" y="105" fill="#c084fc" font-size="10" font-weight="bold">IN & UP</text>
+                  </g>
+                </svg>
+                <div class="text-xs font-mono text-purple-400 font-extrabold mt-1">5 BACK BLOWS + 5 INWARD-UPWARD THRUSTS</div>
+                <div class="text-[10px] text-slate-400" data-i18n="vDemo3Sub">Quick upward thrust under diaphragm expels airway obstruction</div>
               </div>
             </div>
 
-            <!-- Demo 4: Recovery Position -->
-            <div class="p-6 rounded-3xl tutorial-anim-box flex flex-col justify-between space-y-4">
+            <!-- Demo 4: Unconscious Recovery Position Animation -->
+            <div class="p-6 rounded-3xl tutorial-canvas-container flex flex-col justify-between space-y-4">
               <div>
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-black text-sky-400 tracking-wider uppercase">Visual Technique 4</span>
-                  <button onclick="speakTutorial('recovery')" class="px-3 py-1 rounded-xl bg-sky-950/80 border border-sky-700 text-sky-300 text-xs font-bold flex items-center gap-1">
-                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Play Audio Coach
-                  </button>
+                  <span class="text-xs font-black text-sky-400 tracking-wider uppercase" data-i18n="vDemo4Badge">TECHNIQUE 4: AIRWAY SAFETY</span>
+                  <div class="flex items-center gap-1.5">
+                    <button onclick="speakDemoVoice('recovery', 'hi')" class="px-2.5 py-1 rounded-xl bg-sky-950 border border-sky-700 text-sky-300 text-xs font-bold flex items-center gap-1 hover:bg-sky-900">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी</span>
+                    </button>
+                    <button onclick="speakDemoVoice('recovery', 'en')" class="px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1 hover:bg-slate-800">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+                    </button>
+                  </div>
                 </div>
-                <h3 class="text-xl font-extrabold text-white mt-1">Unconscious Recovery Position</h3>
-                <p class="text-xs text-slate-300 mt-1">Roll onto side, top knee bent 90°, hand under cheek, chin tilted to keep airway completely clear.</p>
+                <h3 class="text-xl font-extrabold text-white mt-1" data-i18n="vDemo4Title">Unconscious Recovery Position</h3>
+                <p class="text-xs text-slate-300 mt-1" data-i18n="vDemo4Desc">Roll breathing victim onto side. Bend top knee at 90° angle. Rest cheek on back of hand, tilt chin up.</p>
               </div>
 
-              <div class="relative h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden">
-                <div class="flex flex-col items-center space-y-2">
-                  <div class="w-20 h-10 rounded-xl bg-sky-600/30 border-2 border-sky-400 flex items-center justify-center text-sky-200 font-black">
-                    SIDE ROLL
-                  </div>
-                  <div class="text-xs font-mono text-sky-400 font-bold">PREVENTS CHOKING ON TONGUE/VOMIT</div>
-                  <div class="text-[10px] text-slate-400">Keep airway open until ambulance arrives</div>
-                </div>
+              <!-- Animated Recovery Position Geometry Graphic -->
+              <div class="relative h-56 rounded-2xl bg-slate-950 border border-sky-900/40 flex flex-col items-center justify-center p-4 overflow-hidden">
+                <svg class="w-48 h-36" viewBox="0 0 200 150">
+                  <!-- Head tilted slightly -->
+                  <circle cx="50" cy="50" r="14" fill="#38bdf8" opacity="0.8"/>
+                  <path d="M 50 64 L 110 80" stroke="#0284c7" stroke-width="12" stroke-linecap="round"/>
+                  <!-- Hand under cheek -->
+                  <circle cx="45" cy="62" r="6" fill="#fbcfe8"/>
+                  
+                  <!-- Bent Top Knee 90 deg locking posture -->
+                  <path d="M 110 80 L 140 105 L 170 95" stroke="#38bdf8" stroke-width="8" stroke-linecap="round" fill="none"/>
+                  <circle cx="140" cy="105" r="5" fill="#0284c7"/>
+                  <text x="135" y="125" fill="#38bdf8" font-size="9" font-weight="bold">90° Bent Knee</text>
+
+                  <!-- Open Airway Indicator -->
+                  <path d="M 38 48 Q 25 45 20 40" stroke="#4ade80" stroke-width="2" stroke-dasharray="2,2"/>
+                  <text x="5" y="32" fill="#4ade80" font-size="8" font-weight="bold">Airway Open</text>
+                </svg>
+                <div class="text-xs font-mono text-sky-400 font-extrabold mt-1">SIDE ROLL PREVENTS TONGUE / VOMIT CHOKING</div>
+                <div class="text-[10px] text-slate-400" data-i18n="vDemo4Sub">Keep victim in this posture while awaiting ambulance arrival</div>
               </div>
             </div>
 
@@ -402,84 +480,113 @@
         </div>
       </section>
 
-      <!-- ================= TAB 4: CPR METRONOME ================= -->
+      <!-- ================= TAB 4: CPR PANIC METRONOME & ZERO-CONFUSION STEP GUIDE ================= -->
       <section id="tab-cpr" class="tab-content hidden space-y-6">
+        
+        <!-- Emergency Panic Banner (Zero Confusion for Panicked Bystanders) -->
+        <div class="p-5 rounded-3xl bg-red-950/80 border-2 border-red-500 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-red-600 flex items-center justify-center text-white font-black shrink-0 animate-bounce">
+              ⚠️
+            </div>
+            <div>
+              <h3 class="text-lg font-black text-white" data-i18n="cprPanicTitle">🚨 IN AN EMERGENCY? DON'T PANIC — FOLLOW THESE 4 SIMPLE STEPS:</h3>
+              <p class="text-xs text-red-200 mt-0.5" data-i18n="cprPanicSub">1. Place victim flat on hard ground. 2. Lock your hands on center of chest. 3. Press Start Beat below. 4. Push down on EVERY BEEP!</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-2 shrink-0">
+            <button onclick="speakCPRPanicGuide('hi')" class="px-3 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-1 shadow-md">
+              <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>बोलकर समझें (Hindi)</span>
+            </button>
+            <button onclick="speakCPRPanicGuide('en')" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold text-xs flex items-center gap-1">
+              <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>Listen Guide (English)</span>
+            </button>
+          </div>
+        </div>
+
         <div class="grid lg:grid-cols-12 gap-6">
           
+          <!-- CPR Interactive Metronome Player -->
           <div class="lg:col-span-7 glass-card p-6 sm:p-8 rounded-3xl flex flex-col items-center justify-center text-center space-y-6 relative overflow-hidden">
             <div>
-              <span class="text-xs px-3 py-1 rounded-full bg-red-950 text-red-400 border border-red-800 font-bold uppercase tracking-wider">AHA Standard: 100-120 BPM</span>
-              <h2 class="text-3xl font-black text-white mt-2">Life-Saving CPR Metronome</h2>
-              <p class="text-sm text-slate-300 mt-1 max-w-md">Push hard & fast in the center of chest. Stay in sync with the audio pulse.</p>
+              <span class="text-xs px-3 py-1 rounded-full bg-red-950 text-red-400 border border-red-800 font-bold uppercase tracking-wider" data-i18n="cprAHA">AHA Standard: 100-120 BPM</span>
+              <h2 class="text-3xl font-black text-white mt-2" data-i18n="cprMainTitle">Interactive CPR Audio Beat & Counter</h2>
+              <p class="text-sm text-slate-300 mt-1 max-w-md" data-i18n="cprMainSub">Push hard & fast in the center of chest. Push exactly in sync with every audio beat.</p>
             </div>
 
+            <!-- Pulsing Metronome Visual Core -->
             <div id="cpr-visual-ring" class="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full flex flex-col items-center justify-center border-4 border-slate-800 bg-slate-950/90 transition-all duration-100 shadow-2xl">
               <div id="cpr-pulse-core" class="w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-red-950/50 border border-red-700/50 flex flex-col items-center justify-center transition-all duration-100">
                 <i data-lucide="heart" id="cpr-heart-icon" class="w-10 h-10 text-red-500 transition-transform"></i>
                 <div id="cpr-counter" class="text-4xl sm:text-5xl font-black text-white mt-1">0</div>
-                <div class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Compressions</div>
+                <div class="text-[10px] font-bold text-slate-400 tracking-wider uppercase" data-i18n="cprCountLabel">Compressions</div>
               </div>
               <div id="cpr-cycle-badge" class="absolute -bottom-3 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-[11px] font-bold text-slate-300">
-                Cycle <span id="cpr-cycle-count">1</span> (30 : 2)
+                <span data-i18n="cprCycleText">Cycle</span> <span id="cpr-cycle-count">1</span> (30 : 2)
               </div>
             </div>
 
-            <div id="cpr-breath-alert" class="hidden w-full max-w-md p-4 rounded-2xl bg-amber-500/20 border border-amber-500/50 text-amber-200 text-center text-sm font-bold animate-bounce">
-              ⚠️ 30 Compressions Complete! Give 2 Rescue Breaths, then continue!
+            <!-- Rescue Breath Alert -->
+            <div id="cpr-breath-alert" class="hidden w-full max-w-md p-4 rounded-2xl bg-amber-500/20 border border-amber-500/50 text-amber-200 text-center text-sm font-bold animate-bounce" data-i18n="cprBreathAlert">
+              ⚠️ 30 Compressions Done! Give 2 Quick Breaths or continue hands-only compressions!
             </div>
 
+            <!-- Controls -->
             <div class="flex items-center gap-4">
               <button id="cpr-toggle-btn" onclick="toggleCPR()" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 active:scale-95 text-white font-black text-lg shadow-xl shadow-red-900/60 flex items-center gap-3 transition">
                 <i data-lucide="play" id="cpr-btn-icon" class="w-6 h-6 fill-white"></i>
-                <span id="cpr-btn-text">START CPR BEAT</span>
+                <span id="cpr-btn-text" data-i18n="cprBtnStart">START CPR BEAT</span>
               </button>
               <button onclick="resetCPR()" class="p-4 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-95 text-slate-300 border border-slate-700 transition" title="Reset Count">
                 <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
               </button>
             </div>
 
+            <!-- BPM Tempo Selector -->
             <div class="flex items-center gap-3 text-xs text-slate-300">
-              <span>Tempo:</span>
+              <span data-i18n="cprTempoLabel">Tempo:</span>
               <button onclick="setCPRBpm(100)" class="bpm-btn px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 hover:border-slate-600" data-bpm="100">100 BPM</button>
               <button onclick="setCPRBpm(110)" class="bpm-btn px-2.5 py-1 rounded-lg bg-red-600 text-white font-bold border border-red-500" data-bpm="110">110 BPM (Ideal)</button>
               <button onclick="setCPRBpm(120)" class="bpm-btn px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 hover:border-slate-600" data-bpm="120">120 BPM</button>
             </div>
           </div>
 
+          <!-- Step-by-Step Visual & Text Checklist -->
           <div class="lg:col-span-5 space-y-4">
             <div class="glass-card p-6 rounded-3xl space-y-4">
               <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
-                <i data-lucide="book-open" class="w-5 h-5 text-red-400"></i>
-                <span>Adult CPR Steps</span>
+                <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+                <span data-i18n="cprStepsHeader">Exact Adult CPR Action Guide</span>
               </h3>
               
               <ol class="space-y-3 text-sm text-slate-200">
                 <li class="flex items-start gap-3 p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
                   <span class="w-6 h-6 rounded-full bg-red-600/30 text-red-400 font-bold flex items-center justify-center shrink-0 text-xs">1</span>
                   <div>
-                    <strong class="text-white">Check Responsiveness & Breathing</strong>
-                    <p class="text-xs text-slate-400 mt-0.5">Tap shoulders firmly. Check chest rise for 5-10 seconds.</p>
+                    <strong class="text-white" data-i18n="cprS1Title">Check Responsiveness & Breathing</strong>
+                    <p class="text-xs text-slate-400 mt-0.5" data-i18n="cprS1Desc">Tap shoulders firmly. Shout "Are you okay?". Look for chest rise for 5 seconds.</p>
                   </div>
                 </li>
                 <li class="flex items-start gap-3 p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
                   <span class="w-6 h-6 rounded-full bg-red-600/30 text-red-400 font-bold flex items-center justify-center shrink-0 text-xs">2</span>
                   <div>
-                    <strong class="text-white">Call 112 / 108 on Speakerphone</strong>
-                    <p class="text-xs text-slate-400 mt-0.5">Do not delay compressions while making the call.</p>
+                    <strong class="text-white" data-i18n="cprS2Title">Call 112 on Speakerphone</strong>
+                    <p class="text-xs text-slate-400 mt-0.5" data-i18n="cprS2Desc">Put phone on loudspeaker so hands remain free to do compressions immediately.</p>
                   </div>
                 </li>
                 <li class="flex items-start gap-3 p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
                   <span class="w-6 h-6 rounded-full bg-red-600/30 text-red-400 font-bold flex items-center justify-center shrink-0 text-xs">3</span>
                   <div>
-                    <strong class="text-white">Hand Position: Center of Chest</strong>
-                    <p class="text-xs text-slate-400 mt-0.5">Interlock fingers, keep elbows locked straight.</p>
+                    <strong class="text-white" data-i18n="cprS3Title">Lock Hands in Center of Chest</strong>
+                    <p class="text-xs text-slate-400 mt-0.5" data-i18n="cprS3Desc">Place heel of palm between nipples. Interlock fingers. Lock elbows completely straight.</p>
                   </div>
                 </li>
                 <li class="flex items-start gap-3 p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
                   <span class="w-6 h-6 rounded-full bg-red-600/30 text-red-400 font-bold flex items-center justify-center shrink-0 text-xs">4</span>
                   <div>
-                    <strong class="text-white">Compress at 2 inches (5-6 cm) depth</strong>
-                    <p class="text-xs text-slate-400 mt-0.5">Allow chest to recoil fully between pushes.</p>
+                    <strong class="text-white" data-i18n="cprS4Title">Push Hard & Fast (2 Inches Depth)</strong>
+                    <p class="text-xs text-slate-400 mt-0.5" data-i18n="cprS4Desc">Use your upper body weight. Allow full recoil between pushes. Do not stop until medics arrive.</p>
                   </div>
                 </li>
               </ol>
@@ -494,60 +601,60 @@
         <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-2xl font-black text-white">📡 Community SOS & Live GPS Beacon</h2>
-              <p class="text-sm text-slate-300 mt-1">Broadcast exact coordinates and medical details to your family, neighbors, or police instantly without login.</p>
+              <h2 class="text-2xl font-black text-white" data-i18n="sosTitle">📡 Community SOS & Live GPS Beacon</h2>
+              <p class="text-sm text-slate-300 mt-1" data-i18n="sosSub">Broadcast exact coordinates and medical details to your family, neighbors, or police instantly without login.</p>
             </div>
             
             <button onclick="fetchCurrentLocation()" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-bold flex items-center gap-2 transition">
               <i data-lucide="locate" class="w-4 h-4 text-amber-400"></i>
-              <span>Refresh GPS Location</span>
+              <span data-i18n="sosRefresh">Refresh GPS Location</span>
             </button>
           </div>
 
           <div class="grid md:grid-cols-3 gap-4">
             <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-              <div class="text-xs text-slate-400 font-medium">Latitude & Longitude</div>
+              <div class="text-xs text-slate-400 font-medium" data-i18n="sosCoords">Latitude & Longitude</div>
               <div id="gps-coords" class="text-base font-bold text-emerald-400 font-mono">Fetching GPS...</div>
             </div>
             <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-              <div class="text-xs text-slate-400 font-medium">Accuracy Radius</div>
+              <div class="text-xs text-slate-400 font-medium" data-i18n="sosAcc">Accuracy Radius</div>
               <div id="gps-accuracy" class="text-base font-bold text-slate-200 font-mono">Detecting...</div>
             </div>
             <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-              <div class="text-xs text-slate-400 font-medium">Maps Direct Link</div>
+              <div class="text-xs text-slate-400 font-medium" data-i18n="sosMap">Maps Direct Link</div>
               <a id="gps-maps-link" href="#" target="_blank" class="text-xs font-semibold text-sky-400 hover:underline flex items-center gap-1 truncate">
-                <span>Open in Google Maps</span>
+                <span data-i18n="sosOpenMap">Open in Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5 shrink-0"></i>
               </a>
             </div>
           </div>
 
           <div class="space-y-3 pt-2">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">1-Tap Emergency Broadcasts</h3>
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="sosBroadcasts">1-Tap Emergency Broadcasts</h3>
             
             <div class="grid sm:grid-cols-3 gap-3">
               <button onclick="broadcastWhatsApp()" class="p-4 rounded-2xl bg-emerald-700 hover:bg-emerald-600 active:scale-95 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition">
                 <i data-lucide="message-square" class="w-5 h-5"></i>
-                <span>WhatsApp SOS Broadcast</span>
+                <span data-i18n="sosWhatsApp">WhatsApp SOS Broadcast</span>
               </button>
 
               <button onclick="broadcastSMS()" class="p-4 rounded-2xl bg-blue-700 hover:bg-blue-600 active:scale-95 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition">
                 <i data-lucide="send" class="w-5 h-5"></i>
-                <span>Standard SMS SOS</span>
+                <span data-i18n="sosSMS">Standard SMS SOS</span>
               </button>
 
               <button onclick="shareViaWebAPI()" class="p-4 rounded-2xl bg-purple-700 hover:bg-purple-600 active:scale-95 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition">
                 <i data-lucide="share-2" class="w-5 h-5"></i>
-                <span>Native Share / AirDrop</span>
+                <span data-i18n="sosShare">Native Share / AirDrop</span>
               </button>
             </div>
           </div>
 
           <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
             <div class="flex items-center justify-between text-xs text-slate-400">
-              <span class="font-semibold">Generated Emergency Message:</span>
+              <span class="font-semibold" data-i18n="sosMsgGen">Generated Emergency Message:</span>
               <button onclick="copySOSMessage()" class="text-sky-400 hover:underline flex items-center gap-1">
-                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Text
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> <span data-i18n="sosCopy">Copy Text</span>
               </button>
             </div>
             <p id="sos-message-preview" class="text-xs text-slate-300 font-mono bg-slate-900 p-3 rounded-xl border border-slate-800 leading-relaxed">
@@ -563,18 +670,18 @@
           
           <div class="lg:col-span-7 glass-card p-6 sm:p-8 rounded-3xl space-y-5">
             <div>
-              <h2 class="text-2xl font-black text-white">🪪 Digital Emergency Medical ID (ICE)</h2>
-              <p class="text-sm text-slate-300 mt-1">Stored 100% on your device. First responders can see your blood group, allergies, and emergency contacts instantly.</p>
+              <h2 class="text-2xl font-black text-white" data-i18n="iceTitle">🪪 Digital Emergency Medical ID (ICE)</h2>
+              <p class="text-sm text-slate-300 mt-1" data-i18n="iceSub">Stored 100% on your device. First responders can see your blood group, allergies, and emergency contacts instantly.</p>
             </div>
 
             <form id="ice-form" onsubmit="saveMedicalID(event)" class="space-y-4 text-sm">
               <div class="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1" data-i18n="iceLabelName">Full Name</label>
                   <input type="text" id="ice-name" placeholder="e.g. Lakshit Rana" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-red-500">
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Blood Group</label>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1" data-i18n="iceLabelBlood">Blood Group</label>
                   <select id="ice-blood" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-red-500">
                     <option value="Unknown">Select Blood Group</option>
                     <option value="O+">O Positive (O+)</option>
@@ -591,40 +698,40 @@
 
               <div class="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Primary Emergency Contact</label>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1" data-i18n="iceLabelPhone">Primary Emergency Contact</label>
                   <input type="tel" id="ice-phone" placeholder="e.g. +91 9876543210" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-red-500">
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Contact Relation</label>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1" data-i18n="iceLabelRelation">Contact Relation</label>
                   <input type="text" id="ice-relation" placeholder="e.g. Parent / Spouse" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-red-500">
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1">Known Allergies (Crucial for Paramedics)</label>
+                <label class="block text-xs font-semibold text-slate-300 mb-1" data-i18n="iceLabelAllergies">Known Allergies (Crucial for Paramedics)</label>
                 <input type="text" id="ice-allergies" placeholder="e.g. Penicillin, Peanuts, Sulfa Drugs, None" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-red-500">
               </div>
 
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1">Chronic Medical Conditions / Medications</label>
+                <label class="block text-xs font-semibold text-slate-300 mb-1" data-i18n="iceLabelConditions">Chronic Medical Conditions / Medications</label>
                 <input type="text" id="ice-conditions" placeholder="e.g. Asthma (Uses Inhaler), Type 1 Diabetes, Epilepsy" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-red-500">
               </div>
 
               <div class="flex items-center gap-3 pt-2">
                 <button type="submit" class="px-6 py-3 rounded-xl bg-red-600 hover:bg-red-500 font-bold text-white flex items-center gap-2 transition active:scale-95 shadow-md shadow-red-950/50">
                   <i data-lucide="save" class="w-4 h-4"></i>
-                  <span>Save Medical ID</span>
+                  <span data-i18n="iceBtnSave">Save Medical ID</span>
                 </button>
                 <button type="button" onclick="window.print()" class="px-4 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold text-xs flex items-center gap-2 transition">
                   <i data-lucide="printer" class="w-4 h-4 text-sky-400"></i>
-                  <span>Print / Save Badge</span>
+                  <span data-i18n="iceBtnPrint">Print / Save Badge</span>
                 </button>
               </div>
             </form>
           </div>
 
           <div class="lg:col-span-5 space-y-4">
-            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Emergency Lockscreen / ICE Card Preview</div>
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="icePreviewHeader">Emergency Lockscreen / ICE Card Preview</div>
             
             <div id="ice-badge-preview" class="p-6 rounded-3xl bg-gradient-to-br from-red-950 via-slate-900 to-slate-950 border-2 border-red-600/50 shadow-2xl space-y-4">
               <div class="flex items-center justify-between border-b border-red-800/40 pb-3">
@@ -633,7 +740,7 @@
                     +
                   </div>
                   <div>
-                    <div class="text-xs font-black text-white tracking-widest uppercase">EMERGENCY MEDICAL ID</div>
+                    <div class="text-xs font-black text-white tracking-widest uppercase" data-i18n="iceBadgeTitle">EMERGENCY MEDICAL ID</div>
                     <div class="text-[10px] text-red-300 font-hindi">आपत्कालीन चिकित्सा पहचान</div>
                   </div>
                 </div>
@@ -644,24 +751,24 @@
 
               <div class="space-y-2.5 text-xs">
                 <div>
-                  <span class="text-slate-400 block text-[10px] uppercase font-bold">Patient Name</span>
+                  <span class="text-slate-400 block text-[10px] uppercase font-bold" data-i18n="iceBPatient">Patient Name</span>
                   <span id="badge-name" class="text-base font-extrabold text-white">Lakshit Rana</span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 pt-1">
                   <div>
-                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Emergency Contact</span>
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold" data-i18n="iceBContact">Emergency Contact</span>
                     <span id="badge-phone" class="font-bold text-emerald-400 font-mono">+91 9876543210</span>
                     <span id="badge-relation" class="text-[10px] text-slate-400 block">(Family)</span>
                   </div>
                   <div>
-                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Allergies</span>
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold" data-i18n="iceBAllergies">Allergies</span>
                     <span id="badge-allergies" class="font-bold text-amber-400">None</span>
                   </div>
                 </div>
 
                 <div class="pt-1">
-                  <span class="text-slate-400 block text-[10px] uppercase font-bold">Conditions / Medication</span>
+                  <span class="text-slate-400 block text-[10px] uppercase font-bold" data-i18n="iceBConditions">Conditions / Medication</span>
                   <span id="badge-conditions" class="font-medium text-slate-200">No major chronic conditions</span>
                 </div>
               </div>
@@ -678,11 +785,10 @@
 
     </main>
 
-    <!-- ================= PROTOCOL MODAL (WITH VOICE COACH BAR) ================= -->
+    <!-- ================= PROTOCOL MODAL (BILINGUAL VOICE COACH) ================= -->
     <div id="protocol-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
       <div class="glass-card max-w-2xl w-full rounded-3xl border border-red-600/40 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
         
-        <!-- Modal Header -->
         <div class="p-5 border-b border-slate-800 bg-slate-950/90 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div id="modal-icon-container" class="w-10 h-10 rounded-xl bg-red-600/30 flex items-center justify-center text-red-400 font-bold">
@@ -698,17 +804,20 @@
           </button>
         </div>
 
-        <!-- Voice Coach Sticky Bar -->
-        <div class="px-5 py-2.5 bg-emerald-950/80 border-b border-emerald-800/50 flex items-center justify-between text-xs">
+        <!-- Bilingual Spoken Voice Coach Bar -->
+        <div class="px-5 py-2.5 bg-emerald-950/90 border-b border-emerald-800/50 flex items-center justify-between text-xs">
           <div class="flex items-center gap-2 text-emerald-300 font-bold">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Hands-Free Voice Coach</span>
+            <span>Hands-Free Voice Coach (आवाज गाइड)</span>
           </div>
-          <div class="flex items-center gap-2">
-            <button onclick="speakCurrentModal()" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1">
-              <i data-lucide="play" class="w-3.5 h-3.5"></i> Read Aloud
+          <div class="flex items-center gap-1.5">
+            <button onclick="speakCurrentModal('hi')" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1">
+              <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी में सुनें</span>
             </button>
-            <button onclick="window.speechSynthesis.cancel()" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">
+            <button onclick="speakCurrentModal('en')" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold flex items-center gap-1">
+              <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+            </button>
+            <button onclick="window.speechSynthesis.cancel()" class="px-2 py-1 rounded-lg bg-slate-900 text-slate-400 hover:text-white font-bold" title="Stop Audio">
               Stop
             </button>
           </div>
@@ -717,9 +826,9 @@
         <div class="p-6 overflow-y-auto space-y-6 flex-1" id="modal-body"></div>
 
         <div class="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between gap-3">
-          <button id="modal-voice-btn" onclick="speakCurrentModal()" class="px-4 py-2.5 rounded-xl bg-emerald-900/60 hover:bg-emerald-800 text-emerald-300 border border-emerald-700/50 text-xs font-bold flex items-center gap-2 transition">
+          <button onclick="speakCurrentModal(currentLang)" class="px-4 py-2.5 rounded-xl bg-emerald-900/60 hover:bg-emerald-800 text-emerald-300 border border-emerald-700/50 text-xs font-bold flex items-center gap-2 transition">
             <i data-lucide="volume-2" class="w-4 h-4"></i>
-            <span>Repeat Spoken Steps</span>
+            <span>Repeat Audio Instructions</span>
           </button>
           <a href="tel:112" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-red-950/50 transition">
             <i data-lucide="phone-call" class="w-4 h-4"></i>
@@ -757,27 +866,268 @@
 
   </div>
 
+  <!-- ================= COMPREHENSIVE BILINGUAL TRANSLATION DICTIONARY ================= -->
+  <script>
+    const I18N = {
+      en: {
+        liveDisaster: "Live Disaster Scene:",
+        sceneLabel: "Scene:",
+        sceneStorm: "⚡ Lightning Storm & Rain",
+        sceneWildfire: "🔥 Raging Jungle Wildfire",
+        sceneTsunami: "🌊 Surging Ocean Tsunami",
+        sceneVolcano: "🌋 Volcano Lava Eruption",
+        appTagline: "RakshaSetu • Visual First-Aid & Bilingual Voice Coach",
+        langBtn: "हिंदी (Switch to Hindi)",
+        
+        navTriage: "Triage Guide",
+        navWounds: "Wound Materials",
+        navVisuals: "Visual Animations",
+        navCPR: "CPR Panic Guide",
+        navSOS: "GPS SOS",
+        navICE: "Medical ID",
+        call112: "112 SOS",
+        
+        sosNational: "National SOS",
+        sosAmbulance: "Ambulance",
+        sosPolice: "Police",
+        sosFire: "Fire Rescue",
+        
+        triageHeading: "⚡ Emergency First-Aid Triage",
+        triageSub: "Instant action protocols with spoken voice commands & verified procedures.",
+        voiceNarrator: "Voice Narrator",
+        filterAll: "All",
+        filterCritical: "🚨 Critical",
+        filterTrauma: "🩸 Wounds & Bleeding",
+        filterEnv: "🐍 Bites & Hazards",
+        filterMed: "🫀 Medical Emergencies",
+        
+        woundBadge: "Clinical Guidance",
+        woundHeading: "🩹 Smart Wound Cleaning & Material Selector",
+        woundSub: "Select the cause of injury to see exact safe medical materials, dressing rules, and dangerous materials to avoid.",
+        wChipGravel: "🚗 Road Gravel / Scrape",
+        wChipGlass: "🔪 Deep Glass / Cut",
+        wChipNail: "🔩 Rusty Nail Puncture",
+        wChipAnimal: "🐕 Dog / Animal Bite",
+        wChipBurn: "🔥 Fire / Chemical Burn",
+        wChipSplinter: "🪵 Wood Splinter / Thorn",
+        
+        visualsBadge: "Step-by-Step Visual Simulations",
+        visualsHeading: "🎬 Animated Visual Action Demos",
+        visualsSub: "Real-time animated motion diagrams showing exact physical hand placement, angles, and life-saving movements with bilingual voice coaching.",
+        vDemo1Badge: "TECHNIQUE 1: CHEST CPR",
+        vDemo1Title: "Adult CPR Chest Compressions",
+        vDemo1Desc: "Lock elbows straight at 90°. Push 2 inches down in center of chest between nipples at 110 beats per minute.",
+        vDemo1Sub: "Allow chest to recoil fully between compressions",
+        
+        vDemo2Badge: "TECHNIQUE 2: BLEEDING STOP",
+        vDemo2Title: "Emergency Tourniquet Windlass",
+        vDemo2Desc: "Wrap cloth 2-3 inches above wound, knot with a strong stick, twist until spurting blood stops, lock stick.",
+        vDemo2Sub: "Never place over elbow/knee joints • Note application time",
+        
+        vDemo3Badge: "TECHNIQUE 3: CHOKING RESCUE",
+        vDemo3Title: "Heimlich Abdominal Thrusts",
+        vDemo3Desc: "Stand behind victim. Place fist just above navel. Pull sharply inward and upward to pop out trapped object.",
+        vDemo3Sub: "Quick upward thrust under diaphragm expels airway obstruction",
+        
+        vDemo4Badge: "TECHNIQUE 4: AIRWAY SAFETY",
+        vDemo4Title: "Unconscious Recovery Position",
+        vDemo4Desc: "Roll breathing victim onto side. Bend top knee at 90° angle. Rest cheek on back of hand, tilt chin up.",
+        vDemo4Sub: "Keep victim in this posture while awaiting ambulance arrival",
+        
+        cprPanicTitle: "🚨 IN AN EMERGENCY? DON'T PANIC — FOLLOW THESE 4 SIMPLE STEPS:",
+        cprPanicSub: "1. Place victim flat on hard ground. 2. Lock your hands on center of chest. 3. Press Start Beat below. 4. Push down on EVERY BEEP!",
+        cprAHA: "AHA Standard: 100-120 BPM",
+        cprMainTitle: "Interactive CPR Audio Beat & Counter",
+        cprMainSub: "Push hard & fast in the center of chest. Push exactly in sync with every audio beat.",
+        cprCountLabel: "Compressions",
+        cprCycleText: "Cycle",
+        cprBreathAlert: "⚠️ 30 Compressions Done! Give 2 Quick Breaths or continue hands-only compressions!",
+        cprBtnStart: "START CPR BEAT",
+        cprTempoLabel: "Tempo:",
+        cprStepsHeader: "Exact Adult CPR Action Guide",
+        cprS1Title: "Check Responsiveness & Breathing",
+        cprS1Desc: "Tap shoulders firmly. Shout 'Are you okay?'. Look for chest rise for 5 seconds.",
+        cprS2Title: "Call 112 on Speakerphone",
+        cprS2Desc: "Put phone on loudspeaker so hands remain free to do compressions immediately.",
+        cprS3Title: "Lock Hands in Center of Chest",
+        cprS3Desc: "Place heel of palm between nipples. Interlock fingers. Lock elbows completely straight.",
+        cprS4Title: "Push Hard & Fast (2 Inches Depth)",
+        cprS4Desc: "Use your upper body weight. Allow full recoil between pushes. Do not stop until medics arrive.",
+        
+        sosTitle: "📡 Community SOS & Live GPS Beacon",
+        sosSub: "Broadcast exact coordinates and medical details to your family, neighbors, or police instantly without login.",
+        sosRefresh: "Refresh GPS Location",
+        sosCoords: "Latitude & Longitude",
+        sosAcc: "Accuracy Radius",
+        sosMap: "Maps Direct Link",
+        sosOpenMap: "Open in Google Maps",
+        sosBroadcasts: "1-Tap Emergency Broadcasts",
+        sosWhatsApp: "WhatsApp SOS Broadcast",
+        sosSMS: "Standard SMS SOS",
+        sosShare: "Native Share / AirDrop",
+        sosMsgGen: "Generated Emergency Message:",
+        sosCopy: "Copy Text",
+        
+        iceTitle: "🪪 Digital Emergency Medical ID (ICE)",
+        iceSub: "Stored 100% on your device. First responders can see your blood group, allergies, and emergency contacts instantly.",
+        iceLabelName: "Full Name",
+        iceLabelBlood: "Blood Group",
+        iceLabelPhone: "Primary Emergency Contact",
+        iceLabelRelation: "Contact Relation",
+        iceLabelAllergies: "Known Allergies (Crucial for Paramedics)",
+        iceLabelConditions: "Chronic Medical Conditions / Medications",
+        iceBtnSave: "Save Medical ID",
+        iceBtnPrint: "Print / Save Badge",
+        icePreviewHeader: "Emergency Lockscreen / ICE Card Preview",
+        iceBadgeTitle: "EMERGENCY MEDICAL ID",
+        iceBPatient: "Patient Name",
+        iceBContact: "Emergency Contact",
+        iceBAllergies: "Allergies",
+        iceBConditions: "Conditions / Medication"
+      },
+      hi: {
+        liveDisaster: "लाइव आपदा दृश्य:",
+        sceneLabel: "दृश्य:",
+        sceneStorm: "⚡ बिजली, तूफान और मूसलाधार बारिश",
+        sceneWildfire: "🔥 भीषण जंगल की आग",
+        sceneTsunami: "🌊 सुनामी और तूफानी समुद्री लहरें",
+        sceneVolcano: "🌋 ज्वालामुखी लावा विस्फोट",
+        appTagline: "रक्षासेतु • सचित्र प्राथमिक चिकित्सा एवं हिंदी/अंग्रेजी आवाज गाइड",
+        langBtn: "English (अंग्रेज़ी में बदलें)",
+        
+        navTriage: "प्राथमिक चिकित्सा",
+        navWounds: "घाव एवं सामग्री",
+        navVisuals: "सचित्र डेमो",
+        navCPR: "सीपीआर गाइड",
+        navSOS: "जीपीएस एसओएस",
+        navICE: "मेडिकल आईडी",
+        call112: "112 कॉल",
+        
+        sosNational: "राष्ट्रीय आपातकालीन",
+        sosAmbulance: "एम्बुलेंस",
+        sosPolice: "पुलिस",
+        sosFire: "फायर ब्रिगेड",
+        
+        triageHeading: "⚡ आपातकालीन प्राथमिक चिकित्सा",
+        triageSub: "तुरंत कदम उठाने के निर्देश, बोलने वाली आवाज और प्रमाणित चिकित्सा मानक।",
+        voiceNarrator: "आवाज सहायक",
+        filterAll: "सभी",
+        filterCritical: "🚨 अति गंभीर",
+        filterTrauma: "🩸 घाव और खून बहना",
+        filterEnv: "🐍 सर्पदंश और खतरे",
+        filterMed: "🫀 दिल व मेडिकल आपातकाल",
+        
+        woundBadge: "चिकित्सा परामर्श",
+        woundHeading: "🩹 घाव की सफाई और सही सामग्री चयन",
+        woundSub: "चोट का कारण चुनें और जानें कि किस सामग्री से घाव धोना है, क्या पट्टी बांधनी है और क्या भूलकर भी नहीं लगाना है।",
+        wChipGravel: "🚗 सड़क की रगड़ / कंकड़ घाव",
+        wChipGlass: "🔪 कांच या ब्लेड का गहरा कट",
+        wChipNail: "🔩 जंग लगी कील का घाव",
+        wChipAnimal: "🐕 कुत्ते या जानवर का काटना",
+        wChipBurn: "🔥 आग या गर्म पानी से जलना",
+        wChipSplinter: "🪵 लकड़ी की फांस / कांटा",
+        
+        visualsBadge: "चरण-दर-चरण सचित्र सिमुलेशन",
+        visualsHeading: "🎬 सचित्र वीडियो और एनिमेटेड डेमो",
+        visualsSub: "हाथ रखने का सही स्थान, दबाव का कोण और जीवन रक्षक तरीके लाइव एनीमेशन और आवाज के साथ देखें।",
+        vDemo1Badge: "तरीका 1: छाती का सीपीआर",
+        vDemo1Title: "वयस्क छाती सीपीआर कंप्रेशन",
+        vDemo1Desc: "कोहनी सीधी 90 डिग्री पर रखें। छाती के ठीक बीच में दोनों स्तनों के मध्य 2 इंच गहरा 110 बीपीएम की गति से दबाएं।",
+        vDemo1Sub: "हर बार दबाने के बाद छाती को पूरी तरह ऊपर आने दें",
+        
+        vDemo2Badge: "तरीका 2: तेज खून रोकना",
+        vDemo2Title: "टार्निकेट और लकड़ी से खून रोकना",
+        vDemo2Desc: "घाव से 2-3 इंच ऊपर चौड़ा कपड़ा बांधें, लकड़ी फंसाकर तब तक घुमाएं जब तक फव्वारे जैसा खून पूरी तरह बंद न हो जाए।",
+        vDemo2Sub: "कोहनी या घुटने के जोड़ पर न बांधें • बांधने का समय लिख लें",
+        
+        vDemo3Badge: "तरीका 3: गले में फंसी चीज निकालना",
+        vDemo3Title: "हेमलिच पैंतरेबाज़ी (पेट के झटके)",
+        vDemo3Desc: "पीड़ित के पीछे खड़े हों। नाभि के ठीक ऊपर मुट्ठी रखें और अंदर व ऊपर की ओर तेजी से 5 झटके दें।",
+        vDemo3Sub: "डायाफ्राम पर ऊपर की ओर दबाव से फंसी हुई वस्तु बाहर निकल जाती है",
+        
+        vDemo4Badge: "तरीका 4: बेहोश व्यक्ति की सुरक्षा",
+        vDemo4Title: "रिकवरी पोजीशन (करवट दिलाना)",
+        vDemo4Desc: "सांस ले रहे बेहोश व्यक्ति को करवट दिलाएं। ऊपर का घुटना 90° मोड़ें, गाल के नीचे हाथ रखें और ठोड़ी ऊपर उठाएं।",
+        vDemo4Sub: "जीभ या उल्टी से सांस नली बंद होने से रोकने के लिए एम्बुलेंस आने तक इस स्थिति में रखें",
+        
+        cprPanicTitle: "🚨 घबराएं नहीं! केवल इन 4 आसान कदमों का पालन करें:",
+        cprPanicSub: "1. पीड़ित को फर्श पर सीधा लिटाएं। 2. छाती के बीच दोनों हाथ रखें। 3. नीचे 'Start Beat' दबाएं। 4. हर बीप पर छाती दबाएं!",
+        cprAHA: "अंतर्राष्ट्रीय मानक: 100-120 BPM",
+        cprMainTitle: "इंटरैक्टिव सीपीआर ऑडियो बीट और काउंटर",
+        cprMainSub: "छाती के बीच तेजी से और जोर से दबाएं। बीप की आवाज के साथ अपनी गति मिलाएं।",
+        cprCountLabel: "कंप्रेशन गिनती",
+        cprCycleText: "साइकिल",
+        cprBreathAlert: "⚠️ 30 बार दबाना पूरा हुआ! 2 बार मुंह से सांस दें या बिना रुके लगातार छाती दबाते रहें!",
+        cprBtnStart: "सीपीआर बीट शुरू करें",
+        cprTempoLabel: "गति (Tempo):",
+        cprStepsHeader: "वयस्क सीपीआर करने का सही तरीका",
+        cprS1Title: "होश और सांस की जांच करें",
+        cprS1Desc: "कंधे थपथपाएं और पूछें 'क्या आप ठीक हैं?'। 5 सेकंड तक छाती का उठना-गिरना देखें।",
+        cprS2Title: "112 पर स्पीकरफोन कॉल लगाएं",
+        cprS2Desc: "फोन स्पीकर पर रखें ताकि आपके दोनों हाथ तुरंत छाती दबाने के लिए खाली रहें।",
+        cprS3Title: "छाती के ठीक बीच में हाथ रखें",
+        cprS3Desc: "हथेली का पिछला हिस्सा सीने के बीच रखें। उंगलियां फंसाएं और कोहनी बिल्कुल सीधी रखें।",
+        cprS4Title: "2 इंच गहराई तक जोर से दबाएं",
+        cprS4Desc: "शरीर के ऊपरी वजन का उपयोग करें। जब तक डॉक्टर या एम्बुलेंस न आए तब तक न रुकें।",
+        
+        sosTitle: "📡 सामुदायिक एसओएस और लाइव जीपीएस",
+        sosSub: "बिना किसी लॉगिन के तुरंत अपने परिवार, पड़ोसियों और पुलिस को सटीक लोकेशन भेजें।",
+        sosRefresh: "जीपीएस लोकेशन रिफ्रेश करें",
+        sosCoords: "अक्षांश और देशांतर",
+        sosAcc: "सटीकता दायरा",
+        sosMap: "नक्शा सीधा लिंक",
+        sosOpenMap: "गूगल मैप्स में खोलें",
+        sosBroadcasts: "1-टैप आपातकालीन प्रसारण",
+        sosWhatsApp: "व्हाट्सएप एसओएस भेजें",
+        sosSMS: "एसएमएस एसओएस भेजें",
+        sosShare: "शेयर / एयरड्रॉप",
+        sosMsgGen: "तैयार आपातकालीन संदेश:",
+        sosCopy: "कॉपी करें",
+        
+        iceTitle: "🪪 डिजिटल मेडिकल पहचान पत्र (ICE)",
+        iceSub: "100% आपके डिवाइस पर सुरक्षित। आपातकाल में डॉक्टर आपका ब्लड ग्रुप, एलर्जी और फोन नंबर देख सकते हैं।",
+        iceLabelName: "पूरा नाम",
+        iceLabelBlood: "रक्त समूह (Blood Group)",
+        iceLabelPhone: "आपातकालीन संपर्क नंबर",
+        iceLabelRelation: "संबंध (माता/पिता/पति/पत्नी)",
+        iceLabelAllergies: "एलर्जी (दवा/खान-पान)",
+        iceLabelConditions: "पुरानी बीमारियां / नियमित दवाएं",
+        iceBtnSave: "मेडिकल आईडी सहेजें",
+        iceBtnPrint: "कार्ड प्रिंट / सेव करें",
+        icePreviewHeader: "लॉकस्क्रीन मेडिकल कार्ड प्रीव्यू",
+        iceBadgeTitle: "आपातकालीन चिकित्सा पहचान",
+        iceBPatient: "मरीज का नाम",
+        iceBContact: "आपातकालीन नंबर",
+        iceBAllergies: "एलर्जी",
+        iceBConditions: "बीमारियां / दवाएं"
+      }
+    };
+  </script>
+
   <!-- ================= WOUNDS & MATERIAL ADVISOR DATA ================= -->
   <script>
     const WOUND_GUIDES = {
       gravel: {
         title_en: 'Road Gravel / Friction Abrasion (Road Rash)',
         title_hi: 'सड़क की रगड़ और कंकड़ घाव',
-        danger_level: 'High Infection Risk • Tetanus Hazard',
+        danger_level_en: 'High Infection Risk • Tetanus Hazard',
+        danger_level_hi: 'उच्च संक्रमण जोखिम • टिटनेस खतरा',
         wash_material_en: 'Copious clean running tap water or Normal Saline 0.9% for 5-10 minutes.',
         wash_material_hi: 'नल का साफ बहता पानी या नॉर्मल सलाइन से 5-10 मिनट धोएं।',
         disinfectant_en: 'Povidone-Iodine 5% (Betadine) applied around wound borders. Avoid stinging alcohol inside raw cut.',
-        disinfectant_hi: 'घाव के किनारों पर पोविडोन-आयोडीन (Betadine) लगाएं।',
+        disinfectant_hi: 'घाव के किनारों पर पोविडोन-आयोडीन (Betadine) लगाएं। कटे हुए स्थान पर तेज स्पिरिट न डालें।',
         dressing_en: 'Sterile non-adherent gauze + Petroleum Jelly/Neosporin to prevent cloth sticking to raw skin.',
         dressing_hi: 'न चिपकने वाली साफ पट्टी (Non-adherent gauze) और एंटीबायोटिक क्रीम लगाएं।',
         never_use_en: '❌ DO NOT use loose cotton wool fibers (they get embedded in gravel). DO NOT apply turmeric, mud, or engine grease.',
         never_use_hi: '❌ रूई (Cotton) कभी न लगाएं, इसके रेशे घाव में चिपक जाते हैं। हल्दी या मिट्टी न लगाएं।',
-        tetanus_warning: '⚠️ If not vaccinated in last 5 years, get a Tetanus Toxoid (TT) shot within 24 hours.'
+        tetanus_warning_en: '⚠️ If not vaccinated in last 5 years, get a Tetanus Toxoid (TT) shot within 24 hours.',
+        tetanus_warning_hi: '⚠️ यदि पिछले 5 वर्षों में टिटनेस का टीका नहीं लगा है, तो 24 घंटे के भीतर TT इंजेक्शन लगवाएं।'
       },
       glass: {
         title_en: 'Deep Glass / Blade Laceration',
         title_hi: 'कांच या ब्लेड का गहरा घाव',
-        danger_level: 'Severe Bleeding • Tendon/Artery Risk',
+        danger_level_en: 'Severe Bleeding • Tendon/Artery Risk',
+        danger_level_hi: 'गंभीर रक्तस्राव • नस कटने का खतरा',
         wash_material_en: 'Gently irrigate around surface with sterile water without dislodging embedded shards.',
         wash_material_hi: 'घाव के आसपास साफ पानी से धोएं, कांच के टुकड़ों को न हिलाएं।',
         disinfectant_en: 'Apply Betadine on surrounding intact skin only.',
@@ -786,26 +1136,30 @@
         dressing_hi: 'मोटे साफ कपड़े से दबाव बनाएं। यदि कांच फंसा हो तो उसे खींचें नहीं, उसके चारों ओर रिंग बनाकर पट्टी बांधें।',
         never_use_en: '❌ DO NOT pluck deep glass pieces yourself (causes sudden massive arterial hemorrhage).',
         never_use_hi: '❌ गहराई में फंसे कांच को खुद न खींचें (तेज खून बह सकता है)।',
-        tetanus_warning: '⚠️ Requires immediate doctor visit for surgical sutures and TT injection.'
+        tetanus_warning_en: '⚠️ Requires immediate doctor visit for surgical sutures and TT injection.',
+        tetanus_warning_hi: '⚠️ टांके (Sutures) और टिटनेस इंजेक्शन के लिए तुरंत अस्पताल जाएं।'
       },
       puncture: {
         title_en: 'Rusty Nail / Metal Wire Puncture',
         title_hi: 'जंग लगी कील या तार का चुभना',
-        danger_level: 'Extreme Anaerobic Tetanus Hazard',
+        danger_level_en: 'Extreme Anaerobic Tetanus Hazard',
+        danger_level_hi: 'अत्यधिक टिटनेस संक्रमण खतरा',
         wash_material_en: 'Thoroughly wash under running water with antibacterial soap for 5 minutes. Allow minor bleeding to flush out bacteria.',
-        wash_material_hi: 'साबुन और बहते पानी से 5 मिनट तक अच्छी तरह धोएं।',
+        wash_material_hi: 'साबुन और बहते पानी से 5 मिनट तक अच्छी तरह धोएं ताकि बैक्टीरिया बाहर निकल जाए।',
         disinfectant_en: 'Flush with Povidone-Iodine or Chlorhexidine solution.',
         disinfectant_hi: 'पोविडोन-आयोडीन या क्लोरहेक्सिडीन से साफ करें।',
         dressing_en: 'Cover loosely with sterile bandage. Puncture wounds must drain—do not seal airtight.',
         dressing_hi: 'साफ पट्टी से हल्के से ढकें, पूरी तरह सील न करें ताकि अंदर हवा रहे।',
         never_use_en: '❌ DO NOT ignore small punctures. DO NOT try to probe deep inside with needles.',
         never_use_hi: '❌ सुई डालकर घाव को कुरेदने की कोशिश न करें।',
-        tetanus_warning: '🚨 URGENT: Tetanus injection is mandatory within 24 hours for all rusty punctures!'
+        tetanus_warning_en: '🚨 URGENT: Tetanus injection is mandatory within 24 hours for all rusty punctures!',
+        tetanus_warning_hi: '🚨 अनिवार्य: जंग लगी कील चुभने पर 24 घंटे में टिटनेस का टीका लगवाना अनिवार्य है!'
       },
       animal: {
         title_en: 'Animal / Stray Dog / Cat Bite & Scratch',
         title_hi: 'कुत्ते या बिल्ली का काटना (रेबीज खतरा)',
-        danger_level: 'Lethal Rabies & Bacterial Risk',
+        danger_level_en: 'Lethal Rabies & Bacterial Risk',
+        danger_level_hi: 'जानलेवा रेबीज और बैक्टीरियल खतरा',
         wash_material_en: 'Immediately scrub vigorously under running tap water with detergent/soap for AT LEAST 15 FULL MINUTES.',
         wash_material_hi: 'तुरंत बहते पानी और साबुन/सर्फ से कम से कम 15 मिनट तक लगातार धोएं।',
         disinfectant_en: 'Generously apply Povidone-Iodine 5% (Betadine) or 70% alcohol (kills Rabies virus envelope).',
@@ -814,12 +1168,14 @@
         dressing_hi: 'घाव को कसकर न बांधें, तुरंत डॉक्टर के पास जाएं।',
         never_use_en: '❌ NEVER apply red chili powder, turmeric, lime, or plant leaves (deadly myths).',
         never_use_hi: '❌ लाल मिर्च, चूना या जड़ी-बूटी कभी न लगाएं (यह जानलेवा अंधविश्वास है)।',
-        tetanus_warning: '🚨 MANDATORY: Start Anti-Rabies Vaccine (ARV) Day 0 dose and Immunoglobulin immediately at hospital!'
+        tetanus_warning_en: '🚨 MANDATORY: Start Anti-Rabies Vaccine (ARV) Day 0 dose and Immunoglobulin immediately at hospital!',
+        tetanus_warning_hi: '🚨 अनिवार्य: तुरंत अस्पताल जाकर एंटी-रेबीज वैक्सीन (ARV) की पहली खुराक लगवाएं!'
       },
       burn: {
         title_en: 'Fire / Scald / Chemical Burn',
         title_hi: 'आग, गर्म पानी या केमिकल से जलना',
-        danger_level: 'Tissue Dehydration & Infection Risk',
+        danger_level_en: 'Tissue Dehydration & Infection Risk',
+        danger_level_hi: 'त्वचा क्षति और संक्रमण खतरा',
         wash_material_en: 'Cool running tap water for continuous 20 minutes. Chemical burns require 30 minutes flushing.',
         wash_material_hi: '20 मिनट तक लगातार नल के ठंडे पानी से ठंडा करें।',
         disinfectant_en: 'Silver Sulfadiazine cream (Burnol / Silvadene) for unbroken superficial burns only.',
@@ -828,12 +1184,14 @@
         dressing_hi: 'साफ प्लास्टिक क्लिंग फिल्म या साफ कपड़े से हल्के से ढकें।',
         never_use_en: '❌ DO NOT apply ice, toothpaste, butter, raw egg, or flour. DO NOT burst blisters.',
         never_use_hi: '❌ बर्फ, टूथपेस्ट, मक्खन, अंडा या आटा न लगाएं। छालों को न फोड़ें।',
-        tetanus_warning: '⚠️ Seek ER care if burn exceeds victim hand size or affects face/joints.'
+        tetanus_warning_en: '⚠️ Seek ER care if burn exceeds victim hand size or affects face/joints.',
+        tetanus_warning_hi: '⚠️ यदि जलने का आकार हथेली से बड़ा हो या चेहरे/जोड़ों पर हो तो तुरंत अस्पताल ले जाएं।'
       },
       splinter: {
         title_en: 'Wood Splinter / Deep Organic Thorn',
         title_hi: 'लकड़ी की फांस या कांटा चुभना',
-        danger_level: 'Foreign Body Granuloma & Fungal Infection',
+        danger_level_en: 'Foreign Body Granuloma & Fungal Infection',
+        danger_level_hi: 'अंदरूनी संक्रमण और मवाद का खतरा',
         wash_material_en: 'Wash area with warm water and soap. Disinfect tweezers with rubbing alcohol.',
         wash_material_hi: 'गुनगुने पानी व साबुन से धोएं और चिमटी (Tweezers) को अल्कोहल से साफ करें।',
         disinfectant_en: 'Betadine antiseptic lotion after removal.',
@@ -842,7 +1200,8 @@
         dressing_hi: 'साफ बैंड-एड (Band-Aid) लगाएं।',
         never_use_en: '❌ DO NOT squeeze hard (it breaks the splinter inside).',
         never_use_hi: '❌ जोर से न दबाएं, फांस अंदर टूट सकती है।',
-        tetanus_warning: '⚠️ If thorn is deeply buried or swollen after 24 hours, visit clinic.'
+        tetanus_warning_en: '⚠️ If thorn is deeply buried or swollen after 24 hours, visit clinic.',
+        tetanus_warning_hi: '⚠️ यदि कांटा गहरा फंसा हो या 24 घंटे बाद सूजन हो तो डॉक्टर को दिखाएं।'
       }
     };
 
@@ -858,36 +1217,38 @@
       });
 
       const title = currentLang === 'hi' ? guide.title_hi : guide.title_en;
+      const danger = currentLang === 'hi' ? guide.danger_level_hi : guide.danger_level_en;
       const wash = currentLang === 'hi' ? guide.wash_material_hi : guide.wash_material_en;
       const dis = currentLang === 'hi' ? guide.disinfectant_hi : guide.disinfectant_en;
       const dress = currentLang === 'hi' ? guide.dressing_hi : guide.dressing_en;
       const never = currentLang === 'hi' ? guide.never_use_hi : guide.never_use_en;
+      const tet = currentLang === 'hi' ? guide.tetanus_warning_hi : guide.tetanus_warning_en;
 
       const html = `
         <div class="lg:col-span-7 space-y-4">
           <div>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-red-950 text-red-400 border border-red-800 font-bold">${guide.danger_level}</span>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-red-950 text-red-400 border border-red-800 font-bold">${danger}</span>
             <h3 class="text-2xl font-black text-white mt-2">${title}</h3>
           </div>
 
           <div class="space-y-3 text-sm">
             <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
               <strong class="text-emerald-400 flex items-center gap-1.5 text-xs uppercase tracking-wider mb-1">
-                <i data-lucide="droplet" class="w-4 h-4"></i> 1. How to Wash & What to Use
+                <i data-lucide="droplet" class="w-4 h-4"></i> ${currentLang === 'hi' ? '1. किस पानी/द्रव से धोएं' : '1. How to Wash & What to Use'}
               </strong>
               <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">${wash}</p>
             </div>
 
             <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
               <strong class="text-sky-400 flex items-center gap-1.5 text-xs uppercase tracking-wider mb-1">
-                <i data-lucide="shield-check" class="w-4 h-4"></i> 2. Safe Antiseptics
+                <i data-lucide="shield-check" class="w-4 h-4"></i> ${currentLang === 'hi' ? '2. सही एंटीसेप्टिक दवा' : '2. Safe Antiseptics'}
               </strong>
               <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">${dis}</p>
             </div>
 
             <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
               <strong class="text-amber-400 flex items-center gap-1.5 text-xs uppercase tracking-wider mb-1">
-                <i data-lucide="layers" class="w-4 h-4"></i> 3. Correct Dressing Material
+                <i data-lucide="layers" class="w-4 h-4"></i> ${currentLang === 'hi' ? '3. सही पट्टी व ड्रेसिंग सामग्री' : '3. Correct Dressing Material'}
               </strong>
               <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">${dress}</p>
             </div>
@@ -897,20 +1258,26 @@
         <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
           <div class="p-4 rounded-2xl bg-red-950/40 border border-red-800/50 space-y-2">
             <strong class="text-red-400 flex items-center gap-1.5 text-xs uppercase tracking-wider">
-              <i data-lucide="alert-octagon" class="w-4 h-4"></i> DANGEROUS TO USE (Never Apply)
+              <i data-lucide="alert-octagon" class="w-4 h-4"></i> ${currentLang === 'hi' ? 'भूलकर भी ये न लगाएं' : 'DANGEROUS TO USE (Never Apply)'}
             </strong>
             <p class="text-red-200 text-xs leading-relaxed font-medium">${never}</p>
           </div>
 
           <div class="p-4 rounded-2xl bg-amber-950/40 border border-amber-800/50 space-y-1 text-xs">
-            <strong class="text-amber-300 font-bold block">TETANUS & HOSPITAL ALERT:</strong>
-            <p class="text-amber-200 leading-relaxed">${guide.tetanus_warning}</p>
+            <strong class="text-amber-300 font-bold block">${currentLang === 'hi' ? 'टिटनेस व अस्पताल चेतावनी:' : 'TETANUS & HOSPITAL ALERT:'}</strong>
+            <p class="text-amber-200 leading-relaxed">${tet}</p>
           </div>
 
-          <button onclick="speakWoundGuide('${type}')" class="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 font-bold text-white text-xs flex items-center justify-center gap-2 shadow-lg transition">
-            <i data-lucide="volume-2" class="w-4 h-4"></i>
-            <span>Listen to Spoken Instructions</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <button onclick="speakWoundGuide('${type}', 'hi')" class="flex-1 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 font-bold text-white text-xs flex items-center justify-center gap-1 shadow-lg transition">
+              <i data-lucide="volume-2" class="w-4 h-4"></i>
+              <span>हिंदी में सुनें</span>
+            </button>
+            <button onclick="speakWoundGuide('${type}', 'en')" class="flex-1 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 font-bold text-slate-200 border border-slate-700 text-xs flex items-center justify-center gap-1 shadow-lg transition">
+              <i data-lucide="volume-2" class="w-4 h-4"></i>
+              <span>Listen English</span>
+            </button>
+          </div>
         </div>
       `;
 
@@ -918,35 +1285,67 @@
       lucide.createIcons();
     }
 
-    function speakWoundGuide(type) {
+    function speakWoundGuide(type, lang = 'hi') {
       const guide = WOUND_GUIDES[type] || WOUND_GUIDES.gravel;
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
 
-      const title = currentLang === 'hi' ? guide.title_hi : guide.title_en;
-      const wash = currentLang === 'hi' ? guide.wash_material_hi : guide.wash_material_en;
-      const never = currentLang === 'hi' ? guide.never_use_hi : guide.never_use_en;
+      const title = lang === 'hi' ? guide.title_hi : guide.title_en;
+      const wash = lang === 'hi' ? guide.wash_material_hi : guide.wash_material_en;
+      const dis = lang === 'hi' ? guide.disinfectant_hi : guide.disinfectant_en;
+      const never = lang === 'hi' ? guide.never_use_hi : guide.never_use_en;
 
-      const speech = `${title}. Step 1: Washing: ${wash}. Warning: ${never}`;
+      const speech = lang === 'hi'
+        ? `${title}। पहला कदम: घाव की सफाई: ${wash}। दवा: ${dis}। ध्यान दें: ${never}`
+        : `${title}. Step 1: Washing: ${wash}. Medication: ${dis}. Warning: ${never}`;
+
       const utterance = new SpeechSynthesisUtterance(speech);
       utterance.rate = 0.95;
-      utterance.lang = currentLang === 'hi' ? 'hi-IN' : 'en-US';
+      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
       window.speechSynthesis.speak(utterance);
     }
 
-    function speakTutorial(key) {
+    function speakDemoVoice(key, lang = 'hi') {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
 
-      const tutorials = {
-        cpr: 'CPR Technique: Place the heel of one hand in the center of the chest. Interlock your other hand. Keep elbows locked straight and push down 2 inches at 110 beats per minute. Do 30 compressions then 2 rescue breaths.',
-        tourniquet: 'Tourniquet Procedure: Place a broad cloth or band 2 to 3 inches above the bleeding site. Tie a half knot, place a firm stick on top, and tie a full knot. Twist the stick until bright red bleeding completely stops. Lock the stick and write the exact time.',
-        heimlich: 'Heimlich Maneuver: Stand behind the choking person. Place your fist with thumb side just above their navel. Grasp with other hand and give rapid, inward and upward thrusts to pop out the blocked object.',
-        recovery: 'Recovery Position: Gently roll the unconscious breathing person onto their side. Bend their top leg at 90 degrees and place their hand under their cheek. Tilt head slightly backward to keep the airway completely open.'
+      const scripts = {
+        cpr: {
+          en: 'CPR Chest Compressions: Place the heel of your palm in the exact center of the chest. Interlock your other hand. Keep elbows locked straight at 90 degrees. Push down 2 inches hard and fast at 110 beats per minute. Do 30 compressions.',
+          hi: 'सीपीआर करने का तरीका: अपनी हथेली को सीने के ठीक बीच में रखें। दूसरे हाथ की उंगलियां फंसाएं। कोहनी को बिल्कुल सीधा 90 डिग्री पर रखें। 2 इंच गहरा जोर से और तेजी से दबाएं। हर मिनट 110 बार की गति से 30 बार दबाएं।'
+        },
+        tourniquet: {
+          en: 'Emergency Tourniquet Bleeding Control: Wrap a broad cloth 2 to 3 inches above the bleeding cut. Tie a half knot, place a strong stick, and tie a full knot over it. Twist the stick firmly until bright red blood completely stops flowing. Lock the stick and write down the exact time.',
+          hi: 'टार्निकेट से खून रोकना: घाव से 2 से 3 इंच ऊपर चौड़ा कपड़ा बांधें। एक गांठ लगाएं, उसके ऊपर मजबूत लकड़ी रखें और दूसरी गांठ लगाएं। लकड़ी को तब तक घुमाएं जब तक खून बहना पूरी तरह बंद न हो जाए। फिर लकड़ी को बांध दें और समय लिख लें।'
+        },
+        heimlich: {
+          en: 'Heimlich Maneuver for Choking: Stand directly behind the choking person. Place your fist with the thumb side just above their navel. Grasp your fist with your other hand and give rapid, forceful inward and upward thrusts to pop out the trapped object from the airway.',
+          hi: 'दम घुटने पर हेमलिच तरीका: पीड़ित व्यक्ति के पीछे खड़े हों। नाभि के ठीक ऊपर अंगूठे की तरफ से मुट्ठी रखें। दूसरे हाथ से मुट्ठी पकड़ें और अंदर व ऊपर की ओर तेजी से 5 झटके दें ताकि सांस नली में फंसी चीज बाहर निकल जाए।'
+        },
+        recovery: {
+          en: 'Unconscious Recovery Position: Gently roll the breathing unconscious person onto their side. Bend their top knee at 90 degrees to lock position. Place their hand under their cheek and tilt the chin gently upward so the airway remains open and prevents choking on vomit.',
+          hi: 'रिकवरी पोजीशन: सांस ले रहे बेहोश व्यक्ति को करवट दिलाएं। ऊपर का घुटना 90 डिग्री मोड़ें। गाल के नीचे उनका हाथ रखें और ठोड़ी को थोड़ा ऊपर उठाएं ताकि सांस नली खुली रहे और उल्टी से दम न घुटे।'
+        }
       };
 
-      const utterance = new SpeechSynthesisUtterance(tutorials[key] || '');
+      const text = (scripts[key] && scripts[key][lang]) ? scripts[key][lang] : scripts[key]['en'];
+      const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.95;
+      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakCPRPanicGuide(lang = 'hi') {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+
+      const text = lang === 'hi'
+        ? 'घबराएं नहीं। शांत रहें। पहला कदम: 112 पर कॉल करें और फोन स्पीकर पर रखें। दूसरा कदम: मरीज को जमीन पर सीधा लिटाएं। तीसरा कदम: अपने दोनों हाथ सीने के ठीक बीच में रखें। चौथा कदम: स्टार्ट बीट बटन दबाएं और हर बीप की आवाज पर जोर से सीना दबाएं।'
+        : 'Do not panic. Stay calm. Step 1: Call 112 on speakerphone. Step 2: Lay the person flat on hard ground. Step 3: Lock your hands in the exact center of chest. Step 4: Press Start Beat and push down on every single beep sound!';
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.95;
+      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
       window.speechSynthesis.speak(utterance);
     }
   </script>
@@ -1514,6 +1913,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
+      applyLanguage(currentLang);
       renderProtocols();
       loadMedicalID();
       fetchCurrentLocation();
@@ -1521,14 +1921,33 @@
 
     function toggleLanguage() {
       currentLang = currentLang === 'en' ? 'hi' : 'en';
-      document.getElementById('lang-label').innerText = currentLang === 'en' ? 'हिंदी' : 'English';
+      applyLanguage(currentLang);
+    }
+
+    function applyLanguage(lang) {
+      const dict = I18N[lang] || I18N.en;
+      document.getElementById('lang-label').innerText = dict.langBtn;
+      document.getElementById('app-tagline').innerText = dict.appTagline;
+
+      // Translate all data-i18n attributes in the DOM
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (dict[key]) {
+          el.innerText = dict[key];
+        }
+      });
+
       renderProtocols();
       updateMedicalIDBadge();
       updateSOSMessagePreview();
+
       const activeWoundChip = document.querySelector('.active-wound-chip');
       if (activeWoundChip) {
         showWoundGuide(activeWoundChip.dataset.wound);
+      } else {
+        showWoundGuide('gravel');
       }
+
       lucide.createIcons();
     }
 
@@ -1591,7 +2010,7 @@
             </div>
             
             <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 group-hover:text-white font-semibold">
-              <span>View Action Steps</span>
+              <span>${currentLang === 'hi' ? 'कदम देखें व सुनें' : 'View Action Steps'}</span>
               <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
             </div>
           </div>
@@ -1635,7 +2054,7 @@
         <div class="space-y-3">
           <div class="text-xs font-black tracking-wider uppercase text-emerald-400 flex items-center gap-1.5">
             <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-            <span>WHAT YOU MUST DO (चरण-दर-चरण क्या करें)</span>
+            <span>${currentLang === 'hi' ? 'चरण-दर-चरण क्या करें (WHAT YOU MUST DO)' : 'WHAT YOU MUST DO (Action Steps)'}</span>
           </div>
           <div class="space-y-2.5">
             ${dos.map((step, idx) => `
@@ -1650,7 +2069,7 @@
         <div class="space-y-3 pt-2">
           <div class="text-xs font-black tracking-wider uppercase text-red-400 flex items-center gap-1.5">
             <i data-lucide="alert-octagon" class="w-4 h-4"></i>
-            <span>WHAT NEVER TO DO (भूलकर भी ये न करें)</span>
+            <span>${currentLang === 'hi' ? 'भूलकर भी ये न करें (WHAT NEVER TO DO)' : 'WHAT NEVER TO DO (Deadly Mistakes)'}</span>
           </div>
           <div class="space-y-2">
             ${donts.map(d => `
@@ -1668,7 +2087,7 @@
       lucide.createIcons();
 
       const voiceEnabled = document.getElementById('voice-toggle').checked;
-      if (voiceEnabled) speakCurrentModal();
+      if (voiceEnabled) speakCurrentModal(currentLang);
     }
 
     function closeProtocolModal() {
@@ -1677,17 +2096,20 @@
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     }
 
-    function speakCurrentModal() {
+    function speakCurrentModal(lang = 'hi') {
       if (!activeModalItem || !('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
 
-      const title = currentLang === 'hi' ? activeModalItem.title_hi : activeModalItem.title_en;
-      const dos = currentLang === 'hi' ? activeModalItem.dos_hi : activeModalItem.dos_en;
+      const title = lang === 'hi' ? activeModalItem.title_hi : activeModalItem.title_en;
+      const dos = lang === 'hi' ? activeModalItem.dos_hi : activeModalItem.dos_en;
       
-      const fullSpeechText = `${title}. Step 1. ${dos.join('. Step ')}`;
+      const fullSpeechText = lang === 'hi'
+        ? `${title}। पहला कदम: ${dos.join('। अगला कदम: ')}`
+        : `${title}. Step 1. ${dos.join('. Next Step: ')}`;
+
       const utterance = new SpeechSynthesisUtterance(fullSpeechText);
       utterance.rate = 0.95;
-      utterance.lang = currentLang === 'hi' ? 'hi-IN' : 'en-US';
+      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
       window.speechSynthesis.speak(utterance);
     }
 
@@ -1712,12 +2134,12 @@
       if (cprInterval) {
         clearInterval(cprInterval);
         cprInterval = null;
-        document.getElementById('cpr-btn-text').innerText = 'RESUME CPR BEAT';
+        document.getElementById('cpr-btn-text').innerText = currentLang === 'hi' ? 'सीपीआर जारी रखें' : 'RESUME CPR BEAT';
         document.getElementById('cpr-visual-ring').classList.remove('cpr-ring-active');
         return;
       }
 
-      document.getElementById('cpr-btn-text').innerText = 'PAUSE CPR';
+      document.getElementById('cpr-btn-text').innerText = currentLang === 'hi' ? 'रोकें (PAUSE)' : 'PAUSE CPR';
       const intervalMs = (60 / cprBpm) * 1000;
 
       cprInterval = setInterval(() => {
@@ -1756,7 +2178,7 @@
       cprCycle = 1;
       document.getElementById('cpr-counter').innerText = '0';
       document.getElementById('cpr-cycle-count').innerText = '1';
-      document.getElementById('cpr-btn-text').innerText = 'START CPR BEAT';
+      document.getElementById('cpr-btn-text').innerText = currentLang === 'hi' ? 'सीपीआर बीट शुरू करें' : 'START CPR BEAT';
       document.getElementById('cpr-visual-ring').classList.remove('cpr-ring-active');
       document.getElementById('cpr-breath-alert').classList.add('hidden');
     }
@@ -1781,7 +2203,7 @@
       const accEl = document.getElementById('gps-accuracy');
       const linkEl = document.getElementById('gps-maps-link');
 
-      coordsEl.innerText = 'Acquiring GPS...';
+      coordsEl.innerText = currentLang === 'hi' ? 'जीपीएस प्राप्त हो रहा है...' : 'Acquiring GPS...';
 
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
@@ -1796,7 +2218,7 @@
             updateSOSMessagePreview();
           },
           (err) => {
-            coordsEl.innerText = 'GPS Permission Required';
+            coordsEl.innerText = currentLang === 'hi' ? 'जीपीएस अनुमति आवश्यक' : 'GPS Permission Required';
             accEl.innerText = 'Unavailable';
             updateSOSMessagePreview();
           },
@@ -1845,7 +2267,7 @@
 
     function copySOSMessage() {
       navigator.clipboard.writeText(getFormattedSOSMessage());
-      alert('✅ Emergency SOS message copied to clipboard!');
+      alert(currentLang === 'hi' ? '✅ आपातकालीन संदेश कॉपी कर लिया गया है!' : '✅ Emergency SOS message copied to clipboard!');
     }
 
     function saveMedicalID(e) {
@@ -1859,7 +2281,7 @@
 
       updateMedicalIDBadge();
       updateSOSMessagePreview();
-      alert('✅ Medical ID updated and saved locally on your device!');
+      alert(currentLang === 'hi' ? '✅ मेडिकल आईडी आपके फोन पर सुरक्षित हो गई है!' : '✅ Medical ID updated and saved locally on your device!');
     }
 
     function loadMedicalID() {
