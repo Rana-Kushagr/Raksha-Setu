@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#dc2626">
-  <meta name="description" content="RakshaSetu - Offline-First Emergency Triage, 3D Disaster Radar, CPR Metronome, and Community SOS Beacon.">
-  <title>RakshaSetu (रक्षासेतु) — 3D Emergency & First-Aid Triager</title>
+  <meta name="description" content="RakshaSetu - Offline-First Emergency Triage, Live Disaster Video Background, CPR Metronome, and Community SOS Beacon.">
+  <title>RakshaSetu (रक्षासेतु) — Emergency & First-Aid Triager</title>
   
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,13 +44,12 @@
     }
   </script>
   
-  <!-- Lucide Icons & Three.js for 3D Disaster Background -->
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   
   <style>
-    /* 3D Background Canvas Stacking */
-    #disaster-canvas {
+    /* Real Video Background Stacking */
+    #disaster-video-container {
       position: fixed;
       top: 0;
       left: 0;
@@ -58,7 +57,14 @@
       height: 100vh;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.85;
+      overflow: hidden;
+      opacity: 0.45;
+    }
+    #disaster-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.2) brightness(0.7);
     }
 
     /* High-Gloss Glassmorphism */
@@ -90,10 +96,14 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-red-500 selection:text-white pb-24 md:pb-12 relative overflow-x-hidden">
 
-  <!-- ================= 3D DISASTER INTERACTIVE CANVAS ================= -->
-  <canvas id="disaster-canvas"></canvas>
+  <!-- ================= REAL LIVE VIDEO BACKGROUND ================= -->
+  <div id="disaster-video-container">
+    <video id="disaster-video" autoplay loop muted playsinline>
+      <source src="https://cdn.pixabay.com/video/2020/05/25/40144-425492167_large.mp4" type="video/mp4">
+    </video>
+  </div>
 
-  <!-- Content Layer (Above 3D Canvas) -->
+  <!-- Content Layer (Above Video Background) -->
   <div class="relative z-10">
 
     <!-- ================= TOP NOTIFICATION BAR (NETWORK & THEME SELECTOR) ================= -->
@@ -101,17 +111,17 @@
       <div class="flex items-center gap-2 max-w-7xl mx-auto w-full justify-between">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="font-medium text-emerald-300">100% Offline-Ready • 3D Tactical Radar Active</span>
+          <span class="font-medium text-emerald-300">100% Offline-Ready • Live Disaster Video Active</span>
         </div>
         
         <!-- Live Disaster Environment Switcher -->
         <div class="flex items-center gap-2">
-          <span class="text-[11px] text-slate-400 hidden sm:inline">3D Environment:</span>
+          <span class="text-[11px] text-slate-400 hidden sm:inline">Background:</span>
           <select id="disaster-theme-select" onchange="changeDisasterTheme(this.value)" class="bg-slate-900 text-xs px-2 py-0.5 rounded-lg border border-slate-700 text-slate-200 outline-none cursor-pointer">
-            <option value="storm">⚡ Cyclone / Storm Radar</option>
-            <option value="wildfire">🔥 Wildfire & Ember Field</option>
-            <option value="quake">🌍 Earthquake Seismic Grid</option>
-            <option value="flood">🌊 Tsunami / Flood Wave</option>
+            <option value="storm">⚡ Cyclone / Storm</option>
+            <option value="wildfire">🔥 Wildfire & Flames</option>
+            <option value="quake">🌍 Debris / Dust Storm</option>
+            <option value="flood">🌊 Flood Waves</option>
           </select>
 
           <!-- Language Switcher -->
@@ -136,7 +146,7 @@
               <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-1">
                 Raksha<span class="text-red-500">Setu</span>
               </h1>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800/60 font-black tracking-wider uppercase">SOS 3D</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800/60 font-black tracking-wider uppercase">SOS LIVE</span>
             </div>
             <p class="text-[11px] text-slate-400 font-hindi -mt-0.5">रक्षासेतु • आपातकालीन प्राथमिक चिकित्सा एवं आपदा तंत्र</p>
           </div>
@@ -642,110 +652,23 @@
 
   </div>
 
-  <!-- ================= 3D DISASTER SCENE SCRIPT ================= -->
+  <!-- ================= REAL VIDEO BACKGROUND CONTROLLER SCRIPT ================= -->
   <script>
-    let scene, camera, renderer, particles, particleGeo, particleMat;
-    let waveMesh, waveGeo, waveMat;
-    let activeTheme = 'storm';
-
-    function init3DDisasterScene() {
-      const canvas = document.getElementById('disaster-canvas');
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.z = 150;
-      camera.position.y = 30;
-
-      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-      // 1. Grid terrain wave
-      waveGeo = new THREE.PlaneGeometry(300, 300, 35, 35);
-      waveMat = new THREE.MeshBasicMaterial({
-        color: 0x38bdf8,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.18
-      });
-      waveMesh = new THREE.Mesh(waveGeo, waveMat);
-      waveMesh.rotation.x = -Math.PI / 2.3;
-      waveMesh.position.y = -40;
-      scene.add(waveMesh);
-
-      // 2. Dynamic Disaster Particle Mesh
-      const particleCount = 600;
-      particleGeo = new THREE.BufferGeometry();
-      const posArray = new Float32Array(particleCount * 3);
-
-      for (let i = 0; i < particleCount * 3; i += 3) {
-        posArray[i] = (Math.random() - 0.5) * 350;
-        posArray[i + 1] = (Math.random() - 0.5) * 200;
-        posArray[i + 2] = (Math.random() - 0.5) * 250;
-      }
-
-      particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-      particleMat = new THREE.PointsMaterial({
-        size: 3.5,
-        color: 0x38bdf8,
-        transparent: true,
-        opacity: 0.75
-      });
-
-      particles = new THREE.Points(particleGeo, particleMat);
-      scene.add(particles);
-
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-
-      animate3D();
-    }
-
-    let clock = 0;
-    function animate3D() {
-      requestAnimationFrame(animate3D);
-      clock += 0.015;
-
-      // Animate wave vertices
-      const pos = waveGeo.attributes.position;
-      for (let i = 0; i < pos.count; i++) {
-        const u = pos.getX(i);
-        const v = pos.getY(i);
-        let z = Math.sin(u * 0.05 + clock * 2) * 6 + Math.cos(v * 0.05 + clock * 1.5) * 5;
-        pos.setZ(i, z);
-      }
-      pos.needsUpdate = true;
-
-      // Rotate particle cloud
-      particles.rotation.y += 0.0015;
-      particles.rotation.x += 0.0008;
-
-      renderer.render(scene, camera);
-    }
+    // High-quality disaster background videos
+    const disasterVideos = {
+      storm: 'https://cdn.pixabay.com/video/2020/05/25/40144-425492167_large.mp4',    // Thunderstorm clouds & lightning
+      wildfire: 'https://cdn.pixabay.com/video/2021/08/25/86273-592882512_large.mp4', // Forest fire flames
+      quake: 'https://cdn.pixabay.com/video/2022/02/10/107297-676643695_large.mp4',   // Dust and debris settling
+      flood: 'https://cdn.pixabay.com/video/2021/08/18/85497-590040713_large.mp4'     // Raging flood waters
+    };
 
     function changeDisasterTheme(theme) {
-      activeTheme = theme;
-      if (theme === 'wildfire') {
-        waveMat.color.setHex(0xef4444);
-        particleMat.color.setHex(0xf97316);
-      } else if (theme === 'quake') {
-        waveMat.color.setHex(0xeab308);
-        particleMat.color.setHex(0xfacc15);
-      } else if (theme === 'flood') {
-        waveMat.color.setHex(0x06b6d4);
-        particleMat.color.setHex(0x3b82f6);
-      } else {
-        // Storm
-        waveMat.color.setHex(0x38bdf8);
-        particleMat.color.setHex(0xa855f7);
+      const videoEl = document.getElementById('disaster-video');
+      if (videoEl && disasterVideos[theme]) {
+        videoEl.src = disasterVideos[theme];
+        videoEl.play().catch(e => console.log("Autoplay prevented:", e));
       }
     }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      init3DDisasterScene();
-    });
   </script>
 
   <!-- ================= APP LOGIC SCRIPT ================= -->
@@ -786,7 +709,7 @@
         donts_hi: [
           '❌ ब्लेड से चीरा न लगाएं और मुँह से जहर चूसने की कोशिश न करें।',
           '❌ बर्फ, जड़ी-बूटी, हल्दी या केमिकल न लगाएं।',
-          '❌ तंग तार या रस्सी न बांधें, इससे अंग सड़ (Gangrene) सकता है।',
+          '❌ तंग तार या रस्सी न बांधें, इससे अंग सड़ (Gangrene) सकता है।',
           '❌ झाड़-फूंक या तांत्रिक के चक्कर में समय बर्बाद न करें।'
         ]
       },
