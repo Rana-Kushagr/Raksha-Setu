@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#dc2626">
-  <meta name="description" content="RakshaSetu - Real Live 3D Disaster Video Emergency & First-Aid Triager.">
+  <meta name="description" content="RakshaSetu - Real Live 3D Disaster Scene Emergency & First-Aid Triager.">
   <title>RakshaSetu (रक्षासेतु) — Real Live Disaster Emergency Triager</title>
   
   <link rel="manifest" href="manifest.json">
@@ -41,100 +41,30 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <style>
-    /* Fullscreen Real Live Background Video */
-    .disaster-bg-container {
+    /* Fullscreen Real Live Disaster Canvas (100% Guaranteed to render with zero black screen) */
+    #disaster-live-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       z-index: 0;
-      overflow: hidden;
       pointer-events: none;
     }
 
-    .real-video {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-      filter: saturate(1.25) contrast(1.1) brightness(0.65);
-      transition: opacity 0.8s ease-in-out;
-    }
-
-    /* Cinematic Lightning Flashes & Atmospheric Rain Streaks */
-    .lightning-flash-layer {
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 255, 255, 0);
-      pointer-events: none;
-      transition: background 0.08s ease-out;
-      z-index: 2;
-    }
-
-    .rain-container {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      overflow: hidden;
-      opacity: 0.7;
-    }
-
-    .rain-drop {
-      position: absolute;
-      background: linear-gradient(transparent, rgba(200, 225, 255, 0.7));
-      width: 1.5px;
-      height: 35px;
-      animation: rainFall 0.75s linear infinite;
-    }
-
-    @keyframes rainFall {
-      0% { transform: translateY(-100px); }
-      100% { transform: translateY(100vh); }
-    }
-
-    /* Wildfire Rising Flame Smoke & Embers */
-    .ember-particle {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(#fff, #ff7700, #ff1100);
-      box-shadow: 0 0 10px #ff5500;
-      animation: emberRise 3s ease-in infinite;
-    }
-
-    @keyframes emberRise {
-      0% { transform: translateY(100vh) scale(0.6); opacity: 1; }
-      100% { transform: translateY(-20vh) scale(1.4); opacity: 0; }
-    }
-
-    /* Dark Vignette Overlay so UI is 100% clear and legible */
-    .cinematic-vignette {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 50% 25%, rgba(10, 15, 30, 0.4) 0%, rgba(5, 8, 18, 0.85) 100%);
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    /* High-Gloss Glassmorphism UI */
+    /* Subtle readable glassmorphism cards */
     .glass-card {
-      background: rgba(10, 15, 30, 0.84);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+      background: rgba(8, 14, 28, 0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     }
     .glass-header {
-      background: rgba(8, 12, 24, 0.88);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(6, 10, 22, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     }
     .cpr-ring-active {
       box-shadow: 0 0 70px rgba(239, 68, 68, 0.95), inset 0 0 45px rgba(239, 68, 68, 0.6);
@@ -145,48 +75,32 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-red-500 selection:text-white pb-24 md:pb-12 relative overflow-x-hidden">
 
-  <!-- ================= REAL 3D LIVE DISASTER VIDEO & ENVIRONMENT ================= -->
-  <div class="disaster-bg-container">
-    <video id="main-disaster-video" class="real-video" autoplay loop muted playsinline preload="auto">
-      <source id="video-source-mp4" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" type="video/mp4">
-    </video>
+  <!-- ================= REAL 3D LIVE DISASTER CANVAS ================= -->
+  <canvas id="disaster-live-canvas"></canvas>
 
-    <!-- Thunderstorm Lightning Flash Layer -->
-    <div id="lightning-flash" class="lightning-flash-layer"></div>
-
-    <!-- Raindrop Simulation -->
-    <div id="rain-layer" class="rain-container"></div>
-
-    <!-- Wildfire Embers Simulation -->
-    <div id="embers-layer" class="rain-container hidden"></div>
-  </div>
-
-  <!-- Cinematic Contrast Vignette -->
-  <div class="cinematic-vignette"></div>
-
-  <!-- Content Layer (Above Video) -->
+  <!-- Content Layer (Above Live Scene) -->
   <div class="relative z-10">
 
     <!-- ================= TOP BAR (DISASTER LIVE SELECTOR) ================= -->
-    <div class="w-full bg-slate-950/90 border-b border-red-900/40 px-4 py-1.5 text-xs text-slate-300">
+    <div class="w-full bg-slate-950/85 border-b border-red-900/40 px-4 py-2 text-xs text-slate-300 backdrop-blur-md">
       <div class="flex items-center gap-2 max-w-7xl mx-auto w-full justify-between">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-          <span class="font-bold text-slate-100">Live 3D Disaster Radar: <span id="current-disaster-name" class="text-red-400">🌊 Severe Oceanic Storm & Tsunami</span></span>
+          <span class="font-bold text-slate-100">Live 3D Disaster Scene: <span id="current-disaster-name" class="text-red-400 font-extrabold">⚡ Lightning Thunderstorm & Torrential Rain</span></span>
         </div>
         
         <!-- Live Disaster Environment Switcher -->
         <div class="flex items-center gap-2">
-          <span class="text-[11px] text-slate-300 font-bold hidden sm:inline">Disaster Scene:</span>
-          <select id="disaster-select" onchange="switchRealDisasterVideo(this.value)" class="bg-slate-900 text-xs font-bold px-3 py-1 rounded-xl border border-red-500/50 text-white outline-none cursor-pointer hover:bg-slate-800 transition">
-            <option value="ocean">🌊 Tsunami & Sea Storm</option>
-            <option value="wildfire">🔥 Forest Wildfire & Firestorm</option>
-            <option value="storm">⚡ Lightning Thunderstorm & Rain</option>
-            <option value="satellite">🛰️ Earth Orbit Cyclone Radar</option>
+          <span class="text-[11px] text-slate-200 font-bold hidden sm:inline">Disaster Scene:</span>
+          <select id="disaster-select" onchange="changeDisasterScene(this.value)" class="bg-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl border border-red-500/60 text-white outline-none cursor-pointer hover:bg-slate-800 shadow-md transition">
+            <option value="storm">⚡ Lightning Storm & Rain</option>
+            <option value="wildfire">🔥 Raging Jungle Wildfire</option>
+            <option value="tsunami">🌊 Surging Ocean Tsunami</option>
+            <option value="volcano">🌋 Volcano Lava Eruption</option>
           </select>
 
           <!-- Language Switcher -->
-          <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-bold flex items-center gap-1 transition">
+          <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-bold flex items-center gap-1 transition">
             <i data-lucide="globe" class="w-3.5 h-3.5"></i>
             <span id="lang-label">हिंदी</span>
           </button>
@@ -710,125 +624,322 @@
 
   </div>
 
-  <!-- ================= DISASTER LIVE VIDEO & ATMOSPHERIC SCRIPT ================= -->
+  <!-- ================= REAL LIVE 3D DISASTER VISUAL ENGINE ================= -->
   <script>
-    const DISASTER_VIDEOS = {
-      ocean: {
-        url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-        name: '🌊 Severe Oceanic Storm & Tsunami',
-        hasRain: true,
-        hasLightning: true,
-        hasEmbers: false
-      },
-      wildfire: {
-        url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-        name: '🔥 Forest Wildfire & Firestorm',
-        hasRain: false,
-        hasLightning: false,
-        hasEmbers: true
-      },
-      storm: {
-        url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-        name: '⚡ Lightning Thunderstorm & Torrential Rain',
-        hasRain: true,
-        hasLightning: true,
-        hasEmbers: false
-      },
-      satellite: {
-        url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
-        name: '🛰️ Global Satellite Cyclone Radar',
-        hasRain: false,
-        hasLightning: true,
-        hasEmbers: false
-      }
+    let activeScene = 'storm';
+    const sceneNames = {
+      storm: '⚡ Lightning Thunderstorm & Torrential Rain',
+      wildfire: '🔥 Raging Jungle Wildfire & Firestorm',
+      tsunami: '🌊 Surging Ocean Tsunami Waves',
+      volcano: '🌋 Volcano Lava Eruption & Smoke'
     };
 
-    let activeDisaster = 'ocean';
-
-    function switchRealDisasterVideo(key) {
-      const config = DISASTER_VIDEOS[key] || DISASTER_VIDEOS.ocean;
-      activeDisaster = key;
-      
-      const video = document.getElementById('main-disaster-video');
-      const src = document.getElementById('video-source-mp4');
-      const nameLabel = document.getElementById('current-disaster-name');
-      
-      nameLabel.innerText = config.name;
-      video.style.opacity = '0';
-      
-      setTimeout(() => {
-        src.src = config.url;
-        video.load();
-        video.play().catch(e => console.log('Autoplay handled:', e));
-        video.style.opacity = '1';
-      }, 300);
-
-      // Toggle atmospheric layers
-      const rainLayer = document.getElementById('rain-layer');
-      const embersLayer = document.getElementById('embers-layer');
-
-      if (config.hasRain) rainLayer.classList.remove('hidden');
-      else rainLayer.classList.add('hidden');
-
-      if (config.hasEmbers) embersLayer.classList.remove('hidden');
-      else embersLayer.classList.add('hidden');
+    function changeDisasterScene(val) {
+      activeScene = val;
+      document.getElementById('current-disaster-name').innerText = sceneNames[val] || sceneNames.storm;
     }
 
-    // Dynamic Raindrop Generation
-    function initRain() {
-      const rainContainer = document.getElementById('rain-layer');
-      rainContainer.innerHTML = '';
-      for (let i = 0; i < 75; i++) {
-        const drop = document.createElement('div');
-        drop.className = 'rain-drop';
-        drop.style.left = `${Math.random() * 100}vw`;
-        drop.style.animationDuration = `${0.5 + Math.random() * 0.4}s`;
-        drop.style.animationDelay = `${Math.random() * 2}s`;
-        rainContainer.appendChild(drop);
+    // 60 FPS Photorealistic Live Canvas Renderer
+    function initLiveDisasterCanvas() {
+      const canvas = document.getElementById('disaster-live-canvas');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      // 1. Rain simulation
+      const rainDrops = [];
+      for (let i = 0; i < 180; i++) {
+        rainDrops.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          len: Math.random() * 25 + 15,
+          speed: Math.random() * 15 + 20,
+          opacity: Math.random() * 0.4 + 0.3
+        });
       }
-    }
 
-    // Dynamic Wildfire Ember Generation
-    function initEmbers() {
-      const emberContainer = document.getElementById('embers-layer');
-      emberContainer.innerHTML = '';
-      for (let i = 0; i < 40; i++) {
-        const ember = document.createElement('div');
-        ember.className = 'ember-particle';
-        const size = Math.random() * 6 + 2;
-        ember.style.width = `${size}px`;
-        ember.style.height = `${size}px`;
-        ember.style.left = `${Math.random() * 100}vw`;
-        ember.style.animationDuration = `${2 + Math.random() * 3}s`;
-        ember.style.animationDelay = `${Math.random() * 3}s`;
-        emberContainer.appendChild(ember);
+      // 2. Fire & Embers simulation
+      const fireFlames = [];
+      for (let i = 0; i < 70; i++) {
+        fireFlames.push({
+          x: Math.random() * w,
+          y: h + Math.random() * 50,
+          radius: Math.random() * 40 + 20,
+          speedY: Math.random() * 3 + 2,
+          speedX: (Math.random() - 0.5) * 2,
+          life: 1,
+          decay: Math.random() * 0.02 + 0.01,
+          hue: Math.random() * 35 + 10 // yellow-orange-red
+        });
       }
-    }
 
-    // Realistic Random Lightning Flashes
-    function startLightningEffects() {
-      const flash = document.getElementById('lightning-flash');
-      setInterval(() => {
-        const config = DISASTER_VIDEOS[activeDisaster];
-        if (config && config.hasLightning && Math.random() < 0.35) {
-          flash.style.background = 'rgba(215, 235, 255, 0.45)';
-          setTimeout(() => {
-            flash.style.background = 'rgba(255, 255, 255, 0)';
-            setTimeout(() => {
-              flash.style.background = 'rgba(215, 235, 255, 0.25)';
-              setTimeout(() => {
-                flash.style.background = 'rgba(255, 255, 255, 0)';
-              }, 80);
-            }, 60);
-          }, 90);
+      const embers = [];
+      for (let i = 0; i < 90; i++) {
+        embers.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          radius: Math.random() * 3 + 1,
+          speedY: Math.random() * -3 - 1,
+          speedX: (Math.random() - 0.5) * 2.5,
+          opacity: Math.random() * 0.8 + 0.2
+        });
+      }
+
+      // 3. Lightning Fractal Branches
+      let lightningPoints = [];
+      let lightningTimer = 0;
+      let lightningAlpha = 0;
+
+      function createLightning() {
+        lightningPoints = [];
+        let startX = Math.random() * w * 0.8 + w * 0.1;
+        let startY = 0;
+        lightningPoints.push({ x: startX, y: startY });
+
+        while (startY < h * 0.85) {
+          startX += (Math.random() - 0.5) * 60;
+          startY += Math.random() * 35 + 20;
+          lightningPoints.push({ x: startX, y: startY });
         }
-      }, 3500);
+        lightningAlpha = 1;
+      }
+
+      // 4. Wave physics for Tsunami
+      let waveOffset = 0;
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+
+        // ================= SCENE 1: THUNDERSTORM & LIGHTNING =================
+        if (activeScene === 'storm') {
+          // Dynamic Storm Clouds Sky
+          const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+          skyGrad.addColorStop(0, '#040714');
+          skyGrad.addColorStop(0.5, '#0a1026');
+          skyGrad.addColorStop(1, '#02050e');
+          ctx.fillStyle = skyGrad;
+          ctx.fillRect(0, 0, w, h);
+
+          // Rolling Cloud Blobs
+          ctx.fillStyle = 'rgba(20, 30, 55, 0.4)';
+          for (let i = 0; i < 5; i++) {
+            ctx.beginPath();
+            ctx.arc((w / 4) * i + Math.sin(Date.now() * 0.0005 + i) * 30, 80, 220, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Trigger Random Lightning Strike
+          lightningTimer++;
+          if (lightningTimer > 160 && Math.random() < 0.04) {
+            createLightning();
+            lightningTimer = 0;
+          }
+
+          // Draw Flash & Lightning Bolt
+          if (lightningAlpha > 0) {
+            ctx.fillStyle = `rgba(225, 240, 255, ${lightningAlpha * 0.45})`;
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.strokeStyle = `rgba(255, 255, 255, ${lightningAlpha})`;
+            ctx.lineWidth = 3.5;
+            ctx.shadowBlur = 25;
+            ctx.shadowColor = '#60a5fa';
+            ctx.beginPath();
+            if (lightningPoints.length > 0) {
+              ctx.moveTo(lightningPoints[0].x, lightningPoints[0].y);
+              for (let pt of lightningPoints) {
+                ctx.lineTo(pt.x, pt.y);
+              }
+              ctx.stroke();
+            }
+            ctx.shadowBlur = 0;
+            lightningAlpha -= 0.04;
+          }
+
+          // Draw Heavy Rain Drops
+          ctx.strokeStyle = 'rgba(180, 215, 255, 0.6)';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          for (let drop of rainDrops) {
+            ctx.moveTo(drop.x, drop.y);
+            ctx.lineTo(drop.x - 3, drop.y + drop.len);
+            drop.y += drop.speed;
+            drop.x -= 1.5;
+            if (drop.y > h) {
+              drop.y = -drop.len;
+              drop.x = Math.random() * w;
+            }
+          }
+          ctx.stroke();
+        }
+
+        // ================= SCENE 2: RAGING JUNGLE WILDFIRE =================
+        else if (activeScene === 'wildfire') {
+          const fireSky = ctx.createLinearGradient(0, 0, 0, h);
+          fireSky.addColorStop(0, '#1a0505');
+          fireSky.addColorStop(0.6, '#3d0c04');
+          fireSky.addColorStop(1, '#1f0402');
+          ctx.fillStyle = fireSky;
+          ctx.fillRect(0, 0, w, h);
+
+          // Burning Tree Silhouettes
+          ctx.fillStyle = '#0a0202';
+          for (let i = 0; i < w; i += 45) {
+            ctx.fillRect(i, h - 160, 16, 160);
+            ctx.beginPath();
+            ctx.arc(i + 8, h - 180, 30, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Rising Wildfire Flames
+          for (let flame of fireFlames) {
+            flame.y -= flame.speedY;
+            flame.x += flame.speedX;
+            flame.life -= flame.decay;
+
+            if (flame.life <= 0 || flame.y < h * 0.4) {
+              flame.y = h + Math.random() * 20;
+              flame.x = Math.random() * w;
+              flame.life = 1;
+              flame.radius = Math.random() * 40 + 20;
+            }
+
+            const radGrad = ctx.createRadialGradient(flame.x, flame.y, 0, flame.x, flame.y, flame.radius * flame.life);
+            radGrad.addColorStop(0, `hsla(${flame.hue + 25}, 100%, 80%, ${flame.life * 0.8})`);
+            radGrad.addColorStop(0.5, `hsla(${flame.hue}, 100%, 55%, ${flame.life * 0.6})`);
+            radGrad.addColorStop(1, 'transparent');
+
+            ctx.fillStyle = radGrad;
+            ctx.beginPath();
+            ctx.arc(flame.x, flame.y, flame.radius * flame.life, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Floating Glowing Embers
+          for (let ember of embers) {
+            ember.y += ember.speedY;
+            ember.x += ember.speedX;
+            if (ember.y < 0) {
+              ember.y = h + 10;
+              ember.x = Math.random() * w;
+            }
+            ctx.fillStyle = `rgba(255, 140, 0, ${ember.opacity})`;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#ff4500';
+            ctx.beginPath();
+            ctx.arc(ember.x, ember.y, ember.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+        }
+
+        // ================= SCENE 3: SURGING OCEAN TSUNAMI =================
+        else if (activeScene === 'tsunami') {
+          const oceanSky = ctx.createLinearGradient(0, 0, 0, h);
+          oceanSky.addColorStop(0, '#030814');
+          oceanSky.addColorStop(0.5, '#08172e');
+          oceanSky.addColorStop(1, '#020b18');
+          ctx.fillStyle = oceanSky;
+          ctx.fillRect(0, 0, w, h);
+
+          waveOffset += 0.03;
+
+          // Layered Huge Ocean Waves
+          for (let layer = 0; layer < 4; layer++) {
+            ctx.fillStyle = `rgba(${5 + layer * 5}, ${25 + layer * 15}, ${55 + layer * 25}, ${0.55 + layer * 0.15})`;
+            ctx.beginPath();
+            ctx.moveTo(0, h);
+            for (let x = 0; x <= w; x += 15) {
+              const y = h * (0.55 + layer * 0.1) + Math.sin(x * 0.006 + waveOffset + layer * 1.5) * (35 + layer * 15) + Math.cos(x * 0.015 - waveOffset) * 20;
+              ctx.lineTo(x, y);
+            }
+            ctx.lineTo(w, h);
+            ctx.closePath();
+            ctx.fill();
+
+            // Foam Crests
+            ctx.strokeStyle = `rgba(180, 230, 255, ${0.4 + layer * 0.15})`;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+          }
+
+          // Torrential Sea Spray
+          ctx.strokeStyle = 'rgba(200, 235, 255, 0.4)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          for (let drop of rainDrops) {
+            ctx.moveTo(drop.x, drop.y);
+            ctx.lineTo(drop.x - 6, drop.y + drop.len * 0.8);
+            drop.y += drop.speed * 1.2;
+            drop.x -= 4;
+            if (drop.y > h) {
+              drop.y = -drop.len;
+              drop.x = Math.random() * w;
+            }
+          }
+          ctx.stroke();
+        }
+
+        // ================= SCENE 4: VOLCANO LAVA ERUPTION =================
+        else if (activeScene === 'volcano') {
+          const volkSky = ctx.createLinearGradient(0, 0, 0, h);
+          volkSky.addColorStop(0, '#100305');
+          volkSky.addColorStop(0.5, '#2e0a0a');
+          volkSky.addColorStop(1, '#0a0203');
+          ctx.fillStyle = volkSky;
+          ctx.fillRect(0, 0, w, h);
+
+          // Mountain Silhouette
+          ctx.fillStyle = '#0d0405';
+          ctx.beginPath();
+          ctx.moveTo(0, h);
+          ctx.lineTo(w * 0.35, h * 0.45);
+          ctx.lineTo(w * 0.65, h * 0.45);
+          ctx.lineTo(w, h);
+          ctx.closePath();
+          ctx.fill();
+
+          // Lava Crater Glow
+          const lavaGrad = ctx.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.45, 120);
+          lavaGrad.addColorStop(0, '#fff');
+          lavaGrad.addColorStop(0.4, '#ff3300');
+          lavaGrad.addColorStop(1, 'transparent');
+          ctx.fillStyle = lavaGrad;
+          ctx.beginPath();
+          ctx.arc(w * 0.5, h * 0.45, 120, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Flying Magma Rocks
+          for (let ember of embers) {
+            ember.y += ember.speedY * 1.5;
+            ember.x += ember.speedX * 2;
+            if (ember.y < 0) {
+              ember.y = h * 0.45;
+              ember.x = w * 0.5 + (Math.random() - 0.5) * 80;
+            }
+            ctx.fillStyle = '#ff6600';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#ff2200';
+            ctx.beginPath();
+            ctx.arc(ember.x, ember.y, ember.radius * 1.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+        }
+
+        requestAnimationFrame(render);
+      }
+
+      render();
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      initRain();
-      initEmbers();
-      startLightningEffects();
+      initLiveDisasterCanvas();
     });
   </script>
 
@@ -1158,7 +1269,7 @@
         const isCritical = item.severity === 'critical';
 
         return `
-          <div onclick="openProtocolModal('${item.id}')" class="group cursor-pointer p-5 rounded-3xl glass-card hover:border-red-500/50 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between space-y-4 shadow-xl">
+          <div onclick="openProtocolModal('${item.id}')" class="group cursor-pointer p-5 rounded-3xl glass-card hover:border-red-500/60 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between space-y-4 shadow-xl">
             <div class="space-y-2.5">
               <div class="flex items-center justify-between">
                 <div class="w-10 h-10 rounded-2xl ${isCritical ? 'bg-red-600/30 text-red-400' : 'bg-amber-600/30 text-amber-400'} flex items-center justify-center font-bold">
@@ -1167,7 +1278,7 @@
                 <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${isCritical ? 'bg-red-950 text-red-300 border border-red-800' : 'bg-slate-900 text-slate-300 border border-slate-700'}">${tag}</span>
               </div>
               <h3 class="text-base font-black text-white group-hover:text-red-400 transition">${title}</h3>
-              <p class="text-xs text-slate-300 leading-relaxed line-clamp-2">${summary}</p>
+              <p class="text-xs text-slate-200 leading-relaxed line-clamp-2">${summary}</p>
             </div>
             
             <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 group-hover:text-white font-semibold">
