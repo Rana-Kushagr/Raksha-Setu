@@ -3283,22 +3283,159 @@
       lucide.createIcons();
     }
 
+    // ── Fuzzy Search Helpers ────────────────────────────────────────────────
+    // Simple Levenshtein distance for typo detection
+    function levenshtein(a, b) {
+      const m = a.length, n = b.length;
+      const dp = Array.from({ length: m + 1 }, (_, i) => Array.from({ length: n + 1 }, (_, j) => i === 0 ? j : j === 0 ? i : 0));
+      for (let i = 1; i <= m; i++)
+        for (let j = 1; j <= n; j++)
+          dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+      return dp[m][n];
+    }
+
+    // Score a protocol against a query — returns 0..100
+    function scoreProtocol(item, query) {
+      if (!query) return 0;
+      const q = query.toLowerCase().trim();
+      const words = q.split(/\s+/);
+      let score = 0;
+
+      const title = (currentLang === 'hi' ? item.title_hi : item.title_en).toLowerCase();
+      const summary = (currentLang === 'hi' ? item.summary_hi : item.summary_en).toLowerCase();
+      const mapEntry = SYMPTOM_MAP ? SYMPTOM_MAP.find(s => s.id === item.id) : null;
+      const keywords = mapEntry ? mapEntry.keywords : [];
+
+      // Exact substring match in title → high score
+      if (title.includes(q)) score += 60;
+      if (summary.includes(q)) score += 20;
+
+      // Word-by-word keyword matching
+      for (const word of words) {
+        if (word.length < 2) continue;
+        for (const kw of keywords) {
+          if (kw.includes(word) || word.includes(kw)) { score += 15; break; }
+          // Fuzzy: allow 1-2 character typos for words longer than 4 chars
+          if (word.length > 4 && levenshtein(word, kw) <= 2) { score += 10; break; }
+        }
+        if (title.includes(word)) score += 8;
+        if (summary.includes(word)) score += 4;
+      }
+
+      return score;
+    }
+
+    // Find the best "Did you mean?" label for a failed query
+    function findDidYouMean(query) {
+      if (!query || query.trim().length < 2) return null;
+      const q = query.toLowerCase().trim();
+      const words = q.split(/\s+/);
+
+      // Collect all known keywords from all protocols
+      const allTerms = new Set();
+      if (typeof SYMPTOM_MAP !== 'undefined') {
+        SYMPTOM_MAP.forEach(entry => {
+          entry.keywords.forEach(kw => { if (kw.length > 3) allTerms.add(kw); });
+        });
+      }
+      EMERGENCY_PROTOCOLS.forEach(p => {
+        allTerms.add((p.title_en).toLowerCase());
+        allTerms.add((p.title_hi).toLowerCase());
+      });
+
+      let bestTerm = null, bestDist = 99;
+      for (const word of words) {
+        if (word.length < 3) continue;
+        for (const term of allTerms) {
+          const d = levenshtein(word, term);
+          const threshold = word.length <= 4 ? 1 : word.length <= 7 ? 2 : 3;
+          if (d < bestDist && d <= threshold) { bestDist = d; bestTerm = term; }
+        }
+      }
+      return bestTerm;
+    }
+
     function renderProtocols() {
       const grid = document.getElementById('protocols-grid');
-      const searchQuery = document.getElementById('triage-search').value.toLowerCase();
-      
-      const filtered = EMERGENCY_PROTOCOLS.filter(item => {
+      const rawQuery = document.getElementById('triage-search').value;
+      const searchQuery = rawQuery.toLowerCase().trim();
+      const isHi = currentLang === 'hi';
+
+      // ── Step 1: Exact filter (title / summary / id substring) ──────────
+      let filtered = EMERGENCY_PROTOCOLS.filter(item => {
         const matchesCategory = currentFilter === 'all' || item.category === currentFilter || (currentFilter === 'critical' && item.severity === 'critical');
-        const title = (currentLang === 'hi' ? item.title_hi : item.title_en).toLowerCase();
-        const summary = (currentLang === 'hi' ? item.summary_hi : item.summary_en).toLowerCase();
+        const title = (isHi ? item.title_hi : item.title_en).toLowerCase();
+        const summary = (isHi ? item.summary_hi : item.summary_en).toLowerCase();
         const matchesSearch = !searchQuery || title.includes(searchQuery) || summary.includes(searchQuery) || item.id.includes(searchQuery);
         return matchesCategory && matchesSearch;
       });
 
-      grid.innerHTML = filtered.map(item => {
-        const title = currentLang === 'hi' ? item.title_hi : item.title_en;
-        const tag = currentLang === 'hi' ? item.tag_hi : item.tag_en;
-        const summary = currentLang === 'hi' ? item.summary_hi : item.summary_en;
+      // ── Step 2: If no exact match, try fuzzy keyword scoring ───────────
+      let isFuzzyMode = false;
+      let didYouMean = null;
+
+      if (searchQuery && filtered.length === 0) {
+        isFuzzyMode = true;
+
+        const scored = EMERGENCY_PROTOCOLS
+          .filter(item => currentFilter === 'all' || item.category === currentFilter || (currentFilter === 'critical' && item.severity === 'critical'))
+          .map(item => ({ item, score: scoreProtocol(item, searchQuery) }))
+          .filter(x => x.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 4); // Show top 4 similar results
+
+        filtered = scored.map(x => x.item);
+        if (filtered.length === 0) didYouMean = findDidYouMean(searchQuery);
+      }
+
+      // ── Step 3: Render ─────────────────────────────────────────────────
+      let headerHtml = '';
+
+      if (searchQuery && isFuzzyMode && filtered.length > 0) {
+        const suggestion = findDidYouMean(searchQuery);
+        headerHtml = `
+          <div class="col-span-full mb-1 px-1">
+            <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <span style="font-size:16px;">🔍</span>
+              <span style="font-size:12px;color:#fde68a;font-weight:700;font-family:'JetBrains Mono',monospace;">
+                ${isHi ? `"${rawQuery}" का सटीक मिलान नहीं मिला — समान आपात स्थितियाँ दिख रही हैं` : `No exact match for "${rawQuery}" — showing similar emergencies`}
+              </span>
+              ${suggestion ? `
+                <span style="font-size:11px;color:#93c5fd;margin-left:auto;cursor:pointer;text-decoration:underline;" onclick="document.getElementById('triage-search').value='${suggestion}';filterProtocols();">
+                  ${isHi ? `क्या आप का मतलब था: "${suggestion}"?` : `Did you mean: "${suggestion}"?`}
+                </span>` : ''}
+            </div>
+          </div>`;
+      }
+
+      if (filtered.length === 0 && searchQuery) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-14 space-y-3">
+            <div style="font-size:40px;">🔍</div>
+            <p style="color:rgba(255,255,255,0.55);font-size:13px;font-weight:600;">
+              ${isHi ? `"${rawQuery}" के लिए कोई परिणाम नहीं मिला` : `No results found for "${rawQuery}"`}
+            </p>
+            ${didYouMean ? `
+              <p style="color:#93c5fd;font-size:12px;cursor:pointer;" onclick="document.getElementById('triage-search').value='${didYouMean}';filterProtocols();">
+                ${isHi ? `क्या आप का मतलब था: <strong>"${didYouMean}"</strong>?` : `Did you mean: <strong>"${didYouMean}"</strong>?`}
+              </p>` : ''}
+            <p class="text-[11px] text-white/35">Try typing keywords like: <em>chest pain, bleeding, burn, seizure, stroke, heat</em></p>
+          </div>`;
+        return;
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-14 space-y-3">
+            <p class="text-white/40 text-sm">No protocols in this category.</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = headerHtml + filtered.map(item => {
+        const title = isHi ? item.title_hi : item.title_en;
+        const tag = isHi ? item.tag_hi : item.tag_en;
+        const summary = isHi ? item.summary_hi : item.summary_en;
         const isCritical = item.severity === 'critical';
 
         return `
@@ -3315,7 +3452,7 @@
             </div>
             
             <div class="pt-3 border-t border-white/05 flex items-center justify-between text-xs text-white/35 group-hover:text-white/70 font-semibold transition">
-              <span>${currentLang === 'hi' ? 'कदम देखें व सुनें' : 'View Action Steps'}</span>
+              <span>${isHi ? 'कदम देखें व सुनें' : 'View Action Steps'}</span>
               <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
             </div>
           </div>
