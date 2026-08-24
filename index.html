@@ -466,13 +466,23 @@
               <p class="text-sm text-white/45 mt-1 font-medium" data-i18n="triageSub">Instant action protocols with spoken voice commands &amp; verified procedures.</p>
             </div>
             
-            <div class="flex items-center gap-2.5 glass-card px-3.5 py-2 rounded-xl border border-white/06 shrink-0">
-              <i data-lucide="volume-2" class="w-3.5 h-3.5 text-rs-teal" style="color:#00d4aa"></i>
-              <span class="text-xs font-semibold text-white/60" data-i18n="voiceNarrator">Voice Coach</span>
-              <label class="relative inline-flex items-center cursor-pointer ml-1">
-                <input type="checkbox" id="voice-toggle" class="sr-only peer" checked>
-                <div class="w-9 h-5 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#00d4aa]"></div>
-              </label>
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <!-- Active Triage Timer & Auto-112 Monitor -->
+              <div id="triage-timer-pill" class="flex items-center gap-2 glass-card px-3 py-2 rounded-xl border border-white/06 shrink-0" title="Active Triage Duration. Auto-112 escalation triggers at 10-12 mins.">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                <span class="text-[11px] font-mono text-white/60">Triage: <strong id="triage-timer-display" class="text-amber-400">00:00</strong></span>
+                <button onclick="fastForwardDemoTimer()" class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500 hover:text-white transition" title="Fast-forward to 10 mins for demo testing">⚡ Test 10m</button>
+              </div>
+
+              <!-- Voice Coach Switch -->
+              <div class="flex items-center gap-2.5 glass-card px-3.5 py-2 rounded-xl border border-white/06 shrink-0">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5 text-rs-teal" style="color:#00d4aa"></i>
+                <span class="text-xs font-semibold text-white/60" data-i18n="voiceNarrator">Voice Coach</span>
+                <label class="relative inline-flex items-center cursor-pointer ml-1">
+                  <input type="checkbox" id="voice-toggle" class="sr-only peer" checked>
+                  <div class="w-9 h-5 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#00d4aa]"></div>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -1123,6 +1133,52 @@
       <div class="flex items-center gap-2 shrink-0">
         <a href="tel:112" class="px-3.5 py-1.5 rounded-lg bg-white text-red-600 font-brand font-bold text-xs shadow-md">📞 Call 112</a>
         <button onclick="document.getElementById('escalation-banner').classList.remove('show')" class="text-white/60 hover:text-white text-xs font-bold px-2">✕</button>
+      </div>
+    </div>
+
+    <!-- ================= 10-MINUTE AUTO-CALL EMERGENCY INTERCEPTOR ================= -->
+    <div id="autocall-modal" class="fixed inset-0 z-[9000] bg-black/90 backdrop-blur-2xl hidden items-center justify-center p-4">
+      <div class="glass-card max-w-lg w-full rounded-3xl border-2 border-red-500 overflow-hidden shadow-2xl p-6 sm:p-8 text-center space-y-6 animate-fadeup" style="background:linear-gradient(160deg,#1c0505,#0a0202);box-shadow:0 0 120px rgba(255,0,51,0.6);">
+        
+        <div class="w-20 h-20 rounded-full mx-auto flex items-center justify-center neon-red text-4xl splash-ring" style="background:rgba(255,0,51,0.25);">
+          🚨
+        </div>
+
+        <div class="space-y-2">
+          <span class="px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-widest text-red-300 border border-red-500/40" style="background:rgba(255,0,51,0.15);">
+            10-MINUTE EMERGENCY TIMEOUT
+          </span>
+          <h2 class="font-brand text-2xl sm:text-3xl font-black text-white leading-tight">
+            Urgent: Automatic 112 Dialing
+          </h2>
+          <p class="text-xs sm:text-sm text-red-200/80 leading-relaxed font-sans">
+            You have been actively searching for medical procedures for over 10 minutes. If the patient is not stabilizing, professional emergency response is strictly critical.
+          </p>
+        </div>
+
+        <!-- Countdown Dial Display -->
+        <div class="p-4 rounded-2xl border border-red-500/40 flex items-center justify-center gap-3" style="background:rgba(255,0,51,0.12);">
+          <div class="text-xs font-mono uppercase tracking-wider text-red-300">Auto-Dialing 112 In:</div>
+          <div id="autocall-countdown" class="font-brand text-3xl font-black text-white text-red-400 font-mono animate-pulse">10s</div>
+        </div>
+
+        <!-- Call Buttons -->
+        <div class="space-y-3">
+          <a href="tel:112" onclick="triggerDirect112Call()" class="w-full py-4 rounded-2xl text-white font-brand font-bold text-base flex items-center justify-center gap-3 shadow-xl hover:scale-105 transition" style="background:linear-gradient(135deg,#ff0033,#ff5500);box-shadow:0 10px 40px rgba(255,0,51,0.5);">
+            <i data-lucide="phone-call" class="w-5 h-5"></i>
+            <span>CALL 112 IMMEDIATELY NOW</span>
+          </a>
+
+          <div class="flex items-center gap-3">
+            <button onclick="snoozeAutoCall(5)" class="flex-1 py-2.5 rounded-xl bg-white/05 hover:bg-white/10 text-white/70 border border-white/10 text-xs font-semibold transition">
+              ⏱️ Snooze 5 Mins
+            </button>
+            <button onclick="cancelAutoCall()" class="flex-1 py-2.5 rounded-xl bg-white/05 hover:bg-white/10 text-white/50 hover:text-white border border-white/10 text-xs font-semibold transition">
+              ✕ Dismiss (Drill/Trained)
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -3190,8 +3246,118 @@
     }
 
     // =========================================================================
-    // FEATURE 4: SEVERITY AUTO-ESCALATION
+    // FEATURE 4: 10-MINUTE ACTIVE SEARCH TIMEOUT & AUTO-112 CALL ESCALATION
     // =========================================================================
+    let triageElapsedSeconds = 0;
+    let triageTimerInterval = null;
+    let autoCallCountdownVal = 10;
+    let autoCallCountdownInterval = null;
+    let autoCallTriggered = false;
+
+    function startTriageSessionTimer() {
+      if (triageTimerInterval) return;
+      triageTimerInterval = setInterval(() => {
+        triageElapsedSeconds++;
+        const mins = Math.floor(triageElapsedSeconds / 60);
+        const secs = triageElapsedSeconds % 60;
+        const display = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        
+        const pill = document.getElementById('triage-timer-display');
+        if (pill) {
+          pill.textContent = display;
+          if (mins >= 10) {
+            pill.className = 'text-red-400 font-black animate-pulse';
+          } else if (mins >= 5) {
+            pill.className = 'text-amber-400 font-bold';
+          }
+        }
+
+        // Automatic 10-Minute Escalation Trigger (600 seconds)
+        if (triageElapsedSeconds >= 600 && !autoCallTriggered) {
+          triggerAutoCallEscalation();
+        }
+      }, 1000);
+    }
+    startTriageSessionTimer();
+
+    function fastForwardDemoTimer() {
+      // Demo helper for judges/testing: fast-forward to 9m 58s so auto-call triggers in 2 seconds
+      triageElapsedSeconds = 598;
+      autoCallTriggered = false;
+      const pill = document.getElementById('triage-timer-display');
+      if (pill) pill.textContent = '09:58';
+    }
+
+    function triggerAutoCallEscalation() {
+      autoCallTriggered = true;
+      const modal = document.getElementById('autocall-modal');
+      const countdownEl = document.getElementById('autocall-countdown');
+      if (!modal || !countdownEl) return;
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      lucide.createIcons();
+
+      // Play Attention Chime + Loud Urgent Voice Warning
+      playAttentionAlert();
+      const warningText = currentLang === 'hi'
+        ? 'आपातकालीन चेतावनी! आप 10 मिनट से अधिक समय से प्राथमिक चिकित्सा खोज रहे हैं। 112 डायल किया जा रहा है।'
+        : 'Emergency Warning! You have been searching for 10 minutes without resolution. Auto-dialing 112 emergency services now!';
+      setTimeout(() => playEmergencyVoice(warningText, currentLang), 400);
+
+      // 10-second countdown to auto-dial
+      autoCallCountdownVal = 10;
+      countdownEl.textContent = `${autoCallCountdownVal}s`;
+      
+      if (autoCallCountdownInterval) clearInterval(autoCallCountdownInterval);
+      autoCallCountdownInterval = setInterval(() => {
+        autoCallCountdownVal--;
+        if (countdownEl) countdownEl.textContent = `${autoCallCountdownVal}s`;
+        if (autoCallCountdownVal <= 0) {
+          clearInterval(autoCallCountdownInterval);
+          autoCallCountdownInterval = null;
+          triggerDirect112Call();
+        }
+      }, 1000);
+    }
+
+    function triggerDirect112Call() {
+      if (autoCallCountdownInterval) {
+        clearInterval(autoCallCountdownInterval);
+        autoCallCountdownInterval = null;
+      }
+      window.location.href = 'tel:112';
+    }
+
+    function snoozeAutoCall(mins = 5) {
+      if (autoCallCountdownInterval) {
+        clearInterval(autoCallCountdownInterval);
+        autoCallCountdownInterval = null;
+      }
+      triageElapsedSeconds = Math.max(0, 600 - (mins * 60));
+      autoCallTriggered = false;
+      const modal = document.getElementById('autocall-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    }
+
+    function cancelAutoCall() {
+      if (autoCallCountdownInterval) {
+        clearInterval(autoCallCountdownInterval);
+        autoCallCountdownInterval = null;
+      }
+      autoCallTriggered = true;
+      const modal = document.getElementById('autocall-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    }
+
     let criticalViewCount = 0;
     let criticalViewTimer = null;
 
