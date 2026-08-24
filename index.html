@@ -681,7 +681,7 @@
               </div>
 
               <!-- High-Fidelity Realistic CPR Canvas & Vector Model -->
-              <div class="relative h-64 rounded-2xl bg-gradient-to-b from-[#060814] to-[#020308] border border-red-500/25 flex flex-col items-center justify-center p-3 overflow-hidden">
+              <div id="svg-cpr-demo" class="relative h-64 rounded-2xl bg-gradient-to-b from-[#060814] to-[#020308] border border-red-500/25 flex flex-col items-center justify-center p-3 overflow-hidden">
                 <svg class="w-full h-44" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet">
                   <defs>
                     <linearGradient id="rescuerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -781,6 +781,12 @@
                 <div class="p-2 rounded-xl bg-white/05 border border-white/08 text-emerald-400">② Lock Elbows 90°</div>
                 <div class="p-2 rounded-xl bg-white/05 border border-white/08 text-red-400">③ Push 110 BPM</div>
               </div>
+
+              <!-- Split Screen Modal Trigger Button -->
+              <button onclick="openTutorialSplitModal('cpr')" class="w-full py-2.5 rounded-xl bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-500/30 text-xs font-brand font-bold flex items-center justify-center gap-2 transition hover:scale-[1.01] active:scale-95 shadow-md">
+                <span>⚡ Open Split-Screen Steps &amp; Live Model</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
             </div>
 
             <!-- Demo 2: Realistic Tourniquet Windlass Model -->
@@ -802,7 +808,7 @@
               </div>
 
               <!-- High-Fidelity Tourniquet Limb & Windlass SVG -->
-              <div class="relative h-64 rounded-2xl bg-gradient-to-b from-[#060814] to-[#020308] border border-amber-500/25 flex flex-col items-center justify-center p-3 overflow-hidden">
+              <div id="svg-tourniquet-demo" class="relative h-64 rounded-2xl bg-gradient-to-b from-[#060814] to-[#020308] border border-amber-500/25 flex flex-col items-center justify-center p-3 overflow-hidden">
                 <svg class="w-full h-44" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet">
                   <!-- Human Limb (Thigh / Upper Arm) Contour -->
                   <path d="M 20 60 C 90 55 180 65 300 70 L 300 120 C 180 125 90 135 20 130 Z" fill="#1e293b" stroke="#475569" stroke-width="2"/>
@@ -868,6 +874,12 @@
                 <div class="p-2 rounded-xl bg-white/05 border border-white/08 text-amber-400">② Twist Windlass Tight</div>
                 <div class="p-2 rounded-xl bg-white/05 border border-white/08 text-emerald-400">③ Lock &amp; Record Time</div>
               </div>
+
+              <!-- Split Screen Modal Trigger Button -->
+              <button onclick="openTutorialSplitModal('tourniquet')" class="w-full py-2.5 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 text-xs font-brand font-bold flex items-center justify-center gap-2 transition hover:scale-[1.01] active:scale-95 shadow-md">
+                <span>⚡ Open Split-Screen Steps &amp; Live Model</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
             </div>
 
             <!-- Demo 3: Realistic Heimlich Choking Maneuver Model -->
@@ -889,7 +901,7 @@
               </div>
 
               <!-- High-Fidelity Dual-Human Silhouette Model -->
-              <div class="relative h-64 rounded-2xl bg-gradient-to-b from-[#060814] to-[#020308] border border-purple-500/25 flex flex-col items-center justify-center p-3 overflow-hidden">
+              <div id="svg-heimlich-demo" class="relative h-64 rounded-2xl bg-gradient-to-b from-[#060814] to-[#020308] border border-purple-500/25 flex flex-col items-center justify-center p-3 overflow-hidden">
                 <svg class="w-full h-44" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet">
                   <!-- Rescuer Standing Behind (Braced Posture) -->
                   <g>
@@ -958,6 +970,12 @@
                 <div class="p-2 rounded-xl bg-white/05 border border-white/08 text-purple-400">② Fist Above Navel</div>
                 <div class="p-2 rounded-xl bg-white/05 border border-white/08 text-emerald-400">③ Inward &amp; Upward J-Thrust</div>
               </div>
+
+              <!-- Split Screen Modal Trigger Button -->
+              <button onclick="openTutorialSplitModal('heimlich')" class="w-full py-2.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs font-brand font-bold flex items-center justify-center gap-2 transition hover:scale-[1.01] active:scale-95 shadow-md">
+                <span>⚡ Open Split-Screen Steps &amp; Live Model</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
             </div>
 
             <!-- Demo 4: Realistic Unconscious Lateral Recovery Position Model -->
@@ -979,7 +997,7 @@
               </div>
 
               <!-- High-Fidelity Recovery Position Anatomical Model -->
-              <div class="relative h-64 rounded-2xl bg-gradient-to-b from-[#060814] to-[#020308] border border-sky-500/25 flex flex-col items-center justify-center p-3 overflow-hidden">
+              <div id="svg-recovery-demo" class="relative h-64 rounded-2xl bg-gradient-to-b from-[#060814] to-[#020308] border border-sky-500/25 flex flex-col items-center justify-center p-3 overflow-hidden">
                 <svg class="w-full h-44" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet">
                   <!-- Ground Line -->
                   <line x1="20" y1="150" x2="300" y2="150" stroke="#334155" stroke-width="2"/>
@@ -1039,6 +1057,12 @@
                 <div class="p-2 rounded-xl bg-white/05 border border-white/08 text-sky-400">② Roll Body on Side</div>
                 <div class="p-2 rounded-xl bg-white/05 border border-white/08 text-emerald-400">③ 90° Leg Kickstand</div>
               </div>
+
+              <!-- Split Screen Modal Trigger Button -->
+              <button onclick="openTutorialSplitModal('recovery')" class="w-full py-2.5 rounded-xl bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 text-xs font-brand font-bold flex items-center justify-center gap-2 transition hover:scale-[1.01] active:scale-95 shadow-md">
+                <span>⚡ Open Split-Screen Steps &amp; Live Model</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
             </div>
 
           </div>
@@ -1437,6 +1461,120 @@
               ✕ Cancel (Training Drill)
             </button>
           </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= SPLIT-SCREEN INTERACTIVE TUTORIAL MODAL ================= -->
+    <div id="tutorial-split-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-2xl hidden items-center justify-center p-3 sm:p-5">
+      <div class="glass-card max-w-5xl w-full rounded-3xl border border-white/12 overflow-hidden shadow-2xl max-h-[94vh] flex flex-col" style="background:linear-gradient(160deg,rgba(10,14,28,0.98),rgba(4,6,14,0.98));box-shadow:0 0 100px rgba(0,212,170,0.15);">
+        
+        <!-- Modal Header -->
+        <div class="p-4 sm:p-5 border-b border-white/08 flex items-center justify-between" style="background:rgba(255,255,255,0.02)">
+          <div class="flex items-center gap-3">
+            <div id="tut-modal-badge-icon" class="w-10 h-10 rounded-2xl neon-teal flex items-center justify-center font-bold shrink-0">
+              <i data-lucide="play-circle" class="w-5 h-5 text-teal-400"></i>
+            </div>
+            <div>
+              <span id="tut-modal-badge" class="text-[10px] font-mono font-bold tracking-wider uppercase text-teal-400 block">SPLIT INTERACTIVE TUTORIAL</span>
+              <h3 id="tut-modal-title" class="font-brand text-lg sm:text-xl font-bold text-white leading-tight">Adult CPR Chest Compressions</h3>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- Bilingual Audio Coach Buttons -->
+            <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-teal-500/30" style="background:rgba(0,212,170,0.08);">
+              <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+              <button onclick="speakCurrentTutorial('hi')" class="px-2.5 py-1 rounded-lg text-white font-bold text-xs flex items-center gap-1" style="background:linear-gradient(135deg,#00d4aa,#009977);">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी</span>
+              </button>
+              <button onclick="speakCurrentTutorial('en')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 text-white font-bold text-xs flex items-center gap-1">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
+              </button>
+              <button onclick="window.speechSynthesis.cancel()" class="px-2 py-1 rounded-lg bg-white/05 text-white/50 hover:text-white text-xs font-semibold" title="Stop Audio">
+                Stop
+              </button>
+            </div>
+
+            <button onclick="closeTutorialSplitModal()" class="w-9 h-9 rounded-xl bg-white/05 hover:bg-white/10 text-white/50 hover:text-white flex items-center justify-center transition">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 50/50 Split Screen Body -->
+        <div class="grid lg:grid-cols-12 flex-1 overflow-y-auto divide-y lg:divide-y-0 lg:divide-x divide-white/08">
+          
+          <!-- LEFT HALF (50%): Animated Realistic 3D/SVG Model Canvas -->
+          <div class="lg:col-span-6 p-4 sm:p-6 flex flex-col justify-between space-y-4" style="background:rgba(2,3,8,0.5);">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="section-label" style="color:#00d4aa">REAL-TIME ANATOMICAL MOTION SIMULATION</span>
+                <span class="font-mono text-[10px] text-white/40 uppercase">Interactive Loop</span>
+              </div>
+              <p id="tut-modal-summary" class="text-xs text-white/60 leading-relaxed font-sans"></p>
+            </div>
+
+            <!-- Dynamic Live SVG Simulation Container -->
+            <div id="tut-modal-svg-container" class="rounded-2xl border border-white/10 p-2 overflow-hidden flex items-center justify-center" style="background:linear-gradient(180deg,#070918 0%,#020308 100%);min-height:260px;">
+              <!-- Injected dynamically -->
+            </div>
+
+            <div class="p-3 rounded-2xl border border-teal-500/20 flex items-center justify-between text-xs" style="background:rgba(0,212,170,0.06);">
+              <span id="tut-modal-rhythm" class="font-mono text-teal-300 font-bold flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
+                RHYTHMIC 110 BPM MOTION PACING
+              </span>
+              <button onclick="speakCurrentTutorial(currentLang)" class="text-[11px] font-mono text-white/60 hover:text-white underline">
+                🔊 Listen Guide
+              </button>
+            </div>
+          </div>
+
+          <!-- RIGHT HALF (50%): Step-by-Step Clinical Checklist & Pitfalls -->
+          <div class="lg:col-span-6 p-4 sm:p-6 space-y-5 overflow-y-auto" style="background:rgba(6,8,18,0.7);">
+            <div>
+              <p class="section-label mb-1">CLINICAL ACTION CHECKLIST</p>
+              <h4 class="font-brand text-base font-bold text-white">Step-by-Step Execution Guide</h4>
+              <p class="text-xs text-white/45 mt-0.5">Click any step to listen to its specific voice instruction.</p>
+            </div>
+
+            <!-- Steps Container -->
+            <div id="tut-modal-steps" class="space-y-3">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Deadly Mistakes to Avoid Container -->
+            <div class="space-y-2 pt-2 border-t border-white/08">
+              <div class="text-xs font-mono font-bold tracking-wider uppercase text-red-400 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                <span>DEADLY MISTAKES TO AVOID (गलतियां न करें)</span>
+              </div>
+              <div id="tut-modal-donts" class="space-y-2">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="p-4 border-t border-white/08 flex flex-col sm:flex-row items-center justify-between gap-3" style="background:rgba(2,3,8,0.95)">
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button onclick="openNearbyHospitals()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/05 hover:bg-white/10 text-white/70 border border-white/10 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+              <span>🏥</span>
+              <span>Nearby ERs</span>
+            </button>
+            <button onclick="speakCurrentTutorial(currentLang)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-teal-500/30 text-teal-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition hover:bg-teal-500/10">
+              <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+              <span>Replay Guide</span>
+            </button>
+          </div>
+          <a href="tel:112" class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-white font-brand font-bold text-xs flex items-center justify-center gap-2 shadow-lg hover:scale-105 transition" style="background:linear-gradient(135deg,#ff0033,#ff5500);">
+            <i data-lucide="phone-call" class="w-4 h-4"></i>
+            <span>Call 112 National Ambulance</span>
+          </a>
         </div>
 
       </div>
@@ -3931,6 +4069,254 @@
 
       // Highlight the corresponding wound chip above
       showWoundGuide(targetGuide);
+    }
+
+    // =========================================================================
+    // FEATURE: SPLIT-SCREEN INTERACTIVE TUTORIAL & STEP SIMULATION ENGINE
+    // =========================================================================
+    let activeTutorialKey = 'cpr';
+
+    const TUTORIAL_DATA = {
+      cpr: {
+        badge: 'TECHNIQUE 1: CHEST CPR',
+        badge_hi: 'तकनीक 1: चेस्ट सीपीआर',
+        badge_color: '#ef4444',
+        title_en: 'Adult CPR Chest Compressions',
+        title_hi: 'वयस्क चेस्ट कम्प्रेशन (CPR)',
+        rhythm_en: 'RHYTHMIC 110 BPM MOTION PACING • 5-6 CM DEPTH',
+        rhythm_hi: '110 BPM गति • 5-6 सेमी गहरा दबाव',
+        summary_en: 'Lock elbows straight at 90°. Position shoulders directly above chest. Push 2 to 2.4 inches (5-6 cm) down hard & fast at 110 BPM rhythm.',
+        summary_hi: 'कोहनी 90° पर बिल्कुल सीधी रखें। कंधे मरीज के सीने के ठीक ऊपर रखें। 5-6 सेमी गहरा 110 बीपीएम की गति से बिना रुके दबाएं।',
+        svgId: 'svg-cpr-demo',
+        steps_en: [
+          { num: 1, title: 'Landmark Hand Placement', desc: 'Place the heel of your dominant palm in the lower half of the sternum (exact center between nipples). Interlock fingers of your other hand firmly on top.' },
+          { num: 2, title: 'Lock Elbows Straight at 90°', desc: 'Position shoulders directly over your hands. Keep elbows completely straight and locked so your entire upper body weight delivers the downward force.' },
+          { num: 3, title: 'Push Hard & Fast (110 BPM)', desc: 'Compress the chest 5 to 6 cm (2 to 2.4 inches) deep at a steady rate of 100-120 compressions per minute in rhythm with the beat.' },
+          { num: 4, title: 'Allow 100% Full Chest Recoil', desc: 'Let the chest rise completely back up after each compression so blood refills the heart chambers before the next push.' }
+        ],
+        steps_hi: [
+          { num: 1, title: 'हथेली की सही जगह', desc: 'अपनी मजबूत हथेली का निचला हिस्सा सीने के ठीक बीच में (स्तनों के बीच) रखें। दूसरे हाथ की उंगलियां ऊपर मजबूती से फंसाएं।' },
+          { num: 2, title: 'कोहनी 90° पर सीधी लॉक करें', desc: 'अपने कंधे सीधे हाथों के ऊपर रखें। कोहनी बिल्कुल सीधी रखें ताकि शरीर का पूरा वजन दबाव बनाने में मदद करे।' },
+          { num: 3, title: '110 BPM गति से गहरा दबाएं', desc: 'सीना 5 से 6 सेंटीमीटर (2 इंच) गहरा दबाएं। हर मिनट 110 बार की गति से बिना रुके लगातार 30 बार दबाएं।' },
+          { num: 4, title: 'सीना पूरा ऊपर आने दें', desc: 'हर दबाव के बाद सीने को पूरी तरह ऊपर उठने दें ताकि दिल में दोबारा खून भर सके।' }
+        ],
+        donts_en: [
+          'DO NOT bend elbows (you will tire out in 30 seconds and deliver shallow compressions)',
+          'DO NOT lean on the chest between pushes — full recoil is essential for blood refill',
+          'DO NOT stop compressions until emergency paramedics arrive and take over'
+        ],
+        donts_hi: [
+          'कोहनी मोड़कर दबाव न डालें (30 सेकंड में थक जाएंगे और दबाव कम हो जाएगा)',
+          'दबाव के बीच सीने पर वजन न रखें — सीना पूरा उठना जरूरी है',
+          'एम्बुलेंस के आने तक बीच में रुकें नहीं'
+        ]
+      },
+      tourniquet: {
+        badge: 'TECHNIQUE 2: BLEEDING STOP',
+        badge_hi: 'तकनीक 2: रक्तस्राव नियंत्रण',
+        badge_color: '#f59e0b',
+        title_en: 'Emergency Tourniquet Windlass',
+        title_hi: 'आपातकालीन टार्निकेट (खून रोकना)',
+        rhythm_en: 'TWIST TIGHT UNTIL BLEEDING COMPLETELY CEASES',
+        rhythm_hi: 'खून पूरी तरह रुकने तक लकड़ी घुमाएं',
+        summary_en: 'Wrap cloth 2-3 inches above wound (never on joints). Insert rigid stick, twist until spurting stops, lock & write application time.',
+        summary_hi: 'घाव से 2-3 इंच ऊपर बांधें (जोड़ पर कभी नहीं)। लकड़ी घुमाकर खून रोकें, बांधें और समय नोट करें।',
+        svgId: 'svg-tourniquet-demo',
+        steps_en: [
+          { num: 1, title: 'Position 2-3" Above Wound', desc: 'Wrap a broad strap or cloth 2 to 3 inches (5-7 cm) proximal to the bleeding wound. NEVER apply directly over a joint (elbow/knee).' },
+          { num: 2, title: 'Tie Half-Knot with Windlass Rod', desc: 'Tie a half knot, place a strong rigid stick/rod on top of the knot, and tie a full square knot over the stick.' },
+          { num: 3, title: 'Twist Until Bleeding Ceases', desc: 'Rotate the windlass rod clockwise with firm torsion until bright red arterial spurting and distal bleeding completely stops.' },
+          { num: 4, title: 'Secure Rod & Note Exact Time', desc: 'Lock the windlass rod with cloth tails or clip so it cannot unwind. Write the exact application time (e.g. 14:30) on forehead/tape.' }
+        ],
+        steps_hi: [
+          { num: 1, title: 'घाव से 2-3 इंच ऊपर लगाएं', desc: 'घाव से 2-3 इंच (5-7 सेमी) ऊपर चौड़ा कपड़ा बांधें। कोहनी या घुटने के जोड़ पर कभी न लगाएं।' },
+          { num: 2, title: 'मजबूत लकड़ी फंसाएं', desc: 'एक आधी गांठ लगाएं, ऊपर मजबूत छड़ी रखें और उसके ऊपर पूरी पक्की गांठ बांधें।' },
+          { num: 3, title: 'खून रुकने तक लकड़ी घुमाएं', desc: 'लकड़ी को तब तक घुमाते रहें जब तक लाल खून का फव्वारा और रिसाव पूरी तरह बंद न हो जाए।' },
+          { num: 4, title: 'लकड़ी लॉक करें व समय लिखें', desc: 'लकड़ी को कपड़े से बांध दें ताकि खुले नहीं। मरीज के माथे या टेप पर लगाने का सही समय (जैसे 14:30) लिखें।' }
+        ],
+        donts_en: [
+          'NEVER place tourniquet over elbow or knee joints',
+          'NEVER loosen or remove a tourniquet once applied (causes sudden toxic shock)',
+          'DO NOT use thin wires or shoelaces (they cut skin and nerves)'
+        ],
+        donts_hi: [
+          'टार्निकेट को कभी कोहनी या घुटने के जोड़ पर न लगाएं',
+          'एक बार लगाने के बाद टार्निकेट को कभी ढीला न करें',
+          'पतले तार या जूते के फीते का इस्तेमाल न करें (नसें कट सकती हैं)'
+        ]
+      },
+      heimlich: {
+        badge: 'TECHNIQUE 3: CHOKING RESCUE',
+        badge_hi: 'तकनीक 3: दम घुटना / चोकिंग',
+        badge_color: '#a855f7',
+        title_en: 'Heimlich Abdominal Thrusts',
+        title_hi: 'हेमलिच पैंतरेबाज़ी (चोकिंग बचाव)',
+        rhythm_en: '5 BACK BLOWS + 5 INWARD-UPWARD J-THRUSTS',
+        rhythm_hi: '5 पीठ की थपकियां + 5 ऊपर की ओर J-झटके',
+        summary_en: 'Stand behind choking person. Form fist above navel (below ribcage). Pull sharply INWARD and UPWARD in J-thrust.',
+        summary_hi: 'पीड़ित के पीछे खड़े हों। नाभि के ऊपर मुट्ठी रखें। अंदर और ऊपर की ओर तेजी से J-झटके दें।',
+        svgId: 'svg-heimlich-demo',
+        steps_en: [
+          { num: 1, title: '5 Firm Back Blows', desc: 'Lean victim slightly forward. Deliver 5 firm, distinct back blows between the shoulder blades with the heel of your hand.' },
+          { num: 2, title: 'Position Fist Above Navel', desc: 'Stand braced behind victim. Wrap arms around waist. Form a fist with thumb knuckle against belly just above the navel (below ribcage).' },
+          { num: 3, title: 'Sharp Inward-Upward J-Thrusts', desc: 'Grasp fist with your other hand. Deliver quick, inward and upward thrusts into the abdomen to force air from lungs.' },
+          { num: 4, title: 'Repeat Cycle Until Expelled', desc: 'Alternate 5 back blows and 5 abdominal thrusts until the airway blockage pops out or victim begins breathing.' }
+        ],
+        steps_hi: [
+          { num: 1, title: 'पीठ पर 5 थपकियां दें', desc: 'पीड़ित को थोड़ा आगे झुकाएं। दोनों कंधों के बीच अपनी हथेली से 5 तेज थपकियां मारें।' },
+          { num: 2, title: 'नाभि के ऊपर मुट्ठी रखें', desc: 'मरीज के पीछे खड़े होकर कमर में हाथ डालें। नाभि के ठीक ऊपर अंगूठे की तरफ से मुट्ठी रखें।' },
+          { num: 3, title: 'अंदर और ऊपर की ओर J-झटके', desc: 'दूसरे हाथ से मुट्ठी पकड़ें और पेट में अंदर व ऊपर की ओर तेजी से 5 झटके दें।' },
+          { num: 4, title: 'चीज निकलने तक दोहराएं', desc: '5 पीठ की थपकियां और 5 पेट के झटके तब तक जारी रखें जब तक फंसी चीज बाहर न आ जाए।' }
+        ],
+        donts_en: [
+          'NEVER perform abdominal thrusts directly on the ribs or sternum bone',
+          'If victim loses consciousness, lower gently to floor and begin CPR immediately',
+          'NEVER perform blind finger sweeps in mouth if object is not visible'
+        ],
+        donts_hi: [
+          'पसलियों या छाती की हड्डी पर सीधे दबाव न डालें',
+          'यदि व्यक्ति बेहोश हो जाए, तो तुरंत जमीन पर लिटाकर सीपीआर शुरू करें',
+          'मुंह में बिना देखे उंगली डालकर वस्तु ढूंढने की कोशिश न करें'
+        ]
+      },
+      recovery: {
+        badge: 'TECHNIQUE 4: AIRWAY SAFETY',
+        badge_hi: 'तकनीक 4: रिकवरी पोजीशन',
+        badge_color: '#38bdf8',
+        title_en: 'Unconscious Recovery Position',
+        title_hi: 'बेहोशी में रिकवरी पोजीशन',
+        rhythm_en: 'SIDE ROLL PREVENTS TONGUE & VOMIT ASPHYXIATION',
+        rhythm_hi: 'करवट पोजीशन से दम घुटने से बचाव',
+        summary_en: 'Roll breathing victim onto side. Bend top leg at 90° kickstand. Cushion cheek on hand with chin tilted up.',
+        summary_hi: 'सांस ले रहे बेहोश व्यक्ति को करवट दिलाएं। ऊपर का पैर 90° मोड़ें। गाल के नीचे हाथ रखें।',
+        svgId: 'svg-recovery-demo',
+        steps_en: [
+          { num: 1, title: 'Position Arm at Right Angle', desc: 'Kneel beside victim. Place their nearest arm out at a right angle (90°) to their body, elbow bent, palm facing up.' },
+          { num: 2, title: 'Bring Far Hand to Near Cheek', desc: 'Bring victim\'s other arm across chest, placing the back of their hand firmly against their near cheek to cushion the head.' },
+          { num: 3, title: 'Bend Far Knee & Roll Body', desc: 'With your other hand, grasp victim\'s far leg just above the knee and pull it up. Roll the victim smoothly toward you onto their side.' },
+          { num: 4, title: 'Adjust 90° Leg Kickstand & Tilt Chin', desc: 'Bend the top leg at 90° at hip and knee for stability. Tilt head gently back to ensure the airway stays open and vomit drains freely.' }
+        ],
+        steps_hi: [
+          { num: 1, title: 'पास वाला हाथ 90° पर रखें', desc: 'मरीज के पास घुटने टेकें। पास वाले हाथ को शरीर से 90° के कोण पर सीधा फैलाएं।' },
+          { num: 2, title: 'दूर वाला हाथ गाल के नीचे रखें', desc: 'दूसरे हाथ को छाती के ऊपर से लाएं और हथेली का पिछला हिस्सा गाल के नीचे तकिए की तरह लगाएं।' },
+          { num: 3, title: 'दूर का पैर मोड़कर करवट दिलाएं', desc: 'दूर वाले पैर को घुटने से मोड़ें और मरीज को आराम से अपनी तरफ करवट दिलाएं।' },
+          { num: 4, title: '90° पैर का किकस्टैंड व ठोड़ी ऊपर', desc: 'ऊपर वाले पैर को 90° मोड़ें ताकि मरीज लुढ़के नहीं। ठोड़ी ऊपर उठाएं ताकि सांस नली खुली रहे।' }
+        ],
+        donts_en: [
+          'NEVER use recovery position if victim is NOT breathing (start CPR immediately)',
+          'DO NOT move victim if you suspect severe spinal or neck fracture unless airway is obstructed',
+          'NEVER leave victim unattended without monitoring breathing every minute'
+        ],
+        donts_hi: [
+          'यदि मरीज सांस नहीं ले रहा है तो रिकवरी पोजीशन न दें (तुरंत सीपीआर शुरू करें)',
+          'रीढ़ या गर्दन टूटने का संदेह हो तो बिना जरूरत मरीज को न हिलाएं',
+          'हर मिनट मरीज की सांस चेक करते रहें'
+        ]
+      }
+    };
+
+    function openTutorialSplitModal(key) {
+      activeTutorialKey = key;
+      const data = TUTORIAL_DATA[key];
+      if (!data) return;
+
+      const isHi = currentLang === 'hi';
+      const modal = document.getElementById('tutorial-split-modal');
+      const titleEl = document.getElementById('tut-modal-title');
+      const badgeEl = document.getElementById('tut-modal-badge');
+      const summaryEl = document.getElementById('tut-modal-summary');
+      const rhythmEl = document.getElementById('tut-modal-rhythm');
+      const svgCont = document.getElementById('tut-modal-svg-container');
+      const stepsCont = document.getElementById('tut-modal-steps');
+      const dontsCont = document.getElementById('tut-modal-donts');
+
+      if (titleEl) titleEl.textContent = isHi ? data.title_hi : data.title_en;
+      if (badgeEl) {
+        badgeEl.textContent = isHi ? data.badge_hi : data.badge;
+        badgeEl.style.color = data.badge_color || '#00d4aa';
+      }
+      if (summaryEl) summaryEl.textContent = isHi ? data.summary_hi : data.summary_en;
+      if (rhythmEl) {
+        rhythmEl.innerHTML = `<span class="w-2 h-2 rounded-full animate-ping" style="background:${data.badge_color || '#00d4aa'}"></span> ${isHi ? data.rhythm_hi : data.rhythm_en}`;
+        rhythmEl.style.color = data.badge_color || '#00d4aa';
+      }
+
+      // Clone SVG from page
+      if (svgCont && data.svgId) {
+        const sourceCard = document.getElementById(data.svgId);
+        if (sourceCard) {
+          const svgElem = sourceCard.querySelector('svg');
+          if (svgElem) {
+            svgCont.innerHTML = svgElem.outerHTML;
+            const clonedSvg = svgCont.querySelector('svg');
+            if (clonedSvg) {
+              clonedSvg.classList.add('w-full', 'h-52');
+            }
+          }
+        }
+      }
+
+      // Render Steps with Interactive Voice Click
+      if (stepsCont) {
+        const steps = isHi ? data.steps_hi : data.steps_en;
+        stepsCont.innerHTML = steps.map(s => `
+          <div onclick="speakSingleStep('${s.title.replace(/'/g, "\\'")}', '${s.desc.replace(/'/g, "\\'")}', '${currentLang}')" class="p-3.5 rounded-2xl bg-white/05 hover:bg-white/10 border border-white/08 hover:border-teal-500/40 cursor-pointer transition flex items-start gap-3 group">
+            <div class="w-7 h-7 rounded-xl flex items-center justify-center font-mono font-bold text-xs shrink-0" style="background:${data.badge_color || '#00d4aa'}22;color:${data.badge_color || '#00d4aa'};border:1px solid ${data.badge_color || '#00d4aa'}44;">
+              ${s.num}
+            </div>
+            <div class="space-y-0.5 flex-1">
+              <div class="flex items-center justify-between">
+                <h5 class="font-brand text-xs sm:text-sm font-bold text-white group-hover:text-teal-300 transition">${s.title}</h5>
+                <i data-lucide="volume-2" class="w-3.5 h-3.5 text-white/30 group-hover:text-teal-300 transition"></i>
+              </div>
+              <p class="text-xs text-white/65 leading-relaxed font-sans">${s.desc}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Render DONTs
+      if (dontsCont) {
+        const donts = isHi ? data.donts_hi : data.donts_en;
+        dontsCont.innerHTML = donts.map(d => `
+          <div class="p-2.5 rounded-xl bg-red-950/40 border border-red-500/25 flex items-start gap-2 text-xs text-red-200">
+            <span class="text-red-400 font-bold shrink-0">✕</span>
+            <span>${d}</span>
+          </div>
+        `).join('');
+      }
+
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+
+      if (window.lucide) lucide.createIcons();
+
+      // Auto-voice if toggle is on
+      const voiceToggle = document.getElementById('voice-toggle');
+      if (voiceToggle && voiceToggle.checked) {
+        speakCurrentTutorial(currentLang);
+      }
+    }
+
+    function closeTutorialSplitModal() {
+      const modal = document.getElementById('tutorial-split-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    function speakCurrentTutorial(lang = 'hi') {
+      speakDemoVoice(activeTutorialKey, lang);
+    }
+
+    function speakSingleStep(title, desc, lang = 'hi') {
+      playEmergencyVoice(`${title}। ${desc}`, lang);
     }
 
     // =========================================================================
