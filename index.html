@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#dc2626">
-  <meta name="description" content="RakshaSetu - Real Live 3D Disaster Scene Emergency & First-Aid Triager.">
-  <title>RakshaSetu (रक्षासेतु) — Real Live Disaster Emergency Triager</title>
+  <meta name="description" content="RakshaSetu - Emergency First-Aid Triage, Wound Material Advisor, Voice Coach & Visual Video Tutorials.">
+  <title>RakshaSetu (रक्षासेतु) — Interactive First-Aid & Disaster Guide</title>
   
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <style>
-    /* Fullscreen Real Live Disaster Canvas (100% Guaranteed to render with zero black screen) */
+    /* Fullscreen Real Live Disaster Canvas (100% Guaranteed zero black screen) */
     #disaster-live-canvas {
       position: fixed;
       top: 0;
@@ -54,20 +54,24 @@
 
     /* Subtle readable glassmorphism cards */
     .glass-card {
-      background: rgba(8, 14, 28, 0.78);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(8, 14, 28, 0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.15);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     }
     .glass-header {
-      background: rgba(6, 10, 22, 0.85);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(6, 10, 22, 0.88);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     }
     .cpr-ring-active {
       box-shadow: 0 0 70px rgba(239, 68, 68, 0.95), inset 0 0 45px rgba(239, 68, 68, 0.6);
+    }
+    .tutorial-anim-box {
+      background: radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -78,7 +82,7 @@
   <!-- ================= REAL 3D LIVE DISASTER CANVAS ================= -->
   <canvas id="disaster-live-canvas"></canvas>
 
-  <!-- Content Layer (Above Live Scene) -->
+  <!-- Content Layer -->
   <div class="relative z-10">
 
     <!-- ================= TOP BAR (DISASTER LIVE SELECTOR) ================= -->
@@ -86,7 +90,7 @@
       <div class="flex items-center gap-2 max-w-7xl mx-auto w-full justify-between">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-          <span class="font-bold text-slate-100">Live 3D Disaster Scene: <span id="current-disaster-name" class="text-red-400 font-extrabold">⚡ Lightning Thunderstorm & Torrential Rain</span></span>
+          <span class="font-bold text-slate-100">Live Disaster Scene: <span id="current-disaster-name" class="text-red-400 font-extrabold">⚡ Lightning Thunderstorm & Torrential Rain</span></span>
         </div>
         
         <!-- Live Disaster Environment Switcher -->
@@ -120,28 +124,31 @@
               <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-1">
                 Raksha<span class="text-red-500">Setu</span>
               </h1>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800/60 font-black tracking-wider uppercase">SOS LIVE</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800/60 font-black tracking-wider uppercase">SOS 3D</span>
             </div>
-            <p class="text-[11px] text-slate-300 font-hindi -mt-0.5 font-medium">रक्षासेतु • आपातकालीन प्राथमिक चिकित्सा एवं आपदा तंत्र</p>
+            <p class="text-[11px] text-slate-300 font-hindi -mt-0.5 font-medium">रक्षासेतु • सचित्र प्राथमिक चिकित्सा एवं आवाज गाइड</p>
           </div>
         </div>
 
-        <!-- Desktop Tabs -->
+        <!-- Desktop Navigation Tabs -->
         <nav class="hidden lg:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-700/80 shadow-xl">
-          <button onclick="switchTab('triage')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition active-tab text-white bg-red-600 shadow-md flex items-center gap-1.5" data-tab="triage">
-            <i data-lucide="stethoscope" class="w-4 h-4"></i> <span>First-Aid Triage</span>
+          <button onclick="switchTab('triage')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition active-tab text-white bg-red-600 shadow-md flex items-center gap-1.5" data-tab="triage">
+            <i data-lucide="stethoscope" class="w-4 h-4"></i> <span>Triage Guide</span>
           </button>
-          <button onclick="switchTab('cpr')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="cpr">
+          <button onclick="switchTab('wounds')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="wounds">
+            <i data-lucide="bandage" class="w-4 h-4 text-emerald-400"></i> <span>Wound Cleaning & Materials</span>
+          </button>
+          <button onclick="switchTab('tutorials')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="tutorials">
+            <i data-lucide="play-circle" class="w-4 h-4 text-amber-400"></i> <span>Visual Video Demos</span>
+          </button>
+          <button onclick="switchTab('cpr')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="cpr">
             <i data-lucide="heart-pulse" class="w-4 h-4 text-red-400"></i> <span>CPR Metronome</span>
           </button>
-          <button onclick="switchTab('sos')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="sos">
-            <i data-lucide="radio" class="w-4 h-4 text-amber-400"></i> <span>GPS & SOS Beacon</span>
+          <button onclick="switchTab('sos')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="sos">
+            <i data-lucide="radio" class="w-4 h-4 text-sky-400"></i> <span>GPS SOS</span>
           </button>
-          <button onclick="switchTab('ice')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="ice">
-            <i data-lucide="contact" class="w-4 h-4 text-sky-400"></i> <span>Medical ID (ICE)</span>
-          </button>
-          <button onclick="switchTab('ai')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="ai">
-            <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i> <span>AI Copilot</span>
+          <button onclick="switchTab('ice')" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="ice">
+            <i data-lucide="contact" class="w-4 h-4 text-purple-400"></i> <span>Medical ID</span>
           </button>
         </nav>
 
@@ -207,10 +214,9 @@
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">⚡ Emergency First-Aid Triage</h2>
-              <p class="text-sm text-slate-300 mt-1">Instant action protocols. Hands-free voice instructions. Verified by emergency medicine standards.</p>
+              <p class="text-sm text-slate-300 mt-1">Instant action protocols with spoken voice commands & verified procedures.</p>
             </div>
             
-            <!-- Voice Mode Switch -->
             <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-2 rounded-2xl border border-slate-700">
               <i data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i>
               <span class="text-xs font-bold text-slate-200">Voice Narrator</span>
@@ -221,18 +227,16 @@
             </div>
           </div>
 
-          <!-- Search Input -->
           <div class="relative">
             <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
             <input type="text" id="triage-search" oninput="filterProtocols()" placeholder="Search emergency (e.g. Snakebite, Choking, CPR, Severe Burn, Accident, Electric Shock)..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-slate-900/90 border border-slate-700 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-white placeholder-slate-400 text-sm font-medium outline-none transition">
           </div>
 
-          <!-- Quick Filter Chips -->
           <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-xs">
             <button onclick="setSearchFilter('all')" class="chip-filter px-3.5 py-1.5 rounded-full bg-red-600 text-white font-bold whitespace-nowrap active-chip" data-category="all">All</button>
-            <button onclick="setSearchFilter('critical')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="critical">🚨 Critical / Life-Threatening</button>
+            <button onclick="setSearchFilter('critical')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="critical">🚨 Critical</button>
             <button onclick="setSearchFilter('trauma')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="trauma">🩸 Wounds & Bleeding</button>
-            <button onclick="setSearchFilter('environmental')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="environmental">🐍 Bites & Environmental</button>
+            <button onclick="setSearchFilter('environmental')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="environmental">🐍 Bites & Hazards</button>
             <button onclick="setSearchFilter('medical')" class="chip-filter px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium whitespace-nowrap border border-slate-700" data-category="medical">🫀 Medical Emergencies</button>
           </div>
         </div>
@@ -243,7 +247,162 @@
         </div>
       </section>
 
-      <!-- ================= TAB 2: CPR METRONOME ================= -->
+      <!-- ================= TAB 2: WOUND CLEANING & MATERIAL ADVISOR ================= -->
+      <section id="tab-wounds" class="tab-content hidden space-y-6">
+        <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-black uppercase tracking-wider">Clinical Guidance</span>
+              <h2 class="text-2xl sm:text-3xl font-black text-white">🩹 Smart Wound Cleaning & Material Selector</h2>
+            </div>
+            <p class="text-sm text-slate-300 mt-1">Select the cause of injury to see exact safe medical materials, dressing rules, and dangerous materials to avoid.</p>
+          </div>
+
+          <!-- Cause Selector Chips -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs font-bold">
+            <button onclick="showWoundGuide('gravel')" class="wound-chip p-3 rounded-2xl bg-emerald-700 text-white border border-emerald-500 text-center shadow-lg transition active-wound-chip" data-wound="gravel">
+              🚗 Road Gravel / Scrape
+            </button>
+            <button onclick="showWoundGuide('glass')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="glass">
+              🔪 Deep Glass / Blade Cut
+            </button>
+            <button onclick="showWoundGuide('puncture')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="puncture">
+              🔩 Rusty Nail Puncture
+            </button>
+            <button onclick="showWoundGuide('animal')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="animal">
+              🐕 Animal / Dog Bite
+            </button>
+            <button onclick="showWoundGuide('burn')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="burn">
+              🔥 Fire / Chemical Burn
+            </button>
+            <button onclick="showWoundGuide('splinter')" class="wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition" data-wound="splinter">
+              🪵 Wood Splinter / Thorn
+            </button>
+          </div>
+
+          <!-- Dynamic Wound Detail Presentation -->
+          <div id="wound-detail-panel" class="grid lg:grid-cols-12 gap-6 p-6 rounded-3xl bg-slate-900/90 border border-slate-800">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: VISUAL VIDEO DEMOS & TUTORIALS ================= -->
+      <section id="tab-tutorials" class="tab-content hidden space-y-6">
+        <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-amber-950 text-amber-400 border border-amber-800 text-xs font-black uppercase tracking-wider">Step-by-Step Visuals</span>
+              <h2 class="text-2xl sm:text-3xl font-black text-white">🎬 Interactive Video & Visual Demos</h2>
+            </div>
+            <p class="text-sm text-slate-300 mt-1">Watch exact hand positioning, pressure angles, and emergency bandaging simulations with audio voice coach.</p>
+          </div>
+
+          <!-- Interactive Video Demo Cards -->
+          <div class="grid md:grid-cols-2 gap-6">
+            
+            <!-- Demo 1: CPR Hand Technique -->
+            <div class="p-6 rounded-3xl tutorial-anim-box flex flex-col justify-between space-y-4">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-black text-red-400 tracking-wider uppercase">Visual Technique 1</span>
+                  <button onclick="speakTutorial('cpr')" class="px-3 py-1 rounded-xl bg-red-950/80 border border-red-700 text-red-300 text-xs font-bold flex items-center gap-1">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Play Audio Coach
+                  </button>
+                </div>
+                <h3 class="text-xl font-extrabold text-white mt-1">Adult CPR Chest Compressions</h3>
+                <p class="text-xs text-slate-300 mt-1">Heel of palm on sternum center, interlocked fingers, arms locked at 90° angle, 2-inch depth.</p>
+              </div>
+
+              <!-- Animated Diagram Canvas -->
+              <div class="relative h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden">
+                <div class="flex flex-col items-center space-y-2">
+                  <div class="w-16 h-16 rounded-2xl bg-red-600/30 border-2 border-red-500 flex items-center justify-center text-white font-black animate-bounce">
+                    <i data-lucide="hand" class="w-8 h-8 text-red-400"></i>
+                  </div>
+                  <div class="text-xs font-mono text-emerald-400 font-bold">PUMP RATE: 110 BPM (2 inches)</div>
+                  <div class="text-[10px] text-slate-400">Elbows Locked • Full Recoil • 30 Compressions</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Demo 2: Tourniquet Application -->
+            <div class="p-6 rounded-3xl tutorial-anim-box flex flex-col justify-between space-y-4">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-black text-amber-400 tracking-wider uppercase">Visual Technique 2</span>
+                  <button onclick="speakTutorial('tourniquet')" class="px-3 py-1 rounded-xl bg-amber-950/80 border border-amber-700 text-amber-300 text-xs font-bold flex items-center gap-1">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Play Audio Coach
+                  </button>
+                </div>
+                <h3 class="text-xl font-extrabold text-white mt-1">Tourniquet Bleeding Control</h3>
+                <p class="text-xs text-slate-300 mt-1">Place 2-3 inches above wound, knot with stick, twist until arterial bleeding completely stops, secure stick.</p>
+              </div>
+
+              <div class="relative h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden">
+                <div class="flex flex-col items-center space-y-2">
+                  <div class="w-20 h-10 rounded-xl bg-amber-600/30 border-2 border-amber-500 flex items-center justify-center text-amber-300 font-black animate-pulse">
+                    TWIST & LOCK
+                  </div>
+                  <div class="text-xs font-mono text-amber-400 font-bold">2-3 INCHES ABOVE WOUND</div>
+                  <div class="text-[10px] text-slate-400">Never place on joint • Write exact application time</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Demo 3: Heimlich Choking Maneuver -->
+            <div class="p-6 rounded-3xl tutorial-anim-box flex flex-col justify-between space-y-4">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-black text-purple-400 tracking-wider uppercase">Visual Technique 3</span>
+                  <button onclick="speakTutorial('heimlich')" class="px-3 py-1 rounded-xl bg-purple-950/80 border border-purple-700 text-purple-300 text-xs font-bold flex items-center gap-1">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Play Audio Coach
+                  </button>
+                </div>
+                <h3 class="text-xl font-extrabold text-white mt-1">Heimlich Maneuver (Abdominal Thrusts)</h3>
+                <p class="text-xs text-slate-300 mt-1">Stand behind victim, thumb side of fist just above navel, sharp inward & upward thrusts.</p>
+              </div>
+
+              <div class="relative h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden">
+                <div class="flex flex-col items-center space-y-2">
+                  <div class="w-16 h-16 rounded-full bg-purple-600/30 border-2 border-purple-400 flex items-center justify-center text-white font-black animate-pulse">
+                    ⬆️ IN & UP
+                  </div>
+                  <div class="text-xs font-mono text-purple-400 font-bold">5 BACK BLOWS + 5 THRUSTS</div>
+                  <div class="text-[10px] text-slate-400">Target: Diaphragm upward push to dislodge airway object</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Demo 4: Recovery Position -->
+            <div class="p-6 rounded-3xl tutorial-anim-box flex flex-col justify-between space-y-4">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-black text-sky-400 tracking-wider uppercase">Visual Technique 4</span>
+                  <button onclick="speakTutorial('recovery')" class="px-3 py-1 rounded-xl bg-sky-950/80 border border-sky-700 text-sky-300 text-xs font-bold flex items-center gap-1">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Play Audio Coach
+                  </button>
+                </div>
+                <h3 class="text-xl font-extrabold text-white mt-1">Unconscious Recovery Position</h3>
+                <p class="text-xs text-slate-300 mt-1">Roll onto side, top knee bent 90°, hand under cheek, chin tilted to keep airway completely clear.</p>
+              </div>
+
+              <div class="relative h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden">
+                <div class="flex flex-col items-center space-y-2">
+                  <div class="w-20 h-10 rounded-xl bg-sky-600/30 border-2 border-sky-400 flex items-center justify-center text-sky-200 font-black">
+                    SIDE ROLL
+                  </div>
+                  <div class="text-xs font-mono text-sky-400 font-bold">PREVENTS CHOKING ON TONGUE/VOMIT</div>
+                  <div class="text-[10px] text-slate-400">Keep airway open until ambulance arrives</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 4: CPR METRONOME ================= -->
       <section id="tab-cpr" class="tab-content hidden space-y-6">
         <div class="grid lg:grid-cols-12 gap-6">
           
@@ -254,7 +413,6 @@
               <p class="text-sm text-slate-300 mt-1 max-w-md">Push hard & fast in the center of chest. Stay in sync with the audio pulse.</p>
             </div>
 
-            <!-- Pulsing Metronome Ring -->
             <div id="cpr-visual-ring" class="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full flex flex-col items-center justify-center border-4 border-slate-800 bg-slate-950/90 transition-all duration-100 shadow-2xl">
               <div id="cpr-pulse-core" class="w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-red-950/50 border border-red-700/50 flex flex-col items-center justify-center transition-all duration-100">
                 <i data-lucide="heart" id="cpr-heart-icon" class="w-10 h-10 text-red-500 transition-transform"></i>
@@ -266,12 +424,10 @@
               </div>
             </div>
 
-            <!-- Rescue Breath Alert -->
             <div id="cpr-breath-alert" class="hidden w-full max-w-md p-4 rounded-2xl bg-amber-500/20 border border-amber-500/50 text-amber-200 text-center text-sm font-bold animate-bounce">
               ⚠️ 30 Compressions Complete! Give 2 Rescue Breaths, then continue!
             </div>
 
-            <!-- Controls -->
             <div class="flex items-center gap-4">
               <button id="cpr-toggle-btn" onclick="toggleCPR()" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 active:scale-95 text-white font-black text-lg shadow-xl shadow-red-900/60 flex items-center gap-3 transition">
                 <i data-lucide="play" id="cpr-btn-icon" class="w-6 h-6 fill-white"></i>
@@ -282,7 +438,6 @@
               </button>
             </div>
 
-            <!-- BPM Selector -->
             <div class="flex items-center gap-3 text-xs text-slate-300">
               <span>Tempo:</span>
               <button onclick="setCPRBpm(100)" class="bpm-btn px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 hover:border-slate-600" data-bpm="100">100 BPM</button>
@@ -334,7 +489,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 3: GPS SOS BEACON ================= -->
+      <!-- ================= TAB 5: GPS SOS BEACON ================= -->
       <section id="tab-sos" class="tab-content hidden space-y-6">
         <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -349,7 +504,6 @@
             </button>
           </div>
 
-          <!-- Coordinates Box -->
           <div class="grid md:grid-cols-3 gap-4">
             <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
               <div class="text-xs text-slate-400 font-medium">Latitude & Longitude</div>
@@ -368,7 +522,6 @@
             </div>
           </div>
 
-          <!-- Broadcast Actions -->
           <div class="space-y-3 pt-2">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">1-Tap Emergency Broadcasts</h3>
             
@@ -390,7 +543,6 @@
             </div>
           </div>
 
-          <!-- Live Preview -->
           <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
             <div class="flex items-center justify-between text-xs text-slate-400">
               <span class="font-semibold">Generated Emergency Message:</span>
@@ -405,7 +557,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 4: MEDICAL ID (ICE) ================= -->
+      <!-- ================= TAB 6: MEDICAL ID (ICE) ================= -->
       <section id="tab-ice" class="tab-content hidden space-y-6">
         <div class="grid lg:grid-cols-12 gap-6">
           
@@ -471,7 +623,6 @@
             </form>
           </div>
 
-          <!-- Preview Badge -->
           <div class="lg:col-span-5 space-y-4">
             <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Emergency Lockscreen / ICE Card Preview</div>
             
@@ -525,47 +676,13 @@
         </div>
       </section>
 
-      <!-- ================= TAB 5: AI COPILOT ================= -->
-      <section id="tab-ai" class="tab-content hidden space-y-6">
-        <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-5">
-          <div class="flex items-center justify-between">
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 class="text-2xl font-black text-white">🤖 AI Emergency Copilot</h2>
-                <span class="px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 border border-purple-800 text-xs font-bold">Smart Fallback</span>
-              </div>
-              <p class="text-sm text-slate-300 mt-1">Describe any crisis. Answers dynamically or queries our pre-indexed offline medical database.</p>
-            </div>
-          </div>
-
-          <div id="ai-chat-history" class="h-80 overflow-y-auto space-y-3 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-sm">
-            <div class="p-3.5 rounded-2xl bg-slate-800/80 border border-slate-700/60 max-w-lg text-slate-200">
-              👋 <strong>Namaste / Hello!</strong> I am your emergency first-aid copilot. Tell me what happened (e.g. <em>"Someone touched an open live wire"</em> or <em>"Child swallowed detergent"</em>).
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <input type="text" id="ai-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Ask emergency advice or describe injury..." class="flex-1 px-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-700 focus:border-purple-500 text-white text-sm outline-none">
-            <button onclick="sendAIMessage()" class="px-6 py-3.5 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm flex items-center gap-2 transition active:scale-95 shadow-lg shadow-purple-950/50">
-              <i data-lucide="send" class="w-4 h-4"></i>
-              <span>Send</span>
-            </button>
-          </div>
-
-          <div class="flex flex-wrap gap-2 text-xs text-slate-400">
-            <span>Quick queries:</span>
-            <button onclick="askQuickAI('What to do for Russell Viper snake bite in India?')" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 hover:text-white">🐍 Russell Viper Snakebite</button>
-            <button onclick="askQuickAI('Severe boiling water burn on hand, what steps?')" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 hover:text-white">🔥 2nd Degree Hot Water Burn</button>
-            <button onclick="askQuickAI('Elderly person feeling chest tightness and left arm numbness')" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 hover:text-white">🫀 Heart Attack Signs</button>
-          </div>
-        </div>
-      </section>
-
     </main>
 
-    <!-- ================= PROTOCOL MODAL ================= -->
+    <!-- ================= PROTOCOL MODAL (WITH VOICE COACH BAR) ================= -->
     <div id="protocol-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
       <div class="glass-card max-w-2xl w-full rounded-3xl border border-red-600/40 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+        
+        <!-- Modal Header -->
         <div class="p-5 border-b border-slate-800 bg-slate-950/90 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div id="modal-icon-container" class="w-10 h-10 rounded-xl bg-red-600/30 flex items-center justify-center text-red-400 font-bold">
@@ -581,12 +698,28 @@
           </button>
         </div>
 
+        <!-- Voice Coach Sticky Bar -->
+        <div class="px-5 py-2.5 bg-emerald-950/80 border-b border-emerald-800/50 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2 text-emerald-300 font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Hands-Free Voice Coach</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="speakCurrentModal()" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i> Read Aloud
+            </button>
+            <button onclick="window.speechSynthesis.cancel()" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">
+              Stop
+            </button>
+          </div>
+        </div>
+
         <div class="p-6 overflow-y-auto space-y-6 flex-1" id="modal-body"></div>
 
         <div class="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between gap-3">
           <button id="modal-voice-btn" onclick="speakCurrentModal()" class="px-4 py-2.5 rounded-xl bg-emerald-900/60 hover:bg-emerald-800 text-emerald-300 border border-emerald-700/50 text-xs font-bold flex items-center gap-2 transition">
             <i data-lucide="volume-2" class="w-4 h-4"></i>
-            <span id="modal-voice-text">Read Steps Out Loud</span>
+            <span>Repeat Spoken Steps</span>
           </button>
           <a href="tel:112" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-red-950/50 transition">
             <i data-lucide="phone-call" class="w-4 h-4"></i>
@@ -597,32 +730,226 @@
     </div>
 
     <!-- ================= MOBILE NAVIGATION DOCK ================= -->
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800 px-3 py-2">
-      <div class="flex items-center justify-around text-[10px] font-semibold">
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800 px-2 py-2">
+      <div class="flex items-center justify-around text-[10px] font-bold">
         <button onclick="switchTab('triage')" class="mob-tab-btn flex flex-col items-center gap-1 text-red-500 active-mob-tab" data-tab="triage">
-          <i data-lucide="stethoscope" class="w-5 h-5"></i>
-          <span>First-Aid</span>
+          <i data-lucide="stethoscope" class="w-4 h-4"></i>
+          <span>Triage</span>
+        </button>
+        <button onclick="switchTab('wounds')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="wounds">
+          <i data-lucide="bandage" class="w-4 h-4"></i>
+          <span>Wounds</span>
+        </button>
+        <button onclick="switchTab('tutorials')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="tutorials">
+          <i data-lucide="play-circle" class="w-4 h-4"></i>
+          <span>Visuals</span>
         </button>
         <button onclick="switchTab('cpr')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="cpr">
-          <i data-lucide="heart-pulse" class="w-5 h-5"></i>
-          <span>CPR Beat</span>
+          <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+          <span>CPR</span>
         </button>
         <button onclick="switchTab('sos')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="sos">
-          <i data-lucide="radio" class="w-5 h-5"></i>
-          <span>GPS SOS</span>
-        </button>
-        <button onclick="switchTab('ice')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="ice">
-          <i data-lucide="contact" class="w-5 h-5"></i>
-          <span>ICE ID</span>
-        </button>
-        <button onclick="switchTab('ai')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="ai">
-          <i data-lucide="sparkles" class="w-5 h-5"></i>
-          <span>AI Copilot</span>
+          <i data-lucide="radio" class="w-4 h-4"></i>
+          <span>SOS</span>
         </button>
       </div>
     </div>
 
   </div>
+
+  <!-- ================= WOUNDS & MATERIAL ADVISOR DATA ================= -->
+  <script>
+    const WOUND_GUIDES = {
+      gravel: {
+        title_en: 'Road Gravel / Friction Abrasion (Road Rash)',
+        title_hi: 'सड़क की रगड़ और कंकड़ घाव',
+        danger_level: 'High Infection Risk • Tetanus Hazard',
+        wash_material_en: 'Copious clean running tap water or Normal Saline 0.9% for 5-10 minutes.',
+        wash_material_hi: 'नल का साफ बहता पानी या नॉर्मल सलाइन से 5-10 मिनट धोएं।',
+        disinfectant_en: 'Povidone-Iodine 5% (Betadine) applied around wound borders. Avoid stinging alcohol inside raw cut.',
+        disinfectant_hi: 'घाव के किनारों पर पोविडोन-आयोडीन (Betadine) लगाएं।',
+        dressing_en: 'Sterile non-adherent gauze + Petroleum Jelly/Neosporin to prevent cloth sticking to raw skin.',
+        dressing_hi: 'न चिपकने वाली साफ पट्टी (Non-adherent gauze) और एंटीबायोटिक क्रीम लगाएं।',
+        never_use_en: '❌ DO NOT use loose cotton wool fibers (they get embedded in gravel). DO NOT apply turmeric, mud, or engine grease.',
+        never_use_hi: '❌ रूई (Cotton) कभी न लगाएं, इसके रेशे घाव में चिपक जाते हैं। हल्दी या मिट्टी न लगाएं।',
+        tetanus_warning: '⚠️ If not vaccinated in last 5 years, get a Tetanus Toxoid (TT) shot within 24 hours.'
+      },
+      glass: {
+        title_en: 'Deep Glass / Blade Laceration',
+        title_hi: 'कांच या ब्लेड का गहरा घाव',
+        danger_level: 'Severe Bleeding • Tendon/Artery Risk',
+        wash_material_en: 'Gently irrigate around surface with sterile water without dislodging embedded shards.',
+        wash_material_hi: 'घाव के आसपास साफ पानी से धोएं, कांच के टुकड़ों को न हिलाएं।',
+        disinfectant_en: 'Apply Betadine on surrounding intact skin only.',
+        disinfectant_hi: 'घाव के आसपास की त्वचा पर बीटाडीन लगाएं।',
+        dressing_en: 'Apply direct pressure with thick folded sterile gauze. If glass is sticking out, build gauze donut ring around it—NEVER press down directly on glass.',
+        dressing_hi: 'मोटे साफ कपड़े से दबाव बनाएं। यदि कांच फंसा हो तो उसे खींचें नहीं, उसके चारों ओर रिंग बनाकर पट्टी बांधें।',
+        never_use_en: '❌ DO NOT pluck deep glass pieces yourself (causes sudden massive arterial hemorrhage).',
+        never_use_hi: '❌ गहराई में फंसे कांच को खुद न खींचें (तेज खून बह सकता है)।',
+        tetanus_warning: '⚠️ Requires immediate doctor visit for surgical sutures and TT injection.'
+      },
+      puncture: {
+        title_en: 'Rusty Nail / Metal Wire Puncture',
+        title_hi: 'जंग लगी कील या तार का चुभना',
+        danger_level: 'Extreme Anaerobic Tetanus Hazard',
+        wash_material_en: 'Thoroughly wash under running water with antibacterial soap for 5 minutes. Allow minor bleeding to flush out bacteria.',
+        wash_material_hi: 'साबुन और बहते पानी से 5 मिनट तक अच्छी तरह धोएं।',
+        disinfectant_en: 'Flush with Povidone-Iodine or Chlorhexidine solution.',
+        disinfectant_hi: 'पोविडोन-आयोडीन या क्लोरहेक्सिडीन से साफ करें।',
+        dressing_en: 'Cover loosely with sterile bandage. Puncture wounds must drain—do not seal airtight.',
+        dressing_hi: 'साफ पट्टी से हल्के से ढकें, पूरी तरह सील न करें ताकि अंदर हवा रहे।',
+        never_use_en: '❌ DO NOT ignore small punctures. DO NOT try to probe deep inside with needles.',
+        never_use_hi: '❌ सुई डालकर घाव को कुरेदने की कोशिश न करें।',
+        tetanus_warning: '🚨 URGENT: Tetanus injection is mandatory within 24 hours for all rusty punctures!'
+      },
+      animal: {
+        title_en: 'Animal / Stray Dog / Cat Bite & Scratch',
+        title_hi: 'कुत्ते या बिल्ली का काटना (रेबीज खतरा)',
+        danger_level: 'Lethal Rabies & Bacterial Risk',
+        wash_material_en: 'Immediately scrub vigorously under running tap water with detergent/soap for AT LEAST 15 FULL MINUTES.',
+        wash_material_hi: 'तुरंत बहते पानी और साबुन/सर्फ से कम से कम 15 मिनट तक लगातार धोएं।',
+        disinfectant_en: 'Generously apply Povidone-Iodine 5% (Betadine) or 70% alcohol (kills Rabies virus envelope).',
+        disinfectant_hi: 'घाव पर बीटाडीन (Betadine) या 70% स्पिरिट लगाएं जो रेबीज वायरस को मारता है।',
+        dressing_en: 'Leave open or cover very loosely. DO NOT stitch or bandage tightly immediately.',
+        dressing_hi: 'घाव को कसकर न बांधें, तुरंत डॉक्टर के पास जाएं।',
+        never_use_en: '❌ NEVER apply red chili powder, turmeric, lime, or plant leaves (deadly myths).',
+        never_use_hi: '❌ लाल मिर्च, चूना या जड़ी-बूटी कभी न लगाएं (यह जानलेवा अंधविश्वास है)।',
+        tetanus_warning: '🚨 MANDATORY: Start Anti-Rabies Vaccine (ARV) Day 0 dose and Immunoglobulin immediately at hospital!'
+      },
+      burn: {
+        title_en: 'Fire / Scald / Chemical Burn',
+        title_hi: 'आग, गर्म पानी या केमिकल से जलना',
+        danger_level: 'Tissue Dehydration & Infection Risk',
+        wash_material_en: 'Cool running tap water for continuous 20 minutes. Chemical burns require 30 minutes flushing.',
+        wash_material_hi: '20 मिनट तक लगातार नल के ठंडे पानी से ठंडा करें।',
+        disinfectant_en: 'Silver Sulfadiazine cream (Burnol / Silvadene) for unbroken superficial burns only.',
+        disinfectant_hi: 'सिल्वर सल्फाडायजीन (Silverex/Burnol) क्रीम हल्के से लगाएं।',
+        dressing_en: 'Sterile clean plastic cling wrap loosely placed over burn, or non-fluffy sterile gauze.',
+        dressing_hi: 'साफ प्लास्टिक क्लिंग फिल्म या साफ कपड़े से हल्के से ढकें।',
+        never_use_en: '❌ DO NOT apply ice, toothpaste, butter, raw egg, or flour. DO NOT burst blisters.',
+        never_use_hi: '❌ बर्फ, टूथपेस्ट, मक्खन, अंडा या आटा न लगाएं। छालों को न फोड़ें।',
+        tetanus_warning: '⚠️ Seek ER care if burn exceeds victim hand size or affects face/joints.'
+      },
+      splinter: {
+        title_en: 'Wood Splinter / Deep Organic Thorn',
+        title_hi: 'लकड़ी की फांस या कांटा चुभना',
+        danger_level: 'Foreign Body Granuloma & Fungal Infection',
+        wash_material_en: 'Wash area with warm water and soap. Disinfect tweezers with rubbing alcohol.',
+        wash_material_hi: 'गुनगुने पानी व साबुन से धोएं और चिमटी (Tweezers) को अल्कोहल से साफ करें।',
+        disinfectant_en: 'Betadine antiseptic lotion after removal.',
+        disinfectant_hi: 'कांटा निकालने के बाद बीटाडीन लगाएं।',
+        dressing_en: 'Small sterile adhesive bandage (Band-Aid).',
+        dressing_hi: 'साफ बैंड-एड (Band-Aid) लगाएं।',
+        never_use_en: '❌ DO NOT squeeze hard (it breaks the splinter inside).',
+        never_use_hi: '❌ जोर से न दबाएं, फांस अंदर टूट सकती है।',
+        tetanus_warning: '⚠️ If thorn is deeply buried or swollen after 24 hours, visit clinic.'
+      }
+    };
+
+    function showWoundGuide(type) {
+      const guide = WOUND_GUIDES[type] || WOUND_GUIDES.gravel;
+
+      document.querySelectorAll('.wound-chip').forEach(btn => {
+        if (btn.dataset.wound === type) {
+          btn.className = 'wound-chip p-3 rounded-2xl bg-emerald-700 text-white border border-emerald-500 text-center shadow-lg transition active-wound-chip';
+        } else {
+          btn.className = 'wound-chip p-3 rounded-2xl bg-slate-900 text-slate-300 border border-slate-700 text-center hover:bg-slate-800 transition';
+        }
+      });
+
+      const title = currentLang === 'hi' ? guide.title_hi : guide.title_en;
+      const wash = currentLang === 'hi' ? guide.wash_material_hi : guide.wash_material_en;
+      const dis = currentLang === 'hi' ? guide.disinfectant_hi : guide.disinfectant_en;
+      const dress = currentLang === 'hi' ? guide.dressing_hi : guide.dressing_en;
+      const never = currentLang === 'hi' ? guide.never_use_hi : guide.never_use_en;
+
+      const html = `
+        <div class="lg:col-span-7 space-y-4">
+          <div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-red-950 text-red-400 border border-red-800 font-bold">${guide.danger_level}</span>
+            <h3 class="text-2xl font-black text-white mt-2">${title}</h3>
+          </div>
+
+          <div class="space-y-3 text-sm">
+            <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
+              <strong class="text-emerald-400 flex items-center gap-1.5 text-xs uppercase tracking-wider mb-1">
+                <i data-lucide="droplet" class="w-4 h-4"></i> 1. How to Wash & What to Use
+              </strong>
+              <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">${wash}</p>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
+              <strong class="text-sky-400 flex items-center gap-1.5 text-xs uppercase tracking-wider mb-1">
+                <i data-lucide="shield-check" class="w-4 h-4"></i> 2. Safe Antiseptics
+              </strong>
+              <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">${dis}</p>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
+              <strong class="text-amber-400 flex items-center gap-1.5 text-xs uppercase tracking-wider mb-1">
+                <i data-lucide="layers" class="w-4 h-4"></i> 3. Correct Dressing Material
+              </strong>
+              <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">${dress}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+          <div class="p-4 rounded-2xl bg-red-950/40 border border-red-800/50 space-y-2">
+            <strong class="text-red-400 flex items-center gap-1.5 text-xs uppercase tracking-wider">
+              <i data-lucide="alert-octagon" class="w-4 h-4"></i> DANGEROUS TO USE (Never Apply)
+            </strong>
+            <p class="text-red-200 text-xs leading-relaxed font-medium">${never}</p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-amber-950/40 border border-amber-800/50 space-y-1 text-xs">
+            <strong class="text-amber-300 font-bold block">TETANUS & HOSPITAL ALERT:</strong>
+            <p class="text-amber-200 leading-relaxed">${guide.tetanus_warning}</p>
+          </div>
+
+          <button onclick="speakWoundGuide('${type}')" class="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 font-bold text-white text-xs flex items-center justify-center gap-2 shadow-lg transition">
+            <i data-lucide="volume-2" class="w-4 h-4"></i>
+            <span>Listen to Spoken Instructions</span>
+          </button>
+        </div>
+      `;
+
+      document.getElementById('wound-detail-panel').innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function speakWoundGuide(type) {
+      const guide = WOUND_GUIDES[type] || WOUND_GUIDES.gravel;
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+
+      const title = currentLang === 'hi' ? guide.title_hi : guide.title_en;
+      const wash = currentLang === 'hi' ? guide.wash_material_hi : guide.wash_material_en;
+      const never = currentLang === 'hi' ? guide.never_use_hi : guide.never_use_en;
+
+      const speech = `${title}. Step 1: Washing: ${wash}. Warning: ${never}`;
+      const utterance = new SpeechSynthesisUtterance(speech);
+      utterance.rate = 0.95;
+      utterance.lang = currentLang === 'hi' ? 'hi-IN' : 'en-US';
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakTutorial(key) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+
+      const tutorials = {
+        cpr: 'CPR Technique: Place the heel of one hand in the center of the chest. Interlock your other hand. Keep elbows locked straight and push down 2 inches at 110 beats per minute. Do 30 compressions then 2 rescue breaths.',
+        tourniquet: 'Tourniquet Procedure: Place a broad cloth or band 2 to 3 inches above the bleeding site. Tie a half knot, place a firm stick on top, and tie a full knot. Twist the stick until bright red bleeding completely stops. Lock the stick and write the exact time.',
+        heimlich: 'Heimlich Maneuver: Stand behind the choking person. Place your fist with thumb side just above their navel. Grasp with other hand and give rapid, inward and upward thrusts to pop out the blocked object.',
+        recovery: 'Recovery Position: Gently roll the unconscious breathing person onto their side. Bend their top leg at 90 degrees and place their hand under their cheek. Tilt head slightly backward to keep the airway completely open.'
+      };
+
+      const utterance = new SpeechSynthesisUtterance(tutorials[key] || '');
+      utterance.rate = 0.95;
+      window.speechSynthesis.speak(utterance);
+    }
+  </script>
 
   <!-- ================= REAL LIVE 3D DISASTER VISUAL ENGINE ================= -->
   <script>
@@ -639,7 +966,6 @@
       document.getElementById('current-disaster-name').innerText = sceneNames[val] || sceneNames.storm;
     }
 
-    // 60 FPS Photorealistic Live Canvas Renderer
     function initLiveDisasterCanvas() {
       const canvas = document.getElementById('disaster-live-canvas');
       const ctx = canvas.getContext('2d');
@@ -651,7 +977,6 @@
         h = canvas.height = window.innerHeight;
       });
 
-      // 1. Rain simulation
       const rainDrops = [];
       for (let i = 0; i < 180; i++) {
         rainDrops.push({
@@ -663,7 +988,6 @@
         });
       }
 
-      // 2. Fire & Embers simulation
       const fireFlames = [];
       for (let i = 0; i < 70; i++) {
         fireFlames.push({
@@ -674,7 +998,7 @@
           speedX: (Math.random() - 0.5) * 2,
           life: 1,
           decay: Math.random() * 0.02 + 0.01,
-          hue: Math.random() * 35 + 10 // yellow-orange-red
+          hue: Math.random() * 35 + 10
         });
       }
 
@@ -690,7 +1014,6 @@
         });
       }
 
-      // 3. Lightning Fractal Branches
       let lightningPoints = [];
       let lightningTimer = 0;
       let lightningAlpha = 0;
@@ -709,15 +1032,12 @@
         lightningAlpha = 1;
       }
 
-      // 4. Wave physics for Tsunami
       let waveOffset = 0;
 
       function render() {
         ctx.clearRect(0, 0, w, h);
 
-        // ================= SCENE 1: THUNDERSTORM & LIGHTNING =================
         if (activeScene === 'storm') {
-          // Dynamic Storm Clouds Sky
           const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
           skyGrad.addColorStop(0, '#040714');
           skyGrad.addColorStop(0.5, '#0a1026');
@@ -725,7 +1045,6 @@
           ctx.fillStyle = skyGrad;
           ctx.fillRect(0, 0, w, h);
 
-          // Rolling Cloud Blobs
           ctx.fillStyle = 'rgba(20, 30, 55, 0.4)';
           for (let i = 0; i < 5; i++) {
             ctx.beginPath();
@@ -733,14 +1052,12 @@
             ctx.fill();
           }
 
-          // Trigger Random Lightning Strike
           lightningTimer++;
           if (lightningTimer > 160 && Math.random() < 0.04) {
             createLightning();
             lightningTimer = 0;
           }
 
-          // Draw Flash & Lightning Bolt
           if (lightningAlpha > 0) {
             ctx.fillStyle = `rgba(225, 240, 255, ${lightningAlpha * 0.45})`;
             ctx.fillRect(0, 0, w, h);
@@ -761,7 +1078,6 @@
             lightningAlpha -= 0.04;
           }
 
-          // Draw Heavy Rain Drops
           ctx.strokeStyle = 'rgba(180, 215, 255, 0.6)';
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -778,7 +1094,6 @@
           ctx.stroke();
         }
 
-        // ================= SCENE 2: RAGING JUNGLE WILDFIRE =================
         else if (activeScene === 'wildfire') {
           const fireSky = ctx.createLinearGradient(0, 0, 0, h);
           fireSky.addColorStop(0, '#1a0505');
@@ -787,7 +1102,6 @@
           ctx.fillStyle = fireSky;
           ctx.fillRect(0, 0, w, h);
 
-          // Burning Tree Silhouettes
           ctx.fillStyle = '#0a0202';
           for (let i = 0; i < w; i += 45) {
             ctx.fillRect(i, h - 160, 16, 160);
@@ -796,7 +1110,6 @@
             ctx.fill();
           }
 
-          // Rising Wildfire Flames
           for (let flame of fireFlames) {
             flame.y -= flame.speedY;
             flame.x += flame.speedX;
@@ -820,7 +1133,6 @@
             ctx.fill();
           }
 
-          // Floating Glowing Embers
           for (let ember of embers) {
             ember.y += ember.speedY;
             ember.x += ember.speedX;
@@ -838,7 +1150,6 @@
           }
         }
 
-        // ================= SCENE 3: SURGING OCEAN TSUNAMI =================
         else if (activeScene === 'tsunami') {
           const oceanSky = ctx.createLinearGradient(0, 0, 0, h);
           oceanSky.addColorStop(0, '#030814');
@@ -849,7 +1160,6 @@
 
           waveOffset += 0.03;
 
-          // Layered Huge Ocean Waves
           for (let layer = 0; layer < 4; layer++) {
             ctx.fillStyle = `rgba(${5 + layer * 5}, ${25 + layer * 15}, ${55 + layer * 25}, ${0.55 + layer * 0.15})`;
             ctx.beginPath();
@@ -862,13 +1172,11 @@
             ctx.closePath();
             ctx.fill();
 
-            // Foam Crests
             ctx.strokeStyle = `rgba(180, 230, 255, ${0.4 + layer * 0.15})`;
             ctx.lineWidth = 3;
             ctx.stroke();
           }
 
-          // Torrential Sea Spray
           ctx.strokeStyle = 'rgba(200, 235, 255, 0.4)';
           ctx.lineWidth = 1;
           ctx.beginPath();
@@ -885,7 +1193,6 @@
           ctx.stroke();
         }
 
-        // ================= SCENE 4: VOLCANO LAVA ERUPTION =================
         else if (activeScene === 'volcano') {
           const volkSky = ctx.createLinearGradient(0, 0, 0, h);
           volkSky.addColorStop(0, '#100305');
@@ -894,7 +1201,6 @@
           ctx.fillStyle = volkSky;
           ctx.fillRect(0, 0, w, h);
 
-          // Mountain Silhouette
           ctx.fillStyle = '#0d0405';
           ctx.beginPath();
           ctx.moveTo(0, h);
@@ -904,7 +1210,6 @@
           ctx.closePath();
           ctx.fill();
 
-          // Lava Crater Glow
           const lavaGrad = ctx.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.45, 120);
           lavaGrad.addColorStop(0, '#fff');
           lavaGrad.addColorStop(0.4, '#ff3300');
@@ -914,7 +1219,6 @@
           ctx.arc(w * 0.5, h * 0.45, 120, 0, Math.PI * 2);
           ctx.fill();
 
-          // Flying Magma Rocks
           for (let ember of embers) {
             ember.y += ember.speedY * 1.5;
             ember.x += ember.speedX * 2;
@@ -940,10 +1244,11 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       initLiveDisasterCanvas();
+      showWoundGuide('gravel');
     });
   </script>
 
-  <!-- ================= APP LOGIC SCRIPT ================= -->
+  <!-- ================= BASE PROTOCOLS & APP ENGINE ================= -->
   <script>
     const EMERGENCY_PROTOCOLS = [
       {
@@ -1220,6 +1525,10 @@
       renderProtocols();
       updateMedicalIDBadge();
       updateSOSMessagePreview();
+      const activeWoundChip = document.querySelector('.active-wound-chip');
+      if (activeWoundChip) {
+        showWoundGuide(activeWoundChip.dataset.wound);
+      }
       lucide.createIcons();
     }
 
@@ -1231,9 +1540,9 @@
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
         if (btn.dataset.tab === tabId) {
-          btn.className = 'tab-btn px-4 py-2 rounded-xl text-xs font-bold transition active-tab text-white bg-red-600 shadow-md flex items-center gap-1.5';
+          btn.className = 'tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition active-tab text-white bg-red-600 shadow-md flex items-center gap-1.5';
         } else {
-          btn.className = 'tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5';
+          btn.className = 'tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5';
         }
       });
 
@@ -1570,80 +1879,6 @@
       document.getElementById('badge-relation').innerText = `(${localStorage.getItem('raksha_relation') || 'Family'})`;
       document.getElementById('badge-allergies').innerText = localStorage.getItem('raksha_allergies') || 'None';
       document.getElementById('badge-conditions').innerText = localStorage.getItem('raksha_conditions') || 'No major chronic conditions';
-    }
-
-    function askQuickAI(query) {
-      document.getElementById('ai-input').value = query;
-      sendAIMessage();
-    }
-
-    function sendAIMessage() {
-      const inputEl = document.getElementById('ai-input');
-      const text = inputEl.value.trim();
-      if (!text) return;
-
-      const historyEl = document.getElementById('ai-chat-history');
-      const userBubble = document.createElement('div');
-      userBubble.className = 'p-3 rounded-2xl bg-purple-950/60 border border-purple-800 text-purple-200 ml-auto max-w-lg';
-      userBubble.innerText = text;
-      historyEl.appendChild(userBubble);
-      inputEl.value = '';
-      historyEl.scrollTop = historyEl.scrollHeight;
-
-      setTimeout(() => {
-        const lower = text.toLowerCase();
-        let matchedProtocol = EMERGENCY_PROTOCOLS.find(p => {
-          return lower.includes(p.id) || 
-                 lower.includes(p.title_en.toLowerCase()) || 
-                 p.dos_en.some(d => lower.includes(d.toLowerCase())) ||
-                 (lower.includes('snake') && p.id === 'snakebite') ||
-                 (lower.includes('burn') && p.id === 'burns') ||
-                 (lower.includes('chok') && p.id === 'choking') ||
-                 (lower.includes('bleed') && p.id === 'severe_bleeding') ||
-                 (lower.includes('cpr') && p.id === 'cpr') ||
-                 (lower.includes('heat') && p.id === 'heatstroke') ||
-                 (lower.includes('heart') && p.id === 'heart_attack') ||
-                 (lower.includes('seizure') && p.id === 'seizure') ||
-                 (lower.includes('shock') && p.id === 'electric_shock') ||
-                 (lower.includes('accident') && p.id === 'road_accident');
-        });
-
-        const botBubble = document.createElement('div');
-        botBubble.className = 'p-3.5 rounded-2xl bg-slate-800/90 border border-slate-700/80 text-slate-100 max-w-xl space-y-2';
-
-        if (matchedProtocol) {
-          const title = currentLang === 'hi' ? matchedProtocol.title_hi : matchedProtocol.title_en;
-          const dos = currentLang === 'hi' ? matchedProtocol.dos_hi : matchedProtocol.dos_en;
-          botBubble.innerHTML = `
-            <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs">
-              <i data-lucide="shield-check" class="w-4 h-4"></i>
-              <span>Verified Emergency Protocol: ${title}</span>
-            </div>
-            <p class="text-xs font-semibold text-slate-200">Key Immediate Actions:</p>
-            <ul class="list-disc pl-4 text-xs space-y-1 text-slate-300">
-              ${dos.slice(0, 3).map(d => `<li>${d}</li>`).join('')}
-            </ul>
-            <div class="pt-2">
-              <button onclick="openProtocolModal('${matchedProtocol.id}')" class="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs">
-                Open Full Step-by-Step Guide
-              </button>
-            </div>
-          `;
-        } else {
-          botBubble.innerHTML = `
-            <div class="text-xs font-semibold text-slate-200">
-              🚨 <strong>General Emergency Rule:</strong>
-            </div>
-            <p class="text-xs text-slate-300 mt-1">
-              Ensure scene safety first. Check responsiveness. If the person is unconscious or in severe pain, call <strong>112</strong> immediately. If not breathing, start CPR compressions in the center of the chest.
-            </p>
-          `;
-        }
-
-        historyEl.appendChild(botBubble);
-        lucide.createIcons();
-        historyEl.scrollTop = historyEl.scrollHeight;
-      }, 400);
     }
   </script>
 </body>
