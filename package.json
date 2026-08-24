@@ -1,0 +1,21 @@
+{
+  "name": "raksha-setu",
+  "version": "1.0.0",
+  "description": "Offline-First Emergency Triage, CPR Rhythm Metronome, and Community SOS Beacon Web App.",
+  "scripts": {
+    "dev": "npx -y serve . -l 3000",
+    "start": "npx -y serve . -l 3000",
+    "build": "echo 'Static PWA ready for instant deployment'"
+  },
+  "keywords": [
+    "emergency",
+    "first-aid",
+    "cpr",
+    "offline-first",
+    "pwa",
+    "hackathon",
+    "public-safety"
+  ],
+  "author": "Lakshit Rana",
+  "license": "MIT"
+}

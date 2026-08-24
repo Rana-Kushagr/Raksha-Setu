@@ -1,0 +1,17 @@
+{
+  "name": "RakshaSetu - Offline Emergency & First-Aid Triager",
+  "short_name": "RakshaSetu",
+  "description": "Offline-first emergency first-aid, CPR audio-visual guide, and SOS beacon.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#dc2626",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23dc2626'/><path d='M50 20 L50 80 M20 50 L80 50' stroke='white' stroke-width='16' stroke-linecap='round'/></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
