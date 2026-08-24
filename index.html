@@ -228,9 +228,106 @@
 
     .pill-critical { background: rgba(255,0,51,0.12); border: 1px solid rgba(255,0,51,0.28); color: #ff6688; }
     .pill-medium   { background: rgba(255,170,0,0.12); border: 1px solid rgba(255,170,0,0.28); color: #ffcc44; }
+
+    /* ---- Splash Screen ---- */
+    #rs-splash {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #020307;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.6s ease;
+    }
+    #rs-splash.fade-out { opacity: 0; pointer-events: none; }
+    @keyframes splashPulse {
+      0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,0,51,0.5); }
+      50% { transform: scale(1.06); box-shadow: 0 0 0 24px rgba(255,0,51,0); }
+    }
+    .splash-ring { animation: splashPulse 1.8s ease-in-out infinite; }
+    @keyframes splashTextIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .splash-text { animation: splashTextIn 0.7s ease 0.3s both; }
+    .splash-sub  { animation: splashTextIn 0.7s ease 0.6s both; }
+    .splash-bar  { animation: splashTextIn 0.7s ease 0.9s both; }
+
+    /* ---- AI Symptom Checker Panel ---- */
+    #ai-panel {
+      position: fixed; bottom: 85px; right: 16px; z-index: 800;
+      width: min(420px, calc(100vw - 32px));
+      background: linear-gradient(160deg, rgba(10,12,26,0.98) 0%, rgba(6,8,18,0.98) 100%);
+      backdrop-filter: blur(32px);
+      border: 1px solid rgba(255,0,51,0.25);
+      border-radius: 20px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.85), 0 0 60px rgba(255,0,51,0.08);
+      display: none; flex-direction: column; overflow: hidden;
+      max-height: 70vh;
+    }
+    #ai-panel.open { display: flex; }
+    #ai-fab {
+      position: fixed; bottom: 85px; right: 16px; z-index: 801;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, #ff0033, #ff5500);
+      border: none; cursor: pointer; color: white;
+      box-shadow: 0 8px 32px rgba(255,0,51,0.5);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-size: 22px;
+    }
+    #ai-fab:hover { transform: scale(1.08); box-shadow: 0 12px 40px rgba(255,0,51,0.65); }
+    #ai-fab.panel-open { background: linear-gradient(135deg, #333, #111); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+
+    /* ---- Escalation Banner ---- */
+    #escalation-banner {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 8000;
+      background: linear-gradient(90deg, #ff0033, #cc0022);
+      color: white; padding: 10px 16px;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: 13px; align-items: center; justify-content: space-between; gap: 8px;
+      box-shadow: 0 4px 24px rgba(255,0,51,0.6);
+      animation: splashTextIn 0.3s ease;
+    }
+    #escalation-banner.show { display: flex; }
+
+    /* ---- Voice search mic button ---- */
+    .mic-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.5);
+      transition: all 0.2s ease;
+    }
+    .mic-btn.listening {
+      background: rgba(255,0,51,0.25);
+      border-color: rgba(255,0,51,0.6);
+      color: #ff6688;
+      animation: sosPulse 1s ease-in-out infinite;
+    }
+    .ai-match-card {
+      background: linear-gradient(135deg, rgba(255,0,51,0.10), rgba(255,85,0,0.05));
+      border: 1px solid rgba(255,0,51,0.22);
+      border-radius: 12px; padding: 12px;
+      transition: all 0.2s ease;
+    }
+    .ai-match-card:hover { border-color: rgba(255,0,51,0.4); cursor: pointer; }
   </style>
 </head>
 <body class="bg-[#020307] text-slate-100 min-h-screen font-sans selection:bg-red-600/50 selection:text-white pb-24 md:pb-4 relative overflow-x-hidden">
+
+  <!-- ================= ONBOARDING SPLASH SCREEN ================= -->
+  <div id="rs-splash" onclick="dismissSplash()">
+    <div class="splash-ring w-28 h-28 rounded-full brand-icon-bg flex items-center justify-center mb-6">
+      <i data-lucide="shield-alert" class="w-14 h-14 text-white"></i>
+    </div>
+    <h1 class="splash-text font-brand text-4xl font-bold text-center">
+      <span class="brand-gradient">Raksha</span><span class="text-white">Setu</span>
+    </h1>
+    <p class="splash-sub font-hindi text-white/60 text-center mt-2 text-sm">रक्षासेतु — India's Panic-Proof Emergency First-Aid Guide</p>
+    <div class="splash-bar mt-8 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+      <span class="font-mono text-[10px] text-white/40 uppercase tracking-widest">Instant Offline Emergency Engine Ready</span>
+    </div>
+    <p class="splash-bar font-mono text-[10px] text-white/30 mt-4 uppercase tracking-widest border border-white/10 px-3 py-1 rounded-full cursor-pointer hover:bg-white/10 transition">Tap anywhere to enter</p>
+  </div>
 
   <!-- ================= REAL 3D LIVE DISASTER CANVAS ================= -->
   <canvas id="disaster-live-canvas"></canvas>
@@ -381,7 +478,10 @@
 
           <div class="relative">
             <i data-lucide="search" class="w-4 h-4 text-white/25 absolute left-4 top-1/2 -translate-y-1/2"></i>
-            <input type="text" id="triage-search" oninput="filterProtocols()" placeholder="Search emergency... (Stroke, Choking, Burns, Electric Shock, Drowning...)" class="rs-search w-full pl-11 pr-4 py-3.5 rounded-xl text-sm font-medium">
+            <input type="text" id="triage-search" oninput="filterProtocols()" placeholder="Search emergency... (Stroke, Choking, Burns, Electric Shock, Drowning...)" class="rs-search w-full pl-11 pr-14 py-3.5 rounded-xl text-sm font-medium">
+            <button id="voice-search-btn" onclick="startVoiceSearch()" title="Speak to search (Hindi / English)" class="mic-btn absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center text-sm shadow-md">
+              🎙️
+            </button>
           </div>
 
           <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
@@ -433,6 +533,68 @@
 
           <div id="wound-detail-panel" class="grid lg:grid-cols-12 gap-6 p-6 rounded-3xl bg-slate-900/90 border border-slate-800">
             <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- ===== PHOTO WOUND IDENTIFIER ===== -->
+        <div class="glass-card p-6 rounded-3xl space-y-5">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <p class="section-label mb-1">📸 AI PHOTO WOUND GUIDE</p>
+              <h2 class="font-brand text-xl font-bold text-white">Photo Wound Identifier</h2>
+              <p class="text-xs text-white/40 mt-1">Take a photo of the wound, answer 3 quick questions — get the right first-aid guide instantly.</p>
+            </div>
+            <label for="wound-camera-input" class="shrink-0 cursor-pointer px-4 py-2.5 rounded-xl flex items-center gap-2 font-brand font-bold text-sm text-white" style="background:linear-gradient(135deg,#00d4aa,#009977);">
+              <span>📷</span> <span>Take / Upload Photo</span>
+            </label>
+            <input type="file" id="wound-camera-input" accept="image/*" capture="environment" class="hidden" onchange="handleWoundPhoto(event)">
+          </div>
+
+          <!-- Photo Preview -->
+          <div id="wound-photo-preview" class="hidden">
+            <img id="wound-photo-img" src="" alt="Wound photo" class="w-full max-h-48 object-cover rounded-2xl border border-white/10">
+            <p class="text-[10px] font-mono text-white/25 mt-1 text-center">Photo captured — answer below to identify wound type</p>
+          </div>
+
+          <!-- Guided Questions -->
+          <div id="wound-questions" class="hidden space-y-4">
+            <!-- Q1 -->
+            <div>
+              <p class="text-xs font-semibold text-white/70 mb-2">Q1: Is the wound bleeding?</p>
+              <div class="flex gap-2 flex-wrap" id="q1-options">
+                <button onclick="selectWoundQ(1,'heavy')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="1" data-v="heavy">🩸 Heavy / Spurting</button>
+                <button onclick="selectWoundQ(1,'oozing')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="1" data-v="oozing">💧 Oozing slowly</button>
+                <button onclick="selectWoundQ(1,'no')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="1" data-v="no">✅ Not bleeding</button>
+              </div>
+            </div>
+            <!-- Q2 -->
+            <div>
+              <p class="text-xs font-semibold text-white/70 mb-2">Q2: What caused the injury?</p>
+              <div class="flex gap-2 flex-wrap" id="q2-options">
+                <button onclick="selectWoundQ(2,'glass')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="2" data-v="glass">🔪 Sharp / Glass</button>
+                <button onclick="selectWoundQ(2,'gravel')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="2" data-v="gravel">🚗 Road / Gravel</button>
+                <button onclick="selectWoundQ(2,'burn')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="2" data-v="burn">🔥 Fire / Burn</button>
+                <button onclick="selectWoundQ(2,'animal')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="2" data-v="animal">🐕 Animal bite</button>
+                <button onclick="selectWoundQ(2,'puncture')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="2" data-v="puncture">🔩 Nail / Puncture</button>
+                <button onclick="selectWoundQ(2,'splinter')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="2" data-v="splinter">🪵 Splinter / Thorn</button>
+              </div>
+            </div>
+            <!-- Q3 -->
+            <div>
+              <p class="text-xs font-semibold text-white/70 mb-2">Q3: How deep does it look?</p>
+              <div class="flex gap-2 flex-wrap" id="q3-options">
+                <button onclick="selectWoundQ(3,'surface')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="3" data-v="surface">🔵 Surface scratch</button>
+                <button onclick="selectWoundQ(3,'deep')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="3" data-v="deep">🔴 Looks deep</button>
+                <button onclick="selectWoundQ(3,'unknown')" class="wound-q-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-white/10 bg-white/05 text-white/60 transition" data-q="3" data-v="unknown">❓ Can't tell</button>
+              </div>
+            </div>
+
+            <!-- Result -->
+            <div id="wound-photo-result" class="hidden p-4 rounded-2xl" style="background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);">
+              <p class="section-label mb-1" style="color:rgba(0,212,170,0.8)">WOUND IDENTIFIED</p>
+              <p id="wound-result-text" class="font-brand text-white font-semibold text-sm"></p>
+              <button id="wound-result-btn" onclick="" class="mt-2 text-xs font-mono text-teal-400 hover:underline">→ Open full wound guide</button>
+            </div>
           </div>
         </div>
       </section>
@@ -755,16 +917,17 @@
             </button>
           </div>
 
+          <!-- Coordinates & Hospital Banner -->
           <div class="grid md:grid-cols-3 gap-4">
             <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-              <div class="text-xs text-slate-400 font-medium" data-i18n="sosCoords">Latitude & Longitude</div>
+              <div class="text-xs text-slate-400 font-medium" data-i18n="sosCoords">Latitude &amp; Longitude</div>
               <div id="gps-coords" class="text-base font-bold text-emerald-400 font-mono">Fetching GPS...</div>
             </div>
             <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
               <div class="text-xs text-slate-400 font-medium" data-i18n="sosAcc">Accuracy Radius</div>
               <div id="gps-accuracy" class="text-base font-bold text-slate-200 font-mono">Detecting...</div>
             </div>
-            <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
+            <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1 flex flex-col justify-between">
               <div class="text-xs text-slate-400 font-medium" data-i18n="sosMap">Maps Direct Link</div>
               <a id="gps-maps-link" href="#" target="_blank" class="text-xs font-semibold text-sky-400 hover:underline flex items-center gap-1 truncate">
                 <span data-i18n="sosOpenMap">Open in Google Maps</span>
@@ -773,23 +936,45 @@
             </div>
           </div>
 
+          <!-- Nearest Hospital Instant Navigator -->
+          <div class="p-4 rounded-2xl border border-red-500/30 flex flex-col sm:flex-row items-center justify-between gap-4" style="background:linear-gradient(135deg,rgba(255,0,51,0.12),rgba(255,85,0,0.06));">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl neon-red flex items-center justify-center text-xl shrink-0">
+                🏥
+              </div>
+              <div>
+                <h4 class="font-brand text-base font-bold text-white">Find Emergency Hospitals Near You</h4>
+                <p class="text-xs text-white/50">Uses your live GPS coordinates to locate nearest ERs, trauma centers, and clinics on Google Maps.</p>
+              </div>
+            </div>
+            <button onclick="openNearbyHospitals()" class="px-5 py-2.5 rounded-xl font-brand font-bold text-xs text-white shrink-0 flex items-center gap-2 shadow-lg hover:scale-105 transition" style="background:linear-gradient(135deg,#ff0033,#ff5500);">
+              <i data-lucide="navigation" class="w-4 h-4"></i>
+              <span>Locate Hospitals Near Me</span>
+            </button>
+          </div>
+
           <div class="space-y-3 pt-2">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="sosBroadcasts">1-Tap Emergency Broadcasts</h3>
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono" data-i18n="sosBroadcasts">1-Tap Live Emergency Location Broadcasts</h3>
             
-            <div class="grid sm:grid-cols-3 gap-3">
-              <button onclick="broadcastWhatsApp()" class="p-4 rounded-2xl bg-emerald-700 hover:bg-emerald-600 active:scale-95 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition">
-                <i data-lucide="message-square" class="w-5 h-5"></i>
-                <span data-i18n="sosWhatsApp">WhatsApp SOS Broadcast</span>
+            <div class="grid sm:grid-cols-4 gap-3">
+              <button onclick="shareLocationWhatsApp()" class="p-4 rounded-2xl bg-emerald-700 hover:bg-emerald-600 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
+                <span>WhatsApp SOS</span>
               </button>
 
-              <button onclick="broadcastSMS()" class="p-4 rounded-2xl bg-blue-700 hover:bg-blue-600 active:scale-95 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition">
-                <i data-lucide="send" class="w-5 h-5"></i>
-                <span data-i18n="sosSMS">Standard SMS SOS</span>
+              <button onclick="shareLocationSMS()" class="p-4 rounded-2xl bg-blue-700 hover:bg-blue-600 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                <i data-lucide="send" class="w-4 h-4"></i>
+                <span>SMS SOS</span>
               </button>
 
-              <button onclick="shareViaWebAPI()" class="p-4 rounded-2xl bg-purple-700 hover:bg-purple-600 active:scale-95 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition">
-                <i data-lucide="share-2" class="w-5 h-5"></i>
-                <span data-i18n="sosShare">Native Share / AirDrop</span>
+              <button onclick="copyLocationLink()" id="copy-loc-btn" class="p-4 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                <i data-lucide="link" class="w-4 h-4"></i>
+                <span>📋 Copy Link</span>
+              </button>
+
+              <button onclick="shareViaWebAPI()" class="p-4 rounded-2xl bg-purple-700 hover:bg-purple-600 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                <i data-lucide="share-2" class="w-4 h-4"></i>
+                <span>Native Share</span>
               </button>
             </div>
           </div>
@@ -929,61 +1114,114 @@
 
     </main>
 
-    <!-- ================= PROTOCOL MODAL (BILINGUAL VOICE COACH) ================= -->
-    <div id="protocol-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
-      <div class="glass-card max-w-2xl w-full rounded-3xl border border-red-600/40 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+    <!-- ================= SEVERITY ESCALATION BANNER ================= -->
+    <div id="escalation-banner">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🚨</span>
+        <span id="escalation-text">Critical emergency detected — Call 112 immediately!</span>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <a href="tel:112" class="px-3.5 py-1.5 rounded-lg bg-white text-red-600 font-brand font-bold text-xs shadow-md">📞 Call 112</a>
+        <button onclick="document.getElementById('escalation-banner').classList.remove('show')" class="text-white/60 hover:text-white text-xs font-bold px-2">✕</button>
+      </div>
+    </div>
+
+    <!-- ================= PROTOCOL MODAL (BILINGUAL VOICE COACH & REDESIGNED) ================= -->
+    <div id="protocol-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl hidden items-center justify-center p-4">
+      <div class="glass-card max-w-2xl w-full rounded-3xl border border-white/10 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col" style="background:linear-gradient(160deg,rgba(12,16,32,0.98),rgba(6,8,18,0.98));">
         
-        <div class="p-5 border-b border-slate-800 bg-slate-950/90 flex items-center justify-between">
+        <!-- Modal Header -->
+        <div class="p-5 border-b border-white/08 flex items-center justify-between" style="background:rgba(255,255,255,0.02)">
           <div class="flex items-center gap-3">
-            <div id="modal-icon-container" class="w-10 h-10 rounded-xl bg-red-600/30 flex items-center justify-center text-red-400 font-bold">
-              <i data-lucide="shield-alert" class="w-6 h-6"></i>
+            <div id="modal-icon-container" class="w-11 h-11 rounded-2xl neon-red flex items-center justify-center font-bold">
+              <i data-lucide="shield-alert" class="w-6 h-6 text-red-400"></i>
             </div>
             <div>
-              <h3 id="modal-title" class="text-xl font-extrabold text-white">Emergency Protocol</h3>
-              <p id="modal-subtitle" class="text-xs text-slate-400 font-hindi">चरण दर चरण प्राथमिक चिकित्सा</p>
+              <h3 id="modal-title" class="font-brand text-xl font-bold text-white leading-tight">Emergency Protocol</h3>
+              <p id="modal-subtitle" class="text-xs text-white/50 font-hindi mt-0.5">चरण दर चरण प्राथमिक चिकित्सा</p>
             </div>
           </div>
-          <button onclick="closeProtocolModal()" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">
+          <button onclick="closeProtocolModal()" class="w-9 h-9 rounded-xl bg-white/05 hover:bg-white/10 text-white/50 hover:text-white flex items-center justify-center transition">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
 
         <!-- Bilingual Spoken Voice Coach Bar -->
-        <div class="px-5 py-2.5 bg-emerald-950/90 border-b border-emerald-800/50 flex items-center justify-between text-xs">
-          <div class="flex items-center gap-2 text-emerald-300 font-bold">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Hands-Free Voice Coach (आवाज गाइड)</span>
+        <div class="px-5 py-2.5 border-b flex items-center justify-between text-xs" style="background:rgba(0,212,170,0.08);border-color:rgba(0,212,170,0.2);">
+          <div class="flex items-center gap-2 text-teal-300 font-semibold font-brand">
+            <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+            <span>Spoken Audio Coach (आवाज गाइड)</span>
           </div>
           <div class="flex items-center gap-1.5">
-            <button onclick="speakCurrentModal('hi')" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1">
+            <button onclick="speakCurrentModal('hi')" class="px-3 py-1.5 rounded-lg text-white font-bold flex items-center gap-1 shadow-sm transition active:scale-95" style="background:linear-gradient(135deg,#00d4aa,#009977);">
               <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>हिंदी में सुनें</span>
             </button>
-            <button onclick="speakCurrentModal('en')" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold flex items-center gap-1">
+            <button onclick="speakCurrentModal('en')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white font-bold flex items-center gap-1 transition active:scale-95">
               <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> <span>English</span>
             </button>
-            <button onclick="window.speechSynthesis.cancel()" class="px-2 py-1 rounded-lg bg-slate-900 text-slate-400 hover:text-white font-bold" title="Stop Audio">
+            <button onclick="window.speechSynthesis.cancel()" class="px-2.5 py-1.5 rounded-lg bg-white/05 text-white/50 hover:text-white font-semibold" title="Stop Audio">
               Stop
             </button>
           </div>
         </div>
 
-        <div class="p-6 overflow-y-auto space-y-6 flex-1" id="modal-body"></div>
+        <!-- Modal Body Content -->
+        <div class="p-6 overflow-y-auto space-y-6 flex-1 text-sm" id="modal-body"></div>
 
-        <div class="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between gap-3">
-          <button onclick="speakCurrentModal(currentLang)" class="px-4 py-2.5 rounded-xl bg-emerald-900/60 hover:bg-emerald-800 text-emerald-300 border border-emerald-700/50 text-xs font-bold flex items-center gap-2 transition">
-            <i data-lucide="volume-2" class="w-4 h-4"></i>
-            <span>Repeat Audio Instructions</span>
-          </button>
-          <a href="tel:112" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-red-950/50 transition">
+        <!-- Modal Footer Actions -->
+        <div class="p-4 border-t border-white/08 flex flex-col sm:flex-row items-center justify-between gap-3" style="background:rgba(2,3,8,0.95)">
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button onclick="openNearbyHospitals()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/05 hover:bg-white/10 text-white/70 border border-white/10 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+              <span>🏥</span>
+              <span>Nearby ERs</span>
+            </button>
+            <button onclick="speakCurrentModal(currentLang)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-teal-500/30 text-teal-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition hover:bg-teal-500/10">
+              <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+              <span>Replay Audio</span>
+            </button>
+          </div>
+          <a href="tel:112" class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-white font-brand font-bold text-xs flex items-center justify-center gap-2 shadow-lg hover:scale-105 transition" style="background:linear-gradient(135deg,#ff0033,#ff5500);">
             <i data-lucide="phone-call" class="w-4 h-4"></i>
-            <span>Call 112 for Ambulance</span>
+            <span>Call 112 National Ambulance</span>
           </a>
         </div>
       </div>
     </div>
 
+    <!-- ================= AI SYMPTOM CHECKER FAB + FLOATING PANEL ================= -->
+    <button id="ai-fab" onclick="toggleAIPanel()" title="AI Symptom Checker">
+      🤖
+    </button>
+
+    <div id="ai-panel">
+      <!-- Panel Header -->
+      <div class="px-4 py-3 border-b flex items-center justify-between" style="border-color:rgba(255,255,255,0.07);background:rgba(255,255,255,0.02);">
+        <div>
+          <p class="section-label">AI SYMPTOM CHECKER</p>
+          <h3 class="font-brand text-white font-bold text-[15px] leading-tight mt-0.5">Describe Emergency Symptoms</h3>
+        </div>
+        <button onclick="toggleAIPanel()" class="w-8 h-8 rounded-full bg-white/05 text-white/40 hover:text-white flex items-center justify-center text-sm">✕</button>
+      </div>
+
+      <!-- Input Area -->
+      <div class="px-4 py-3 border-b flex gap-2" style="border-color:rgba(255,255,255,0.07)">
+        <input id="ai-symptom-input" type="text" placeholder="e.g. chest pain, can't breathe, unconscious..." oninput="runSymptomCheck()" class="rs-search flex-1 px-3 py-2 rounded-xl text-xs font-medium">
+        <button onclick="runSymptomCheck()" class="px-3.5 py-2 rounded-xl text-white text-xs font-brand font-bold shrink-0" style="background:linear-gradient(135deg,#ff0033,#ff5500);">Check</button>
+      </div>
+
+      <!-- Helper info -->
+      <div class="px-4 pt-2">
+        <p class="text-[10px] font-mono text-white/30 uppercase tracking-wider">Works 100% Offline • Supports English &amp; Hindi (हिंदी)</p>
+      </div>
+
+      <!-- Results list -->
+      <div id="ai-results" class="px-4 pb-4 pt-2 space-y-2 overflow-y-auto flex-1">
+        <p class="text-xs text-white/30 text-center py-5">Type any symptoms above to identify emergencies instantly</p>
+      </div>
+    </div>
+
     <!-- ================= MOBILE NAVIGATION DOCK ================= -->
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800 px-2 py-2">
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-white/08 px-2 py-2">
       <div class="flex items-center justify-around text-[10px] font-bold">
         <button onclick="switchTab('triage')" class="mob-tab-btn flex flex-col items-center gap-1 text-red-500 active-mob-tab" data-tab="triage">
           <i data-lucide="stethoscope" class="w-4 h-4"></i>
@@ -2590,24 +2828,34 @@
       if (!item) return;
       activeModalItem = item;
 
+      // Track critical view for auto-escalation
+      trackCriticalView(item.severity === 'critical');
+
       const title = currentLang === 'hi' ? item.title_hi : item.title_en;
       const subtitle = currentLang === 'hi' ? item.tag_hi : item.tag_en;
       const dos = currentLang === 'hi' ? item.dos_hi : item.dos_en;
       const donts = currentLang === 'hi' ? item.donts_hi : item.donts_en;
+      const isCritical = item.severity === 'critical';
 
       document.getElementById('modal-title').innerText = title;
       document.getElementById('modal-subtitle').innerText = subtitle;
 
+      const iconContainer = document.getElementById('modal-icon-container');
+      if (iconContainer) {
+        iconContainer.className = `w-11 h-11 rounded-2xl ${isCritical ? 'neon-red' : 'neon-amber'} flex items-center justify-center font-bold shrink-0`;
+        iconContainer.innerHTML = `<i data-lucide="${item.icon || 'shield-alert'}" class="w-6 h-6"></i>`;
+      }
+
       const bodyHtml = `
         <div class="space-y-3">
-          <div class="text-xs font-black tracking-wider uppercase text-emerald-400 flex items-center gap-1.5">
-            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+          <div class="text-xs font-mono font-bold tracking-wider uppercase text-emerald-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
             <span>${currentLang === 'hi' ? 'चरण-दर-चरण क्या करें (WHAT YOU MUST DO)' : 'WHAT YOU MUST DO (Action Steps)'}</span>
           </div>
           <div class="space-y-2.5">
             ${dos.map((step, idx) => `
-              <div class="p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-800/50 flex items-start gap-3">
-                <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center shrink-0 text-xs">${idx + 1}</span>
+              <div class="p-3.5 rounded-2xl border flex items-start gap-3.5" style="background:rgba(0,212,170,0.06);border-color:rgba(0,212,170,0.18);">
+                <span class="w-6 h-6 rounded-xl font-bold flex items-center justify-center shrink-0 text-xs text-white" style="background:linear-gradient(135deg,#00d4aa,#009977);">${idx + 1}</span>
                 <p class="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">${step}</p>
               </div>
             `).join('')}
@@ -2615,14 +2863,15 @@
         </div>
 
         <div class="space-y-3 pt-2">
-          <div class="text-xs font-black tracking-wider uppercase text-red-400 flex items-center gap-1.5">
-            <i data-lucide="alert-octagon" class="w-4 h-4"></i>
-            <span>${currentLang === 'hi' ? 'भूलकर भी ये न करें (WHAT NEVER TO DO)' : 'WHAT NEVER TO DO (Deadly Mistakes)'}</span>
+          <div class="text-xs font-mono font-bold tracking-wider uppercase text-red-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+            <span>${currentLang === 'hi' ? 'भूलकर भी ये न करें (DEADLY MISTAKES TO AVOID)' : 'WHAT NEVER TO DO (Deadly Mistakes)'}</span>
           </div>
           <div class="space-y-2">
             ${donts.map(d => `
-              <div class="p-3 rounded-2xl bg-red-950/40 border border-red-800/50 text-xs text-red-200 font-medium leading-relaxed">
-                ${d}
+              <div class="p-3 rounded-2xl border text-xs text-red-200 font-medium leading-relaxed flex items-start gap-2.5" style="background:rgba(255,0,51,0.06);border-color:rgba(255,0,51,0.2);">
+                <span class="text-red-400 font-bold shrink-0">⚠️</span>
+                <span>${d}</span>
               </div>
             `).join('')}
           </div>
@@ -2846,6 +3095,398 @@
       document.getElementById('badge-relation').innerText = `(${localStorage.getItem('raksha_relation') || 'Family'})`;
       document.getElementById('badge-allergies').innerText = localStorage.getItem('raksha_allergies') || 'None';
       document.getElementById('badge-conditions').innerText = localStorage.getItem('raksha_conditions') || 'No major chronic conditions';
+    }
+
+    // =========================================================================
+    // FEATURE 1: SPLASH SCREEN DISMISSAL & AUTO-START
+    // =========================================================================
+    function dismissSplash() {
+      const splash = document.getElementById('rs-splash');
+      if (!splash) return;
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+      }, 700);
+    }
+    // Auto dismiss after 2.5s
+    setTimeout(dismissSplash, 2500);
+
+    // =========================================================================
+    // FEATURE 2: GPS AUTO-START & NEARBY HOSPITAL SEARCH
+    // =========================================================================
+    window.userGPS = null;
+
+    function initGPSBackground() {
+      if (!('geolocation' in navigator)) return;
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          window.userGPS = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+            acc: Math.round(pos.coords.accuracy)
+          };
+          currentGpsData.lat = window.userGPS.lat.toFixed(6);
+          currentGpsData.lng = window.userGPS.lng.toFixed(6);
+          currentGpsData.accuracy = window.userGPS.acc;
+
+          const c = document.getElementById('gps-coords');
+          const a = document.getElementById('gps-accuracy');
+          const ml = document.getElementById('gps-maps-link');
+          if (c) c.innerText = `${currentGpsData.lat}, ${currentGpsData.lng}`;
+          if (a) a.innerText = `± ${currentGpsData.accuracy} meters`;
+          if (ml) ml.href = `https://www.google.com/maps?q=${currentGpsData.lat},${currentGpsData.lng}`;
+          updateSOSMessagePreview();
+        },
+        () => {},
+        { enableHighAccuracy: true, timeout: 12000 }
+      );
+    }
+    initGPSBackground();
+
+    function openNearbyHospitals() {
+      if (window.userGPS && window.userGPS.lat) {
+        window.open(`https://www.google.com/maps/search/hospitals+emergency/@${window.userGPS.lat},${window.userGPS.lng},14z`, '_blank');
+      } else if (currentGpsData.lat) {
+        window.open(`https://www.google.com/maps/search/hospitals+emergency/@${currentGpsData.lat},${currentGpsData.lng},14z`, '_blank');
+      } else {
+        window.open('https://www.google.com/maps/search/hospitals+near+me', '_blank');
+      }
+    }
+
+    // =========================================================================
+    // FEATURE 3: LIVE GPS LOCATION SHARING
+    // =========================================================================
+    function shareLocationWhatsApp() {
+      const gps = window.userGPS || (currentGpsData.lat ? currentGpsData : null);
+      const msg = gps && gps.lat
+        ? `🚨 *EMERGENCY SOS!* I need urgent medical help.\nMy live GPS location:\nhttps://maps.google.com/?q=${gps.lat},${gps.lng} (±${gps.acc || gps.accuracy || 15}m)\nPlease dispatch assistance or call 112!`
+        : getFormattedSOSMessage();
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function shareLocationSMS() {
+      const phone = localStorage.getItem('raksha_phone') || '';
+      const gps = window.userGPS || (currentGpsData.lat ? currentGpsData : null);
+      const msg = gps && gps.lat
+        ? `EMERGENCY SOS! Need urgent medical help. My live GPS: https://maps.google.com/?q=${gps.lat},${gps.lng}`
+        : getFormattedSOSMessage();
+      window.location.href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
+    }
+
+    function copyLocationLink() {
+      const gps = window.userGPS || (currentGpsData.lat ? currentGpsData : null);
+      const link = gps && gps.lat
+        ? `https://maps.google.com/?q=${gps.lat},${gps.lng}`
+        : 'https://maps.google.com/search/hospitals+near+me';
+      navigator.clipboard.writeText(link).then(() => {
+        const btn = document.getElementById('copy-loc-btn');
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>✓ Copied!</span>';
+          lucide.createIcons();
+          setTimeout(() => { btn.innerHTML = orig; lucide.createIcons(); }, 2000);
+        }
+      }).catch(() => alert(link));
+    }
+
+    // =========================================================================
+    // FEATURE 4: SEVERITY AUTO-ESCALATION
+    // =========================================================================
+    let criticalViewCount = 0;
+    let criticalViewTimer = null;
+
+    function trackCriticalView(isCritical) {
+      if (!isCritical) return;
+      criticalViewCount++;
+      clearTimeout(criticalViewTimer);
+      criticalViewTimer = setTimeout(() => { criticalViewCount = 0; }, 75000);
+      if (criticalViewCount >= 2) {
+        showEscalationBanner(currentLang === 'hi' 
+          ? 'गंभीर आपातकाल की स्थिति! कृपया तुरंत 112 पर कॉल करें।'
+          : 'Multiple Critical Protocols Viewed — Call 112 for an Ambulance NOW!');
+      }
+    }
+
+    function showEscalationBanner(msg) {
+      const banner = document.getElementById('escalation-banner');
+      const text = document.getElementById('escalation-text');
+      if (banner && text) {
+        text.textContent = msg;
+        banner.classList.add('show');
+      }
+    }
+
+    // =========================================================================
+    // FEATURE 5: VOICE ACTIVATED SEARCH (Speech-to-Text)
+    // =========================================================================
+    let voiceRecognition = null;
+
+    function startVoiceSearch() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const btn = document.getElementById('voice-search-btn');
+
+      if (!SpeechRecognition) {
+        alert(currentLang === 'hi'
+          ? 'आवाज खोज इस ब्राउज़र में समर्थित नहीं है। कृपया Chrome का उपयोग करें।'
+          : 'Voice search is not supported in this browser. Please use Chrome or Edge.');
+        return;
+      }
+
+      if (voiceRecognition) {
+        voiceRecognition.stop();
+        voiceRecognition = null;
+        if (btn) btn.classList.remove('listening');
+        return;
+      }
+
+      try {
+        voiceRecognition = new SpeechRecognition();
+        voiceRecognition.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
+        voiceRecognition.interimResults = false;
+        voiceRecognition.maxAlternatives = 1;
+
+        if (btn) btn.classList.add('listening');
+
+        voiceRecognition.onresult = (e) => {
+          const transcript = e.results[0][0].transcript;
+          const searchInput = document.getElementById('triage-search');
+          if (searchInput) {
+            searchInput.value = transcript;
+            filterProtocols();
+          }
+          if (btn) btn.classList.remove('listening');
+          voiceRecognition = null;
+        };
+
+        voiceRecognition.onerror = () => {
+          if (btn) btn.classList.remove('listening');
+          voiceRecognition = null;
+        };
+
+        voiceRecognition.onend = () => {
+          if (btn) btn.classList.remove('listening');
+          voiceRecognition = null;
+        };
+
+        voiceRecognition.start();
+      } catch (err) {
+        if (btn) btn.classList.remove('listening');
+        voiceRecognition = null;
+      }
+    }
+
+    // =========================================================================
+    // FEATURE 6: OFFLINE AI SYMPTOM CHECKER
+    // =========================================================================
+    let aiPanelOpen = false;
+
+    function toggleAIPanel() {
+      aiPanelOpen = !aiPanelOpen;
+      const panel = document.getElementById('ai-panel');
+      const fab = document.getElementById('ai-fab');
+      if (aiPanelOpen) {
+        panel.classList.add('open');
+        fab.classList.add('panel-open');
+        fab.textContent = '✕';
+        fab.style.bottom = 'calc(70vh + 96px)';
+        setTimeout(() => {
+          const input = document.getElementById('ai-symptom-input');
+          if (input) input.focus();
+        }, 120);
+      } else {
+        panel.classList.remove('open');
+        fab.classList.remove('panel-open');
+        fab.textContent = '🤖';
+        fab.style.bottom = '85px';
+      }
+    }
+
+    const SYMPTOM_MAP = [
+      { id: 'heart-attack',    keywords: ['chest pain','chest tightness','heart','crushing','left arm','jaw pain','sweating','nausea',
+                                          'सीने में दर्द','दिल का दौरा','सांस लेने में तकलीफ','हार्ट'] },
+      { id: 'stroke',          keywords: ['stroke','face drooping','arm weak','speech','slurred','sudden confusion','can\'t speak',
+                                          'स्ट्रोक','चेहरा झुकना','कमजोरी','बोलने में दिक्कत'] },
+      { id: 'choking',         keywords: ['choking','can\'t breathe','airway','throat blocked','heimlich','no cough',
+                                          'गला रुकना','सांस नहीं','दम घुटना','चोकिंग'] },
+      { id: 'severe-bleeding', keywords: ['bleeding','blood','cut','wound','hemorrhage','blood loss','won\'t stop','spurting',
+                                          'खून','चोट','रक्तस्राव','कटा'] },
+      { id: 'anaphylaxis',     keywords: ['allergic reaction','anaphylaxis','swollen','hives','throat swelling','epipen','bee sting',
+                                          'एलर्जी','सूजन','गले में सूजन'] },
+      { id: 'drowning',        keywords: ['drowning','water','submerged','cannot swim','rescue','lake','river','flood',
+                                          'डूबना','पानी में','नदी','तालाब'] },
+      { id: 'burns',           keywords: ['burn','fire','chemical','hot water','scalded','blister','skin damage',
+                                          'जलन','आग','जला','फफोले'] },
+      { id: 'fracture',        keywords: ['broken','fracture','bone','sprain','can\'t move','deformed','limb','swollen joint',
+                                          'हड्डी टूटना','मोच','हड्डी','फ्रैक्चर'] },
+      { id: 'seizure',         keywords: ['seizure','epilepsy','convulsion','shaking','unconscious','fit','foaming',
+                                          'दौरा','मिर्गी','बेहोश','झटके'] },
+      { id: 'poisoning',       keywords: ['poison','toxic','swallowed','chemical','insecticide','drug overdose','vomit',
+                                          'जहर','नशा','कीटनाशक','उल्टी'] },
+      { id: 'head-injury',     keywords: ['head','concussion','fall','blow to head','unconscious','confusion after fall','dizziness',
+                                          'सिर में चोट','बेहोशी','गिरना','चक्कर'] },
+      { id: 'heatstroke',      keywords: ['heat','heatstroke','hot','overheating','high temperature','sun','dehydrated',
+                                          'लू','गर्मी','धूप','बुखार'] },
+      { id: 'hypothermia',     keywords: ['cold','hypothermia','freezing','shivering','low temperature','frostbite',
+                                          'ठंड','कंपन','ठिठुरना','बर्फ'] },
+      { id: 'electric-shock',  keywords: ['electric','shock','electricity','electrocuted','power line','wire',
+                                          'बिजली','करंट','इलेक्ट्रिक','तार'] },
+      { id: 'diabetic',        keywords: ['diabetes','sugar','low blood sugar','hypoglycemia','fainting','shaking sweat',
+                                          'मधुमेह','शुगर','कमजोरी','चक्कर'] },
+      { id: 'asthma',          keywords: ['asthma','wheeze','wheezing','inhaler','can\'t breathe','breathing difficulty',
+                                          'अस्थमा','सांस','घरघराहट','सांस फूलना'] },
+      { id: 'animal-bites',    keywords: ['snake','bite','dog bite','animal','scorpion','spider','insect','rabies',
+                                          'साँप','कुत्ता','काटना','बिच्छू','कीड़ा'] },
+    ];
+
+    const CRITICAL_PROTOCOLS = ['heart-attack','stroke','drowning','anaphylaxis','choking','electric-shock','severe-bleeding'];
+
+    function runSymptomCheck() {
+      const input = (document.getElementById('ai-symptom-input').value || '').toLowerCase().trim();
+      const resultsDiv = document.getElementById('ai-results');
+      if (!input || input.length < 2) {
+        resultsDiv.innerHTML = '<p class="text-xs text-white/30 text-center py-5">Type any symptoms above to identify emergencies instantly</p>';
+        return;
+      }
+
+      // Score each protocol
+      const scored = SYMPTOM_MAP.map(entry => {
+        const score = entry.keywords.reduce((acc, kw) => acc + (input.includes(kw.toLowerCase()) ? 2 : 0), 0);
+        return { id: entry.id, score };
+      }).filter(e => e.score > 0).sort((a, b) => b.score - a.score).slice(0, 3);
+
+      if (scored.length === 0) {
+        resultsDiv.innerHTML = `<div class="p-4 rounded-xl text-center space-y-2" style="background:rgba(255,255,255,0.03);">
+          <p class="text-xs text-white/50">No exact match for "${input}"</p>
+          <p class="text-[11px] text-white/35">Try typing keywords like: <em>chest pain, bleeding, burn, fracture, unconscious</em></p>
+        </div>`;
+        return;
+      }
+
+      // Trigger escalation if critical protocol is top match
+      if (CRITICAL_PROTOCOLS.includes(scored[0].id)) {
+        showEscalationBanner(currentLang === 'hi'
+          ? 'गंभीर लक्षण पाए गए! 112 पर कॉल करें और नीचे दी गई विधि देखें।'
+          : 'Critical Emergency Symptoms Detected — Call 112 NOW!');
+      }
+
+      resultsDiv.innerHTML = scored.map((entry, idx) => {
+        const protocol = EMERGENCY_PROTOCOLS.find(p => p.id === entry.id);
+        if (!protocol) return '';
+        const title = currentLang === 'hi' ? protocol.title_hi : protocol.title_en;
+        const summary = currentLang === 'hi' ? protocol.summary_hi : protocol.summary_en;
+        const isCrit = CRITICAL_PROTOCOLS.includes(entry.id);
+        const confidence = idx === 0 ? '🔴 High Match' : idx === 1 ? '🟡 Probable' : '🟢 Related';
+
+        return `<div class="ai-match-card" onclick="toggleAIPanel(); openProtocolModal('${entry.id}')">
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-brand text-[13px] font-semibold text-white">${title}</span>
+            <span class="font-mono text-[9px] font-bold ${isCrit ? 'text-red-400' : 'text-amber-400'}">${confidence}</span>
+          </div>
+          <p class="text-[11px] text-white/45 leading-relaxed line-clamp-2">${summary}</p>
+          <p class="text-[10px] text-teal-400 mt-1 font-mono">Tap to open protocol →</p>
+        </div>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // =========================================================================
+    // FEATURE 7: PHOTO WOUND TRIAGE & GUIDED QUESTIONS
+    // =========================================================================
+    let woundAnswers = { q1: null, q2: null, q3: null };
+
+    function handleWoundPhoto(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const preview = document.getElementById('wound-photo-preview');
+        const img = document.getElementById('wound-photo-img');
+        const qSection = document.getElementById('wound-questions');
+        if (img) img.src = event.target.result;
+        if (preview) preview.classList.remove('hidden');
+        if (qSection) qSection.classList.remove('hidden');
+        woundAnswers = { q1: null, q2: null, q3: null };
+        document.querySelectorAll('.wound-q-btn').forEach(b => {
+          b.style.borderColor = 'rgba(255,255,255,0.1)';
+          b.style.background = 'rgba(255,255,255,0.05)';
+        });
+        const resDiv = document.getElementById('wound-photo-result');
+        if (resDiv) resDiv.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function selectWoundQ(qNum, val) {
+      woundAnswers[`q${qNum}`] = val;
+      const container = document.getElementById(`q${qNum}-options`);
+      if (container) {
+        container.querySelectorAll('.wound-q-btn').forEach(btn => {
+          if (btn.dataset.v === val) {
+            btn.style.borderColor = 'rgba(0,212,170,0.6)';
+            btn.style.background = 'rgba(0,212,170,0.18)';
+            btn.style.color = '#fff';
+          } else {
+            btn.style.borderColor = 'rgba(255,255,255,0.1)';
+            btn.style.background = 'rgba(255,255,255,0.05)';
+            btn.style.color = 'rgba(255,255,255,0.6)';
+          }
+        });
+      }
+
+      // Check if all 3 questions answered
+      if (woundAnswers.q1 && woundAnswers.q2 && woundAnswers.q3) {
+        evaluateWoundDiagnosis();
+      }
+    }
+
+    function evaluateWoundDiagnosis() {
+      const { q1, q2, q3 } = woundAnswers;
+      let targetGuide = 'gravel';
+      let title = 'Road Gravel / Scrape Wound';
+
+      if (q2 === 'burn') {
+        targetGuide = 'burn';
+        title = 'Fire / Chemical Burn Protocol';
+      } else if (q2 === 'animal') {
+        targetGuide = 'animal';
+        title = 'Animal / Dog Bite Protocol';
+      } else if (q2 === 'puncture') {
+        targetGuide = 'puncture';
+        title = 'Rusty Nail / Deep Puncture Protocol';
+      } else if (q2 === 'splinter') {
+        targetGuide = 'splinter';
+        title = 'Wood Splinter / Embedded Thorn Protocol';
+      } else if (q2 === 'glass' || q1 === 'heavy' || q3 === 'deep') {
+        targetGuide = 'glass';
+        title = 'Deep Glass Cut / Severe Bleeding Protocol';
+      }
+
+      const resDiv = document.getElementById('wound-photo-result');
+      const textEl = document.getElementById('wound-result-text');
+      const btnEl = document.getElementById('wound-result-btn');
+
+      if (resDiv && textEl && btnEl) {
+        textEl.textContent = `Diagnosis: ${title} (${q1 === 'heavy' ? 'Heavy bleeding' : 'Oozing/minor'} detected)`;
+        btnEl.onclick = () => {
+          showWoundGuide(targetGuide);
+          window.scrollTo({ top: document.getElementById('tab-wounds').offsetTop - 80, behavior: 'smooth' });
+        };
+        resDiv.classList.remove('hidden');
+      }
+
+      // Highlight the corresponding wound chip above
+      showWoundGuide(targetGuide);
+    }
+
+    // =========================================================================
+    // FEATURE 8: PWA SERVICE WORKER REGISTRATION
+    // =========================================================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(() => console.log('RakshaSetu PWA Service Worker Registered ✅'))
+          .catch(() => {});
+      });
     }
   </script>
 </body>
