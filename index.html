@@ -251,11 +251,11 @@
         </div>
         
         <div class="flex items-center gap-2">
-          <select id="disaster-select" onchange="changeDisasterScene(this.value)" class="bg-transparent text-[11px] font-semibold px-2 py-1 rounded-lg border border-white/08 text-white/50 outline-none cursor-pointer hover:border-white/15 transition">
-            <option value="storm" data-i18n="sceneStorm">⚡ Lightning Storm</option>
-            <option value="wildfire" data-i18n="sceneWildfire">🔥 Wildfire</option>
-            <option value="tsunami" data-i18n="sceneTsunami">🌊 Tsunami</option>
-            <option value="volcano" data-i18n="sceneVolcano">🌋 Volcano</option>
+          <select id="disaster-select" onchange="changeDisasterScene(this.value)" class="text-[11px] font-semibold px-2 py-1 rounded-lg border border-white/10 text-white/60 outline-none cursor-pointer transition" style="background:#0d1020; color:rgba(255,255,255,0.65);">
+            <option value="storm" style="background:#0d1020;color:#fff;" data-i18n="sceneStorm">⚡ Lightning Storm</option>
+            <option value="wildfire" style="background:#0d1020;color:#fff;" data-i18n="sceneWildfire">🔥 Wildfire</option>
+            <option value="tsunami" style="background:#0d1020;color:#fff;" data-i18n="sceneTsunami">🌊 Tsunami</option>
+            <option value="volcano" style="background:#0d1020;color:#fff;" data-i18n="sceneVolcano">🌋 Volcano</option>
           </select>
           <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3 py-1 rounded-lg border border-white/10 hover:border-rs-red/40 text-white/50 hover:text-white text-[11px] font-semibold flex items-center gap-1.5 transition">
             <i data-lucide="languages" class="w-3 h-3"></i>
@@ -2571,6 +2571,8 @@
     }
 
     function setSearchFilter(cat) {
+      // Toggle back to 'all' if clicking the already-active filter
+      if (currentFilter === cat && cat !== 'all') cat = 'all';
       currentFilter = cat;
       document.querySelectorAll('.chip-filter').forEach(btn => {
         if (btn.dataset.category === cat) {
