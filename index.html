@@ -1675,45 +1675,236 @@
   <!-- ================= BASE PROTOCOLS & APP ENGINE ================= -->
   <script>
     const EMERGENCY_PROTOCOLS = [
+      // 1. Heart Attack
       {
-        id: 'snakebite',
-        category: 'environmental',
+        id: 'heart_attack',
+        category: 'medical',
         severity: 'critical',
-        icon: 'zap',
+        icon: 'heart-crack',
         color: 'rose',
-        title_en: 'Snakebite (Indian Cobra / Russell Viper / Krait)',
-        title_hi: 'साँप का काटना (सर्पदंश)',
-        tag_en: 'Critical • Do NOT cut or suck venom',
-        tag_hi: 'गंभीर • चीरा न लगाएं',
-        summary_en: 'Immobilize the limb like a fracture. Keep victim calm. Rush to hospital with Anti-Snake Venom (ASV).',
-        summary_hi: 'अंग को स्थिर रखें। पीड़ित को शांत रखें। तुरंत ASV युक्त अस्पताल ले जाएं।',
+        title_en: 'Heart Attack vs. Cardiac Arrest',
+        title_hi: 'हार्ट अटैक (दिल का दौरा)',
+        tag_en: 'Crushing Chest Pain • Chewing Aspirin',
+        tag_hi: 'सीने में भारी दर्द • एस्पिरिन चबाएं',
+        summary_en: 'Crushing central chest tightness, left arm/jaw pain, cold sweating, shortness of breath. Call 112, keep seated, chew 300mg Aspirin if advised.',
+        summary_hi: 'सीने में भारी दबाव, बाएं हाथ/जबड़े में दर्द, पसीना। 112 पर कॉल करें, बैठाएं, एस्पिरिन चबाने को दें।',
         dos_en: [
-          'Keep the victim completely still and calm to slow venom spread.',
-          'Immobilize the bitten limb using a splint or firm stick and broad bandage.',
-          'Remove tight rings, anklets, bracelets, and footwear immediately before swelling starts.',
-          'Keep the bite area below the level of the heart.',
-          'Rush immediately to the nearest Government/District Hospital for Anti-Snake Venom (ASV).'
+          'Have person sit down on the floor leaning against a wall with knees bent (W-position).',
+          'Call 112 / 108 immediately and put phone on speaker.',
+          'Loosen tight neck collar, belt, and clothing to ease breathing.',
+          'If not allergic to Aspirin, have them chew and swallow one 300mg Aspirin (Disprin) tablet.',
+          'If victim becomes unresponsive and stops breathing, START CPR COMPRESSIONS IMMEDIATELY!'
         ],
         dos_hi: [
-          'पीड़ित को पूरी तरह शांत रखें ताकि जहर तेजी से न फैले।',
-          'काटे गए अंग को लकड़ी या पट्टी की मदद से स्थिर (Immobilize) करें।',
-          'अंगूठी, पायल, जूते तुरंत उतार दें क्योंकि सूजन आएगी।',
-          'काटे गए स्थान को हृदय के स्तर से नीचे रखें।',
-          'एंटी-स्नेक वेनम (ASV) के लिए तुरंत सरकारी अस्पताल ले जाएं।'
+          'मरीज को जमीन पर दीवार से पीठ टिकाकर घुटने मोड़कर बैठाएं (W स्थिति)।',
+          'तुरंत 112 पर कॉल करें और फोन स्पीकर पर रखें।',
+          'गले का कॉलर, बेल्ट और तंग कपड़े ढीले करें ताकि सांस आसानी से आए।',
+          'यदि एस्पिरिन से एलर्जी न हो तो 300mg डिस्प्रिन/एस्पिरिन की एक गोली चबाने को दें।',
+          'यदि मरीज बेहोश हो जाए और सांस रुक जाए तो तुरंत CPR शुरू करें!'
         ],
         donts_en: [
-          '❌ DO NOT cut the wound with a blade or attempt to suck venom out.',
-          '❌ DO NOT apply ice, herbs, turmeric, or potassium permanganate.',
-          '❌ DO NOT tie a tight wire/string (tourniquet) which cuts off blood flow and leads to gangrene.',
-          '❌ DO NOT waste time visiting faith healers or snake charmers.'
+          '❌ DO NOT let them walk, exert physical effort, or climb stairs.',
+          '❌ DO NOT dismiss crushing chest symptoms as mere acidity or indigestion.',
+          '❌ DO NOT give food or large glasses of water.'
         ],
         donts_hi: [
-          '❌ ब्लेड से चीरा न लगाएं और मुँह से जहर चूसने की कोशिश न करें।',
-          '❌ बर्फ, जड़ी-बूटी, हल्दी या केमिकल न लगाएं।',
-          '❌ तंग तार या रस्सी न बांधें, इससे अंग सड़ (Gangrene) सकता है।',
-          '❌ झाड़-फूंक या तांत्रिक के चक्कर में समय बर्बाद न करें।'
+          '❌ मरीज को चलने, सीढ़ी चढ़ने या कोई मेहनत का काम न करने दें।',
+          '❌ सीने के तेज दर्द को साधारण गैस या बदहजमी समझकर अनदेखा न करें।',
+          '❌ मरीज को भारी खाना या बहुत सारा पानी न पिलाएं।'
         ]
       },
+
+      // 2. Stroke (FAST Protocol)
+      {
+        id: 'stroke',
+        category: 'medical',
+        severity: 'critical',
+        icon: 'activity',
+        color: 'purple',
+        title_en: 'Stroke & Brain Infarction (FAST Test)',
+        title_hi: 'ब्रेन स्ट्रोक (लकवा / पक्षाघात)',
+        tag_en: 'FAST Protocol • Time is Brain',
+        tag_hi: 'FAST टेस्ट • तुरंत 112 पर कॉल करें',
+        summary_en: 'Sudden face drooping, one-sided arm weakness, slurred speech. Every minute millions of brain cells die—rush to a CT-equipped hospital immediately.',
+        summary_hi: 'मुंह का टेढ़ा होना, एक हाथ में कमजोरी, बोलने में लड़खड़ाहट। तुरंत 112 कॉल करें, मरीज को सीधा लिटाकर सिर 30° ऊपर रखें।',
+        dos_en: [
+          'Perform FAST Test: (F) Face Drooping, (A) Arm Weakness, (S) Speech Slurring, (T) Time to call 112.',
+          'Note down the EXACT MINUTE symptoms began (vital for clot-busting tPA injection within 4.5 hours).',
+          'Lay patient down with head and shoulders slightly elevated (30 degrees) on a pillow.',
+          'If unresponsive but breathing normally, place them in the Recovery Position on their side.',
+          'Keep patient calm and still while ambulance is en route.'
+        ],
+        dos_hi: [
+          'FAST टेस्ट करें: (F) चेहरा टेढ़ा, (A) हाथ में कमजोरी, (S) बोलने में तुतलाना, (T) तुरंत 112 कॉल करने का समय।',
+          'लक्षण किस समय शुरू हुए exact समय नोट करें (4.5 घंटे के अंदर इंजेक्शन लगना जरूरी है)।',
+          'मरीज को सीधा लिटाकर सिर और कंधों के नीचे तकिया लगाकर 30 डिग्री ऊपर रखें।',
+          'यदि मरीज बेहोश है पर सांस ले रहा है, तो करवट दिलाकर रिकवरी पोजीशन में लिटाएं।'
+        ],
+        donts_en: [
+          '❌ DO NOT give Aspirin or blood thinners (strokes can be hemorrhagic brain bleeding).',
+          '❌ DO NOT give water, medicine, or food by mouth (swallowing reflex is paralyzed).',
+          '❌ DO NOT wait for symptoms to "pass on their own".'
+        ],
+        donts_hi: [
+          '❌ मरीज को एस्पिरिन या कोई दवा न दें (स्ट्रोक नस फटने से भी हो सकता है)।',
+          '❌ मुंह से पानी या खाना न खिलाएं (गले की मांसपेशियां सुन्न हो सकती हैं, दम घुट सकता है)।',
+          '❌ अपने आप ठीक होने का इंतजार न करें।'
+        ]
+      },
+
+      // 3. Severe Allergic Reaction / Anaphylaxis
+      {
+        id: 'anaphylaxis',
+        category: 'medical',
+        severity: 'critical',
+        icon: 'alert-circle',
+        color: 'rose',
+        title_en: 'Severe Allergic Reaction (Anaphylaxis)',
+        title_hi: 'गंभीर एलर्जी अटैक (एनाफिलेक्सिस)',
+        tag_en: 'EpiPen • Airway Swelling Emergency',
+        tag_hi: 'सांस नली में सूजन • तुरंत इंजेक्शन',
+        summary_en: 'Swollen lips/tongue/throat, severe wheezing, hives, dizziness from sudden blood pressure drop. Requires immediate Epinephrine auto-injector.',
+        summary_hi: 'होठों, जीभ व गले में सूजन, सांस लेने में घरघराहट, पित्ती (Hives)। तुरंत एपिनेफ्रिन/एंटी-एलर्जी उपचार व 112 कॉल करें।',
+        dos_en: [
+          'Call 112 immediately and state: "Severe anaphylactic allergic reaction".',
+          'If patient carries an Epinephrine Auto-Injector (EpiPen), inject immediately into outer mid-thigh (can inject through clothing). Hold in place for 3 seconds.',
+          'Lay patient flat on back and elevate legs 12 inches to restore blood flow to heart and brain.',
+          'If they struggle to breathe, allow them to sit upright in a comfortable position.',
+          'Be prepared to administer a second EpiPen dose after 5-10 minutes if symptoms do not improve.'
+        ],
+        dos_hi: [
+          'तुरंत 112 पर कॉल करें और बताएं कि मरीज को गंभीर एलर्जी रिएक्शन हुआ है।',
+          'यदि मरीज के पास EpiPen (एपिनेफ्रिन ऑटो-इंजेक्टर) है, तो जांघ के बाहरी हिस्से में तुरंत लगाएं और 3 सेकंड दबाए रखें।',
+          'मरीज को जमीन पर सीधा लिटाकर पैरों को 12 इंच ऊपर उठाएं ताकि दिमाग तक खून पहुंचे।',
+          'यदि सांस लेने में बहुत दिक्कत हो रही हो, तो आराम से बैठने दें।'
+        ],
+        donts_en: [
+          '❌ DO NOT make the person stand up or walk suddenly (causes fatal circulatory collapse).',
+          '❌ DO NOT delay injecting Epinephrine to give oral anti-allergy antihistamine pills.',
+          '❌ DO NOT leave the patient alone.'
+        ],
+        donts_hi: [
+          '❌ मरीज को अचानक खड़ा न करें या चलने न दें (ब्लड प्रेशर शून्य हो सकता है)।',
+          '❌ एपिनेफ्रिन में देरी करके साधारण एलर्जी की गोलियों के भरोसे न बैठें।',
+          '❌ मरीज को अकेला न छोड़ें।'
+        ]
+      },
+
+      // 4. Diabetic Emergency
+      {
+        id: 'diabetic_emergency',
+        category: 'medical',
+        severity: 'critical',
+        icon: 'candy',
+        color: 'amber',
+        title_en: 'Diabetic Emergency (Severe Low Blood Sugar / Hypoglycemia)',
+        title_hi: 'डायबिटीज इमरजेंसी (शुगर का अत्यधिक कम होना)',
+        tag_en: 'Rule of 15 • Fast Sugars',
+        tag_hi: '15-15 नियम • ग्लूकोज/मीठा दें',
+        summary_en: 'Shakiness, profuse sweating, confusion, slurred speech, sudden loss of consciousness. Low sugar (<70 mg/dL) can cause rapid brain damage.',
+        summary_hi: 'शरीर कांपना, अत्यधिक पसीना, भ्रम, चक्कर आना, बेहोशी। तुरंत ग्लूकोज या मीठा पानी दें।',
+        dos_en: [
+          'If CONSCIOUS: Give 15 grams of fast-acting sugar immediately (1/2 cup fruit juice, 3-4 teaspoons glucose powder/sugar in water, or 4 hard candies).',
+          'Wait 15 minutes and re-check blood glucose (Rule of 15). If still low, give another 15g sugar.',
+          'Once recovered, provide a complex carbohydrate snack (roti, bread, or crackers) to stabilize sugar levels.',
+          'If UNCONSCIOUS: Place in Recovery Position, call 112 immediately, and rub glucose gel/honey on the inside of their gums.'
+        ],
+        dos_hi: [
+          'यदि मरीज होश में है: तुरंत 15 ग्राम तेजी से घुलने वाली चीनी दें (आधा कप फलों का जूस, 3-4 चम्मच ग्लूकोज/चीनी पानी में, या टॉफी)।',
+          '15 मिनट रुकें और दोबारा शुगर जांचें। यदि अभी भी कम हो, तो फिर 15 ग्राम चीनी दें।',
+          'होश में आने के बाद रोटी या ब्रेड खाने को दें ताकि शुगर स्थिर रहे।',
+          'यदि मरीज बेहोश है: मुंह में पानी न डालें, करवट दिलाएं और मसूड़ों के अंदर शहद या ग्लूकोज पाउडर मलें व 112 कॉल करें।'
+        ],
+        donts_en: [
+          '❌ NEVER pour liquids or force food down the throat of an unconscious or seizing diabetic.',
+          '❌ DO NOT administer Insulin during a low blood sugar crisis (it can be fatal).',
+          '❌ DO NOT leave them unmonitored.'
+        ],
+        donts_hi: [
+          '❌ बेहोश या कांपते मरीज के मुंह में पानी या खाना जबरदस्ती न डालें (दम घुट सकता है)।',
+          '❌ शुगर कम होने पर भूलकर भी इंसुलिन का इंजेक्शन न लगाएं (यह जानलेवा होगा)।'
+        ]
+      },
+
+      // 5. Seizure & Epilepsy
+      {
+        id: 'seizure',
+        category: 'medical',
+        severity: 'critical',
+        icon: 'zap-off',
+        color: 'rose',
+        title_en: 'Seizure & Convulsions (Epilepsy)',
+        title_hi: 'मिर्गी का दौरा / झटके (दौरा पड़ना)',
+        tag_en: 'Cushion Head • Do NOT Restrain',
+        tag_hi: 'सिर के नीचे तकिया रखें • मुंह में कुछ न डालें',
+        summary_en: 'Violent body shaking, stiffness, staring spells, foaming at mouth. Protect from trauma and keep airway clear.',
+        summary_hi: 'शरीर में तेज झटके, बेहोशी, मुंह से झाग। सिर को चोट से बचाएं, दौरे का समय नोट करें।',
+        dos_en: [
+          'Gently guide the person to the ground away from hard or sharp objects.',
+          'Place a soft folded towel, jacket, or cushion under their head to prevent skull trauma.',
+          'Loosen tight clothing around the neck.',
+          'Time the duration of the seizure with your watch.',
+          'Once shaking stops, roll them gently into the Recovery Position on their side to drain saliva and keep airway open.'
+        ],
+        dos_hi: [
+          'मरीज को धीरे से फर्श पर लिटाएं और आसपास से नुकीली व कठोर चीजें हटा दें।',
+          'सिर के नीचे मुलायम तकिया, तौलिया या जैकेट रखें ताकि सिर पर चोट न लगे।',
+          'गले के तंग कपड़े और टाई ढीली करें।',
+          'दौरा कितने मिनट चला, घड़ी में समय नोट करें।',
+          'झटके रुकते ही मरीज को करवट दिलाकर रिकवरी पोजीशन में लिटाएं ताकि लार बाहर निकल सके।'
+        ],
+        donts_en: [
+          '❌ NEVER put spoons, fingers, cloth, or any object into their mouth (teeth can fracture or cause choking).',
+          '❌ DO NOT hold down or forcefully restrain their jerking limbs.',
+          '❌ DO NOT make them smell shoes, onions, or leather (dangerous superstition).'
+        ],
+        donts_hi: [
+          '❌ मुंह में चम्मच, उंगली या कपड़ा कभी न डालें (दांत टूट सकते हैं या जीभ कट सकती है)।',
+          '❌ झटके लेते मरीज के हाथ-पैर जबरदस्ती दबाकर रोकने की कोशिश न करें।',
+          '❌ जूता, मोजा या प्याज सुंघाने जैसे अंधविश्वास में समय बर्बाद न करें।'
+        ]
+      },
+
+      // 6. Asthma Attack
+      {
+        id: 'asthma',
+        category: 'medical',
+        severity: 'medium',
+        icon: 'wind',
+        color: 'sky',
+        title_en: 'Acute Asthma Attack & Severe Wheezing',
+        title_hi: 'अस्थमा का दौरा (दमा / सांस फूलना)',
+        tag_en: '4-4-4 Inhaler Rule • Upright Posture',
+        tag_hi: '4-4-4 इनहेलर नियम • सीधा बैठाएं',
+        summary_en: 'Severe breathlessness, wheezing whistle sounds, blue lips, inability to speak full sentences. Use quick-relief blue inhaler.',
+        summary_hi: 'सांस लेने में तेज घरघराहट, होठों का नीला पड़ना, बोलने में असमर्थता। तुरंत ब्लू इनहेलर दें।',
+        dos_en: [
+          'Sit the person upright comfortably leaning slightly forward (tripod position)—NEVER lay them flat.',
+          'Help them use their Blue Reliever Inhaler (Salbutamol/Asthalin): Give 4 separate puffs with 4 deep breaths each.',
+          'Wait 4 minutes. If there is no improvement, give another 4 puffs (The 4-4-4 Rule).',
+          'Keep them calm and encourage slow, steady breathing through pursed lips.',
+          'If breathing does not improve after 8 puffs, call 112 for emergency ambulance oxygen.'
+        ],
+        dos_hi: [
+          'मरीज को सीधा आगे की ओर थोड़ा झुकाकर बैठाएं—उन्हें कभी भी सीधा न लिटाएं।',
+          'उनका ब्लू इनहेलर (अस्थालिन/सालबुटामोल) दें: 4 अलग-अलग कश (Puffs) दें।',
+          '4 मिनट प्रतीक्षा करें। यदि आराम न मिले तो 4 पफ और दें (4-4-4 नियम)।',
+          'मरीज को शांत रखें और होठों को सिकोड़कर धीरे-धीरे सांस लेने को कहें।',
+          'यदि आराम न मिले तो तुरंत 112 पर कॉल करें।'
+        ],
+        donts_en: [
+          '❌ DO NOT lay an asthma patient flat on their back (collapses airways).',
+          '❌ DO NOT crowd around them—ensure fresh air ventilation.',
+          '❌ DO NOT give cold water.'
+        ],
+        donts_hi: [
+          '❌ मरीज को पीठ के बल सीधा न लिटाएं (इससे सांस नली बंद हो सकती है)।',
+          '❌ मरीज के आसपास भीड़ न लगाएं, ताजी हवा आने दें।',
+          '❌ फ्रिज का ठंडा पानी न पिलाएं।'
+        ]
+      },
+
+      // 7. Choking (Heimlich)
       {
         id: 'choking',
         category: 'critical',
@@ -1722,35 +1913,37 @@
         color: 'amber',
         title_en: 'Choking & Airway Block (Heimlich Maneuver)',
         title_hi: 'गले में कुछ अटकना (दम घुटना)',
-        tag_en: 'Immediate Action • Airway Obstruction',
-        tag_hi: 'तत्काल कार्रवाई',
-        summary_en: 'Perform 5 back blows followed by 5 abdominal thrusts (Heimlich maneuver) until object is expelled.',
-        summary_hi: 'पीठ पर 5 थपकी और पेट पर 5 झटके (हेमलिच पैंतरेबाज़ी) दें।',
+        tag_en: '5 Back Blows + 5 Abdominal Thrusts',
+        tag_hi: '5 पीठ थपकी + 5 पेट के झटके',
+        summary_en: 'Victim clutching throat, unable to speak, cough, or breathe. Clear airway immediately with Heimlich maneuver.',
+        summary_hi: 'गला पकड़ना, न बोल पाना, दम घुटना। 5 पीठ पर थपकी और 5 पेट पर झटके दें।',
         dos_en: [
-          'Ask: "Are you choking?" If they cannot speak or cough, act immediately.',
-          'Lean victim forward and give 5 firm BACK BLOWS between shoulder blades using the heel of your hand.',
-          'If still choking: Stand behind them, make a fist above their navel, grasp with other hand, and pull inward & upward sharply (5 ABDOMINAL THRUSTS).',
-          'Repeat 5 back blows + 5 abdominal thrusts until the object pops out or help arrives.',
-          'If the person becomes unconscious, start CPR immediately!'
+          'Ask: "Are you choking?" If they nod and cannot speak, act immediately.',
+          'Lean them forward and deliver 5 sharp BACK BLOWS between shoulder blades with heel of hand.',
+          'If blocked: Stand behind, place fist thumb-side just above navel, grasp with other hand, pull inward and upward sharply (5 ABDOMINAL THRUSTS).',
+          'Alternate 5 back blows and 5 abdominal thrusts until object flies out.',
+          'If person collapses unconscious, start CPR chest compressions immediately.'
         ],
         dos_hi: [
-          'पूछें क्या वे बोल पा रहे हैं? यदि नहीं, तो तुरंत सहायता करें।',
-          'पीड़ित को आगे झुकाएं और दोनों कंधों के बीच हथेली से 5 बार पीठ पर थपकी दें।',
+          'पूछें क्या वे बोल पा रहे हैं? यदि नहीं, तो तुरंत सहायता शुरू करें।',
+          'मरीज को आगे झुकाएं और दोनों कंधों के बीच हथेली से 5 बार पीठ पर थपकी दें।',
           'नाभि के ठीक ऊपर मुट्ठी रखें, दूसरे हाथ से पकड़ें और अंदर व ऊपर की ओर तेजी से 5 झटके दें।',
-          'जब तक चीज बाहर न आ जाए, 5 पीठ थपकी + 5 पेट के झटके दोहराएं।',
+          'जब तक वस्तु बाहर न आ जाए, 5 पीठ थपकी + 5 पेट के झटके दोहराएं।',
           'यदि व्यक्ति बेहोश हो जाए, तो तुरंत CPR शुरू करें।'
         ],
         donts_en: [
-          '❌ DO NOT slap their back if they are coughing forcefully.',
+          '❌ DO NOT hit their back if they are coughing loudly on their own.',
           '❌ DO NOT give water to a choking person.',
           '❌ DO NOT perform blind finger sweeps in their mouth.'
         ],
         donts_hi: [
-          '❌ यदि व्यक्ति जोर-जोर से खांस रहा है, तो पीठ पर न मारें।',
-          '❌ दम घुटने वाले व्यक्ति को पानी न पिलाएं।',
-          '❌ मुंह में अंधेरे में उंगली डालकर चीज निकालने की कोशिश न करें।'
+          '❌ यदि व्यक्ति खुद खांस रहा है तो पीठ पर न मारें।',
+          '❌ दम घुटने पर पानी न पिलाएं।',
+          '❌ अंधेरे में मुंह में उंगली डालकर चीज निकालने की कोशिश न करें।'
         ]
       },
+
+      // 8. Severe Bleeding
       {
         id: 'severe_bleeding',
         category: 'trauma',
@@ -1760,33 +1953,34 @@
         title_en: 'Severe Bleeding & Hemorrhage Control',
         title_hi: 'गंभीर रक्तस्राव (खून बहना)',
         tag_en: 'Direct Pressure • Tourniquet Timer',
-        tag_hi: 'दबाव बनाएं • खून रोकें',
-        summary_en: 'Apply firm direct pressure with clean cloth. Apply tourniquet for life-threatening arterial spurting.',
-        summary_hi: 'साफ कपड़े से सीधा दबाव बनाएं। जरूरत पड़ने पर टार्निकेट का उपयोग करें।',
+        tag_hi: 'दबाव बनाएं • टार्निकेट लगाएं',
+        summary_en: 'Heavy bleeding that does not stop with light pressure. Apply continuous direct pressure or tourniquet for spurting arterial bleeding.',
+        summary_hi: 'लगातार साफ कपड़े से 5 मिनट तक मजबूत दबाव बनाए रखें। तेज खून के लिए घाव से 2-3 इंच ऊपर टार्निकेट बांधें।',
         dos_en: [
-          'Apply direct, continuous firm pressure over the bleeding wound using clean gauze or cloth.',
-          'Keep pressing continuously for at least 5 minutes without lifting to check.',
-          'If blood soaks through, DO NOT remove the first cloth—add more layers on top.',
-          'For uncontrolled spurting limb bleeding: Apply a tourniquet 2-3 inches above the wound (write down exact time!).',
-          'Keep patient warm with a blanket to prevent shock.'
+          'Press directly and firmly on the wound with sterile gauze or clean folded cloth for AT LEAST 5 FULL MINUTES without lifting.',
+          'If blood soaks through, DO NOT remove original cloth—add more layers on top.',
+          'For life-threatening spurting limb bleeding: Apply a tourniquet 2-3 inches above wound, twist tight with stick until bleeding stops, and record exact time.',
+          'Keep patient warm with blankets to prevent hemorrhagic shock.'
         ],
         dos_hi: [
-          'घाव पर साफ कपड़े से लगातार 5 मिनट तक मजबूत दबाव बनाए रखें।',
-          'यदि कपड़ा भीग जाए, तो उसे हटाएं नहीं, उसके ऊपर और कपड़ा रखें।',
-          'तेज फव्वारे जैसे खून के लिए: घाव से 2-3 इंच ऊपर कसकर पट्टी (Tourniquet) बांधें और समय नोट करें।',
+          'घाव पर साफ कपड़े से लगातार 5 मिनट तक बिना कपड़ा हटाए मजबूत दबाव बनाए रखें।',
+          'यदि कपड़ा भीग जाए तो उसे हटाएं नहीं, उसके ऊपर और कपड़ा रखें।',
+          'तेज फव्वारे जैसे खून के लिए घाव से 2-3 इंच ऊपर टार्निकेट बांधें और समय नोट करें।',
           'मरीज को शॉक से बचाने के लिए कंबल ओढ़ाकर गर्म रखें।'
         ],
         donts_en: [
-          '❌ DO NOT remove deeply embedded objects from the wound—stabilize around them.',
-          '❌ DO NOT release pressure to check if bleeding stopped.',
-          '❌ DO NOT apply tourniquet directly over joints.'
+          '❌ DO NOT remove deeply impaled objects (knives, glass) from the wound.',
+          '❌ DO NOT lift dressing repeatedly to check if bleeding has stopped.',
+          '❌ DO NOT apply tourniquets over joints.'
         ],
         donts_hi: [
-          '❌ घाव में फंसे हुए चाकू या कांच को बाहर न खींचें।',
-          '❌ बार-बार पट्टी उठाकर न देखें।',
-          '❌ कोहनी या घुटने के जोड़ के ऊपर सीधे टार्निकेट न बांधें।'
+          '❌ घाव में घुसे चाकू या कांच को बाहर न खींचें।',
+          '❌ बार-बार कपड़ा उठाकर न देखें।',
+          '❌ कोहनी या घुटने के जोड़ पर टार्निकेट न बांधें।'
         ]
       },
+
+      // 9. Burns
       {
         id: 'burns',
         category: 'trauma',
@@ -1794,35 +1988,215 @@
         icon: 'flame',
         color: 'orange',
         title_en: 'Burns & Scalds (Thermal & Chemical)',
-        title_hi: 'जलना और झुलसना (बर्न्स)',
-        tag_en: 'Cool with running water for 20 mins',
-        tag_hi: '20 मिनट बहते पानी से ठंडा करें',
-        summary_en: 'Cool the burn with cool running tap water for 20 minutes. Cover loosely with sterile cling wrap.',
-        summary_hi: 'जलने पर 20 मिनट तक बहते ठंडे पानी के नीचे रखें। साफ कपड़े से ढकें।',
+        title_hi: 'जलना और झुलसना (थर्मल व केमिकल बर्न्स)',
+        tag_en: 'Cool Running Water for 20 Mins',
+        tag_hi: '20 मिनट बहते ठंडे पानी से ठंडा करें',
+        summary_en: 'Cool burn immediately with cool running tap water for 20 minutes. Cover loosely with sterile cling wrap.',
+        summary_hi: 'तुरंत 20 मिनट तक नल के बहते पानी से ठंडा करें। साफ प्लास्टिक रैप या कपड़े से हल्के से ढकें।',
         dos_en: [
-          'Immediately cool the burn under gentle, cool running tap water for AT LEAST 20 MINUTES.',
-          'Gently remove loose clothing and jewelry near the burn before swelling begins.',
-          'Cover the burn loosely with clean cling film or a sterile dressing.',
-          'Keep the patient warm to prevent hypothermia after water cooling.',
-          'Seek emergency care if burn is larger than palm size or involves face or hands.'
+          'Immediately irrigate the burn under cool running tap water for AT LEAST 20 CONTINUOUS MINUTES.',
+          'Remove tight rings, watches, and loose clothes before swelling starts.',
+          'Cover burn loosely with clean plastic cling wrap or sterile dressing.',
+          'Keep patient warm to prevent hypothermia after water cooling.'
         ],
         dos_hi: [
-          'तुरंत नल के बहते ठंडे पानी के नीचे कम से कम 20 मिनट तक रखें।',
-          'अंगूठी, गहने और ढीले कपड़े तुरंत हटा दें।',
-          'साफ प्लास्टिक रैप या साफ कपड़े से हल्के से ढकें।',
-          'पानी से ठंडा करने के बाद मरीज को ठंड न लगे इसका ध्यान रखें।'
+          'तुरंत 20 मिनट तक लगातार नल के बहते ठंडे पानी के नीचे रखें।',
+          'अंगूठी, घड़ी और ढीले कपड़े तुरंत हटा दें क्योंकि सूजन आएगी।',
+          'साफ प्लास्टिक क्लिंग फिल्म या साफ कपड़े से हल्के से ढकें।'
         ],
         donts_en: [
-          '❌ DO NOT apply ice, butter, toothpaste, oil, or flour.',
+          '❌ DO NOT apply ice, toothpaste, butter, oil, raw egg, or flour.',
           '❌ DO NOT burst burn blisters.',
           '❌ DO NOT pull off clothing stuck to melted skin.'
         ],
         donts_hi: [
           '❌ बर्फ, टूथपेस्ट, मक्खन, तेल या आटा कभी न लगाएं।',
-          '❌ फफोलों को न फोड़ें।',
-          '❌ जले स्थान पर चिपके हुए कपड़े को न खींचें।'
+          '❌ छालों (Blisters) को न फोड़ें।',
+          '❌ जले स्थान पर चिपके कपड़े को जबरदस्ती न खींचें।'
         ]
       },
+
+      // 10. Fractures & Sprains
+      {
+        id: 'fracture',
+        category: 'trauma',
+        severity: 'medium',
+        icon: 'bone',
+        color: 'amber',
+        title_en: 'Fractures & Sprains (R.I.C.E. & Splinting)',
+        title_hi: 'हड्डी टूटना और मोच (फ्रैक्चर व मोच)',
+        tag_en: 'Immobilize • RICE Protocol',
+        tag_hi: 'अंग स्थिर करें • RICE नियम',
+        summary_en: 'Bone deformity, severe swelling, inability to bear weight. Immobilize joints above and below fracture using a splint.',
+        summary_hi: 'हड्डी मुड़ना, तेज दर्द, सूजन। लकड़ी या गत्ते से अंग को स्थिर करें और बर्फ की सिकाई करें।',
+        dos_en: [
+          'Immobilize the broken limb in the exact position found using cardboard, magazines, or wood splints.',
+          'For sprains: Follow R.I.C.E. (Rest, Ice wrapped in cloth for 15 mins, Compress with crepe bandage, Elevate above heart).',
+          'Check pulse and fingers/toes beyond the fracture to ensure blood circulation is intact.'
+        ],
+        dos_hi: [
+          'टूटे हुए अंग को गत्ते, लकड़ी या अखबार की मदद से उसी स्थिति में स्थिर (Splint) करें।',
+          'मोच के लिए RICE नियम अपनाएं: आराम करें, कपड़े में लपेटकर बर्फ लगाएं, पट्टी बांधें और अंग ऊपर उठाएं।',
+          'उंगलियों में खून का दौरा चेक करते रहें।'
+        ],
+        donts_en: [
+          '❌ DO NOT attempt to push back protruding bones or realign crooked limbs.',
+          '❌ DO NOT apply ice directly onto bare skin.',
+          '❌ DO NOT massage a freshly fractured bone.'
+        ],
+        donts_hi: [
+          '❌ टूटी हुई टेढ़ी हड्डी को खुद सीधा करने की कोशिश न करें।',
+          '❌ बर्फ को सीधे त्वचा पर न लगाएं।',
+          '❌ टूटे अंग की मालिश न करें।'
+        ]
+      },
+
+      // 11. Head Injury & Concussion
+      {
+        id: 'head_injury',
+        category: 'trauma',
+        severity: 'critical',
+        icon: 'shield-alert',
+        color: 'purple',
+        title_en: 'Head Injury, Skull Trauma & Concussion',
+        title_hi: 'सिर की गंभीर चोट व बेहोशी',
+        tag_en: 'Cervical Spine Protection • Check Pupils',
+        tag_hi: 'गर्दन न हिलाएं • पुतलियों की जांच करें',
+        summary_en: 'Loss of consciousness, repeated vomiting, unequal pupils, fluid from ears/nose. Keep head and neck completely immobilized.',
+        summary_hi: 'सिर पर तेज चोट, उल्टी आना, कान/नाक से पानी या खून निकलना। गर्दन बिल्कुल सीधी रखें और तुरंत 112 कॉल करें।',
+        dos_en: [
+          'Keep victim’s head, neck, and spine strictly straight in one line—DO NOT allow them to turn head.',
+          'Control bleeding on scalp with gentle direct pressure (unless a skull depression fracture is felt).',
+          'Watch closely for Red Flags: Repeated vomiting, seizures, worsening confusion, unequal pupil sizes, clear fluid from nose/ears.',
+          'Call 112 immediately for emergency neurosurgical triage.'
+        ],
+        dos_hi: [
+          'सिर, गर्दन और रीढ़ को बिल्कुल सीधा रखें—गर्दन को मुड़ने न दें।',
+          'सिर से खून बह रहा हो तो हल्के से साफ कपड़े से दबाएं।',
+          'खतरे के संकेत देखें: बार-बार उल्टी, पुतलियों का छोटा-बड़ा होना, कान/नाक से पानी आना।',
+          'तुरंत 112 पर कॉल करें।'
+        ],
+        donts_en: [
+          '❌ DO NOT remove motorcycle helmets forcefully (unless airway is completely blocked).',
+          '❌ DO NOT press down hard if skull bone feels soft or sunken.',
+          '❌ DO NOT let them sleep immediately if they are vomiting or severely confused.'
+        ],
+        donts_hi: [
+          '❌ हेलमेट को झटके से न खींचें (रीढ़ की हड्डी टूट सकती है)।',
+          '❌ यदि खोपड़ी अंदर धंसी हुई लगे तो तेज दबाव न बनाएं।',
+          '❌ उल्टी या भ्रम होने पर मरीज को तुरंत सोने न दें।'
+        ]
+      },
+
+      // 12. Poisoning & Toxic Ingestion
+      {
+        id: 'poisoning',
+        category: 'medical',
+        severity: 'critical',
+        icon: 'skull',
+        color: 'rose',
+        title_en: 'Poisoning, Chemical Ingestion & Gas Inhalation',
+        title_hi: 'विषाक्तता (जहर या जहरीली गैस निगलना)',
+        tag_en: 'Do NOT Induce Vomiting • Identify Toxin',
+        tag_hi: 'उल्टी न कराएं • जहर का डब्बा संभालें',
+        summary_en: 'Ingestion of pesticides, acids, phenyl, or toxic medicines. DO NOT induce vomiting for corrosive chemicals.',
+        summary_hi: 'कीटनाशक, फिनाइल या एसिड निगलना। उल्टी कराने की कोशिश न करें, तुरंत 112 व विष नियंत्रण केंद्र पर कॉल करें।',
+        dos_en: [
+          'Safely collect and preserve the poison container, bottle, pills, or plant sample for doctors.',
+          'Call National Poison Information Center (1800-116-117) and 112 immediately.',
+          'If inhaled toxic gas/smoke: Move victim to fresh open air immediately.',
+          'If skin/eye chemical contact: Flush continuously with clean water for 15-20 minutes.'
+        ],
+        dos_hi: [
+          'जहर की बोतल, दवाई या केमिकल का डिब्बा संभाल कर रखें ताकि डॉक्टर को दिखाया जा सके।',
+          'तुरंत राष्ट्रीय विष नियंत्रण केंद्र (1800-116-117) और 112 पर कॉल करें।',
+          'जहरीली गैस या धुएं में फंसे व्यक्ति को तुरंत खुली ताजी हवा में लाएं।',
+          'आंख या त्वचा पर केमिकल गिरने पर 15-20 मिनट तक पानी से धोएं।'
+        ],
+        donts_en: [
+          '❌ DO NOT induce vomiting (acids and kerosene burn the food pipe twice and can enter lungs).',
+          '❌ DO NOT give raw eggs, salt water, milk, or charcoal unless instructed by poison control.',
+          '❌ DO NOT wait for symptoms to appear.'
+        ],
+        donts_hi: [
+          '❌ मरीज को उल्टी कराने की कोशिश न करें (एसिड या केरोसिन दोबारा भोजन नली को जला देगा)।',
+          '❌ नमक का पानी, कच्चा अंडा या दूध पिलाने की गलती न करें।'
+        ]
+      },
+
+      // 13. Drowning & Near-Drowning
+      {
+        id: 'drowning',
+        category: 'environmental',
+        severity: 'critical',
+        icon: 'waves',
+        color: 'sky',
+        title_en: 'Drowning & Submersion Recovery',
+        title_hi: 'डूबना और पानी से बचाव',
+        tag_en: '5 Rescue Breaths First • Watch Secondary Drowning',
+        tag_hi: 'पहले 5 सांसें दें • CPR शुरू करें',
+        summary_en: 'Water in lungs causing oxygen deprivation. Start with 5 rescue breaths, followed by 30:2 CPR compressions.',
+        summary_hi: 'पानी से बाहर निकालें। पहले 5 बार मुंह से सांस दें, फिर 30:2 की गति से CPR करें।',
+        dos_en: [
+          'Get victim out of water safely without endangering yourself (Reach or Throw, don’t go).',
+          'Check breathing: If unresponsive and not breathing, GIVE 5 INITIAL RESCUE BREATHS FIRST.',
+          'Immediately follow with 30 chest compressions and 2 rescue breaths (30:2 CPR cycle).',
+          'Remove wet clothing and wrap in dry blankets to treat hypothermia.',
+          'EVERY drowning victim MUST go to hospital—even if they seem recovered (danger of secondary pulmonary edema hours later).'
+        ],
+        dos_hi: [
+          'पीड़ित को सुरक्षित बाहर निकालें।',
+          'यदि सांस नहीं चल रही है तो पहले 5 बार मुंह से सांस (Rescue Breaths) दें।',
+          'इसके तुरंत बाद 30 बार छाती दबाएं और 2 बार सांस दें (30:2 CPR)।',
+          'गीले कपड़े उतारकर सूखे कंबल से ढकें ताकि शरीर गर्म रहे।',
+          'पानी में डूबे हर व्यक्ति को अस्पताल जरूर ले जाएं क्योंकि फेफड़ों में पानी बाद में भी जानलेवा हो सकता है।'
+        ],
+        donts_en: [
+          '❌ DO NOT waste time trying to pump water out of the stomach with abdominal thrusts.',
+          '❌ DO NOT enter dangerous flood currents without rescue ropes/life jackets.'
+        ],
+        donts_hi: [
+          '❌ पेट दबाकर पानी निकालने में समय बर्बाद न करें, सीधे CPR शुरू करें।',
+          '❌ बिना लाइफ जैकेट या रस्सी के तेज बहाव में न कूदें।'
+        ]
+      },
+
+      // 14. Electric Shock
+      {
+        id: 'electric_shock',
+        category: 'environmental',
+        severity: 'critical',
+        icon: 'zap',
+        color: 'amber',
+        title_en: 'Electric Shock & High Voltage Trauma',
+        title_hi: 'बिजली का झटका (करंट लगना)',
+        tag_en: 'Isolate Power First • CPR Ready',
+        tag_hi: 'पहले मेन स्विच बंद करें • CPR के लिए तैयार रहें',
+        summary_en: 'Electrical current passing through body causing cardiac arrest and internal burns. NEVER touch victim while live.',
+        summary_hi: 'मेन स्विच बंद करें या सूखी लकड़ी से तार हटाएं। सांस रुकने पर तुरंत CPR शुरू करें।',
+        dos_en: [
+          'IMMEDIATELY turn off main circuit breaker/fuse. If impossible, push wire away with a DRY wooden broom or plastic stick.',
+          'Check breathing and pulse immediately—high voltage frequently causes ventricular fibrillation cardiac arrest.',
+          'Start CPR immediately if unresponsive and not breathing.',
+          'Cool entry and exit electrical burns with clean water and cover with sterile dressing.'
+        ],
+        dos_hi: [
+          'सबसे पहले घर का मेन स्विच/MCB बंद करें या सूखी लकड़ी की लाठी से तार अलग करें।',
+          'मरीज की सांस चेक करें—करंट से दिल की धड़कन रुक सकती है।',
+          'यदि सांस बंद हो तो तुरंत CPR शुरू करें।',
+          'करंट से जले स्थानों पर साफ पानी डालें और साफ कपड़े से ढकें।'
+        ],
+        donts_en: [
+          '❌ NEVER touch the victim with your bare hands while current is still flowing.',
+          '❌ DO NOT use wet, metal, or conductive objects to separate live wires.'
+        ],
+        donts_hi: [
+          '❌ जब तक बिजली का कनेक्शन न कटे, मरीज को नंगे हाथों से न छुएं।',
+          '❌ लोहे की रॉड या गीली लकड़ी का उपयोग न करें।'
+        ]
+      },
+
+      // 15. Heatstroke
       {
         id: 'heatstroke',
         category: 'environmental',
@@ -1833,95 +2207,98 @@
         title_hi: 'लू लगना / हीट स्ट्रोक',
         tag_en: 'Rapid Cooling • High Indian Summer Risk',
         tag_hi: 'तुरंत शरीर का तापमान घटाएं',
-        summary_en: 'High body temperature (>40°C), confusion, dry/hot skin. Rapidly cool with water spray and wet towels.',
-        summary_hi: 'तेज बुखार, भ्रम, बेहोशी। तुरंत ठंडे पानी और पंखे से शरीर ठंडा करें।',
+        summary_en: 'Core temperature >40°C, confusion, hot dry skin. Rapidly cool body with water spray, wet towels, and aggressive fanning.',
+        summary_hi: 'तेज बुखार (>40°C), भ्रम, बेहोशी। ठंडे पानी का छिड़काव करें, बगलों में गीली पट्टियां रखें और पंखा चलाएं।',
         dos_en: [
-          'Move the person immediately to a shaded or air-conditioned space.',
-          'Loosen or remove excess clothing.',
-          'Rapidly cool the body: Spray cool water all over skin, place wet towels on armpits, groin, and neck.',
-          'Fan aggressively while skin is wet to accelerate evaporative cooling.',
-          'If conscious, give small sips of ORS or cool water.'
+          'Move person immediately to shaded or air-conditioned area.',
+          'Loosen or strip outer clothing.',
+          'Aggressively cool the body: Spray cool water all over skin, place cold wet towels or ice packs on neck, armpits, and groin.',
+          'Fan continuously to maximize evaporative cooling.',
+          'If conscious, offer sips of cool water or ORS solution.'
         ],
         dos_hi: [
-          'मरीज को तुरंत छांव या ठंडी हवादार जगह पर ले जाएं।',
+          'मरीज को तुरंत छांव या ठंडी जगह पर लाएं।',
           'अतिरिक्त कपड़े ढीले करें।',
-          'शरीर पर ठंडा पानी छिड़कें और बगलों व गर्दन पर गीली पट्टियां रखें।',
-          'लगातार तेज पंखा चलाएं।',
-          'यदि मरीज होश में है तो ओआरएस (ORS) या ठंडा पानी पिलाएं।'
+          'शरीर पर ठंडा पानी छिड़कें, बगलों व गर्दन पर गीली पट्टियां रखें और लगातार पंखा चलाएं।',
+          'होश में होने पर ओआरएस (ORS) या ठंडा पानी पिलाएं।'
         ],
         donts_en: [
-          '❌ DO NOT give paracetamol or aspirin.',
-          '❌ DO NOT give fluids if unconscious.'
+          '❌ DO NOT give paracetamol or aspirin (ineffective for environmental heatstroke).',
+          '❌ DO NOT force fluids down an unconscious person’s throat.'
         ],
         donts_hi: [
-          '❌ पैरासिटामोल या एस्पिरिन न दें।',
+          '❌ पैरासिटामोल या एस्पिरिन न दें (यह लू में काम नहीं करती)।',
           '❌ बेहोश मरीज को पानी न पिलाएं।'
         ]
       },
+
+      // 16. Hypothermia
       {
-        id: 'road_accident',
-        category: 'trauma',
+        id: 'hypothermia',
+        category: 'environmental',
         severity: 'critical',
-        icon: 'truck',
-        color: 'red',
-        title_en: 'Road Accident & Spinal Trauma Stabilization',
-        title_hi: 'सड़क दुर्घटना और रीढ़ की हड्डी की सुरक्षा',
-        tag_en: 'Good Samaritan Protection • Immobilize',
-        tag_hi: 'नेक नागरिक सुरक्षा • गर्दन न हिलाएं',
-        summary_en: 'Protect airway, stop major bleeding. Do NOT twist neck/spine. In India, Good Samaritan law legally protects you.',
-        summary_hi: 'गर्दन और रीढ़ को स्थिर रखें। नेक नागरिक (Good Samaritan) को पूरी कानूनी सुरक्षा प्राप्त है।',
+        icon: 'snowflake',
+        color: 'sky',
+        title_en: 'Hypothermia & Extreme Cold Exposure',
+        title_hi: 'हाइपोथर्मिया (अत्यधिक ठंड से शरीर ठंडा पड़ना)',
+        tag_en: 'Gentle Rewarming • Dry Blankets',
+        tag_hi: 'धीरे-धीरे गर्म करें • सूखे कंबल ओढ़ाएं',
+        summary_en: 'Core body temperature drops dangerously below 35°C. Violent shivering gives way to confusion, slurred speech, and lethargy.',
+        summary_hi: 'शरीर का तापमान बहुत कम होना, कंपकंपी छूटना, सुस्ती। गीले कपड़े हटाएं, सूखे कंबल ओढ़ाएं और गर्म मीठा पेय दें।',
         dos_en: [
-          'Call 112 / 108 immediately and state exact location.',
-          'Keep victim’s head and neck strictly in line—DO NOT bend or twist.',
-          'Control spurting bleeding with direct pressure.',
-          'Remember: Good Samaritan Law of India legally protects you.'
+          'Move victim into a warm, sheltered, windproof room.',
+          'Gently remove wet clothing and replace with warm, dry layers and blankets.',
+          'Warm the core body first (chest, neck, groin) using warm dry compresses or skin-to-skin contact.',
+          'If conscious, give warm sweetened tea or soup (calories generate metabolic heat).'
         ],
         dos_hi: [
-          '112 पर तुरंत कॉल करें।',
-          'पीड़ित की गर्दन और सिर को सीधा रखें।',
-          'खून बह रहा हो तो दबाकर रोकें।',
-          'नेक नागरिक को पुलिस पूछताछ का भय नहीं है।'
+          'मरीज को हवा से बचाकर गर्म कमरे में लाएं।',
+          'गीले कपड़े हटाकर सूखे और गर्म कंबल ओढ़ाएं।',
+          'सीने, गर्दन और पेट पर गर्म सिकाई करें।',
+          'होश में होने पर गर्म मीठी चाय या सूप पिलाएं।'
         ],
         donts_en: [
-          '❌ DO NOT remove motorcycle rider’s helmet forcefully.',
-          '❌ DO NOT yank victim out unless there is fire danger.'
+          '❌ DO NOT apply direct intense heat (boiling water, heating lamps) which causes severe burns and cardiac shock.',
+          '❌ DO NOT rub frostbitten limbs vigorously (causes permanent tissue death).',
+          '❌ DO NOT give alcohol or cigarettes.'
         ],
         donts_hi: [
-          '❌ हेलमेट जबरदस्ती न खींचें।',
-          '❌ मरीज को झटके से बाहर न खींचें।'
+          '❌ सीधा तेज गर्म पानी या हीटर न लगाएं (दिल पर झटका लग सकता है)।',
+          '❌ बर्फ से जमे अंगों को जोर-जोर से न रगड़ें।',
+          '❌ शराब या सिगरेट न दें।'
         ]
       },
+
+      // 17. Animal & Insect Bites / Stings
       {
-        id: 'heart_attack',
-        category: 'medical',
-        severity: 'critical',
-        icon: 'heart-crack',
+        id: 'bites_stings',
+        category: 'environmental',
+        severity: 'medium',
+        icon: 'bug',
         color: 'rose',
-        title_en: 'Heart Attack vs. Panic Attack',
-        title_hi: 'हार्ट अटैक (दिल का दौरा)',
-        tag_en: 'Crushing Chest Pain • Chewing Aspirin',
-        tag_hi: 'सीने में भारीपन • एस्पिरिन चबाएं',
-        summary_en: 'Crushing chest pressure, left arm numbness, cold sweat. Call 112, keep seated, chew 300mg Aspirin if advised.',
-        summary_hi: 'सीने में दर्द, पसीना। 112 पर कॉल करें, एस्पिरिन चबाएं।',
+        title_en: 'Scorpion, Dog & Insect Bites / Stings',
+        title_hi: 'कुत्ता, बिच्छू व कीड़े-मकौड़ों का काटना',
+        tag_en: '15-Min Wash • Anti-Rabies / Venom Care',
+        tag_hi: '15 मिनट साबुन से धोएं • रेबीज टीका लगवाएं',
+        summary_en: 'Animal bites (Rabies risk), scorpion stings (intense pain), and bee stings. Immediate decontamination saves lives.',
+        summary_hi: 'कुत्ते के काटने पर 15 मिनट साबुन से धोएं। बिच्छू के डंक पर बर्फ लगाएं और तुरंत अस्पताल जाएं।',
         dos_en: [
-          'Have person sit down with knees bent and back supported.',
-          'Call 112 / 108 immediately.',
-          'Loosen tight clothing.',
-          'If not allergic, give one 300mg Aspirin/Disprin tablet to chew.',
-          'Start CPR immediately if they lose consciousness.'
+          'For Dog/Cat Bites: Wash immediately under running water with soap for AT LEAST 15 MINUTES, apply Betadine, rush for Anti-Rabies Vaccine (ARV).',
+          'For Bee/Wasp Stings: Scrape stinger out using a plastic card edge—DO NOT pinch with tweezers.',
+          'For Scorpion Stings: Apply ice pack to reduce intense pain, keep limb still, and seek emergency medical evaluation.'
         ],
         dos_hi: [
-          'मरीज को जमीन पर दीवार से पीठ टिकाकर बैठाएं।',
-          'तुरंत 112 पर कॉल करें।',
-          'एक डिस्प्रिन/एस्पिरिन गोली चबाने को दें।'
+          'कुत्ते/बिल्ली के काटने पर: कम से कम 15 मिनट तक लगातार साबुन और पानी से धोएं, बीटाडीन लगाएं और तुरंत एंटी-रेबीज का टीका लगवाएं।',
+          'मधुमक्खी के डंक पर: एटीएम कार्ड के किनारे से डंक खुरच कर निकालें, चिमटी से न दबाएं।',
+          'बिच्छू के डंक पर: बर्फ की सिकाई करें और तुरंत अस्पताल ले जाएं।'
         ],
         donts_en: [
-          '❌ DO NOT let them exert energy.',
-          '❌ DO NOT ignore thinking it is acidity.'
+          '❌ DO NOT apply red chili powder, lime, or plant leaves on animal bites.',
+          '❌ DO NOT squeeze bee sting venom sacs with fingers.'
         ],
         donts_hi: [
-          '❌ मरीज को चलने न दें।',
-          '❌ इसे साधारण गैस न समझें।'
+          '❌ घाव पर लाल मिर्च, चूना या जड़ी-बूटी न लगाएं।',
+          '❌ मधुमक्खी के डंक को उंगलियों से न मसलें।'
         ]
       }
     ];
