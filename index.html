@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#dc2626">
-  <meta name="description" content="RakshaSetu - Offline-First Emergency Triage, Live Disaster Video Background, CPR Metronome, and Community SOS Beacon.">
-  <title>RakshaSetu (रक्षासेतु) — Emergency & First-Aid Triager</title>
+  <meta name="description" content="RakshaSetu - Real 3D Live Video Emergency Triage, CPR Metronome, and Community SOS Beacon.">
+  <title>RakshaSetu (रक्षासेतु) — Live Emergency & First-Aid Triager</title>
   
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,7 +37,7 @@
           animation: {
             'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             'ping-slow': 'ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite',
-            'glow-spin': 'spin 12s linear infinite',
+            'lightning-flash': 'flash 4s infinite',
           }
         }
       }
@@ -48,43 +48,60 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <style>
-    /* Real Video Background Stacking */
-    #disaster-video-container {
+    /* Fullscreen Real Live Background Video */
+    #bg-video {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
+      object-fit: cover;
       z-index: 0;
       pointer-events: none;
-      overflow: hidden;
-      opacity: 0.45;
+      filter: saturate(1.2) contrast(1.1) brightness(0.65);
+      transition: opacity 0.8s ease-in-out;
     }
-    #disaster-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: contrast(1.2) brightness(0.7);
+
+    /* Ambient Atmospheric Canvas Overlay (Floating embers / rain droplets) */
+    #ambient-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Cinematic Vignette Overlay to guarantee high contrast & readability */
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 30%, rgba(10, 15, 29, 0.5) 0%, rgba(5, 8, 16, 0.85) 100%);
+      z-index: 2;
+      pointer-events: none;
     }
 
     /* High-Gloss Glassmorphism */
     .glass-card {
-      background: rgba(10, 15, 29, 0.78);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-    }
-    .glass-header {
-      background: rgba(8, 12, 22, 0.85);
+      background: rgba(10, 15, 29, 0.82);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    }
+    .glass-header {
+      background: rgba(8, 12, 22, 0.88);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .cpr-ring-active {
-      box-shadow: 0 0 60px rgba(239, 68, 68, 0.8), inset 0 0 40px rgba(239, 68, 68, 0.5);
+      box-shadow: 0 0 70px rgba(239, 68, 68, 0.9), inset 0 0 45px rgba(239, 68, 68, 0.6);
     }
-    /* Hide scrollbars for clean emergency mobile views */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -96,36 +113,40 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-red-500 selection:text-white pb-24 md:pb-12 relative overflow-x-hidden">
 
-  <!-- ================= REAL LIVE VIDEO BACKGROUND ================= -->
-  <div id="disaster-video-container">
-    <video id="disaster-video" autoplay loop muted playsinline>
-      <source src="https://cdn.pixabay.com/video/2020/05/25/40144-425492167_large.mp4" type="video/mp4">
-    </video>
-  </div>
+  <!-- ================= REAL 3D LIVE BACKGROUND VIDEO ================= -->
+  <video id="bg-video" autoplay loop muted playsinline preload="auto">
+    <source id="video-src" src="https://assets.mixkit.co/videos/preview/mixkit-thunderstorm-with-lightning-in-the-clouds-41551-large.mp4" type="video/mp4">
+  </video>
 
-  <!-- Content Layer (Above Video Background) -->
+  <!-- Ambient Dynamic Particle & Lightning Canvas -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- Dark Cinematic Vignette Layer -->
+  <div class="video-overlay"></div>
+
+  <!-- Content Layer (Above Video & Overlay) -->
   <div class="relative z-10">
 
-    <!-- ================= TOP NOTIFICATION BAR (NETWORK & THEME SELECTOR) ================= -->
+    <!-- ================= TOP NOTIFICATION BAR ================= -->
     <div id="offline-bar" class="w-full bg-slate-950/90 border-b border-red-900/40 px-4 py-1.5 text-xs text-slate-300 flex items-center justify-between">
       <div class="flex items-center gap-2 max-w-7xl mx-auto w-full justify-between">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="font-medium text-emerald-300">100% Offline-Ready • Live Disaster Video Active</span>
+          <span class="font-bold text-emerald-300">100% Offline-Ready • Real Live Disaster Video Active</span>
         </div>
         
-        <!-- Live Disaster Environment Switcher -->
+        <!-- Live Disaster Video Switcher -->
         <div class="flex items-center gap-2">
-          <span class="text-[11px] text-slate-400 hidden sm:inline">Background:</span>
-          <select id="disaster-theme-select" onchange="changeDisasterTheme(this.value)" class="bg-slate-900 text-xs px-2 py-0.5 rounded-lg border border-slate-700 text-slate-200 outline-none cursor-pointer">
-            <option value="storm">⚡ Cyclone / Storm</option>
-            <option value="wildfire">🔥 Wildfire & Flames</option>
-            <option value="quake">🌍 Debris / Dust Storm</option>
-            <option value="flood">🌊 Flood Waves</option>
+          <span class="text-[11px] text-slate-300 font-semibold hidden sm:inline">🎥 Real 3D Scene:</span>
+          <select id="disaster-video-select" onchange="changeLiveVideoTheme(this.value)" class="bg-slate-900 text-xs font-semibold px-2.5 py-1 rounded-lg border border-slate-700 text-slate-200 outline-none cursor-pointer hover:border-red-500 transition">
+            <option value="storm">⚡ Lightning & Thunderstorm</option>
+            <option value="wildfire">🔥 Raging Wildfire & Embers</option>
+            <option value="waves">🌊 Surging Flood & Tsunami</option>
+            <option value="supercell">🌪️ Supercell Storm Clouds</option>
           </select>
 
           <!-- Language Switcher -->
-          <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-2.5 py-0.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-semibold flex items-center gap-1 transition">
+          <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-bold flex items-center gap-1 transition">
             <i data-lucide="globe" class="w-3.5 h-3.5"></i>
             <span id="lang-label">हिंदी</span>
           </button>
@@ -138,7 +159,7 @@
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-red-600 via-rose-600 to-amber-500 flex items-center justify-center shadow-lg shadow-red-900/50">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-red-600 via-rose-600 to-amber-500 flex items-center justify-center shadow-lg shadow-red-900/60 ring-2 ring-red-500/30">
             <i data-lucide="shield-alert" class="w-6 h-6 text-white"></i>
           </div>
           <div>
@@ -146,33 +167,33 @@
               <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-1">
                 Raksha<span class="text-red-500">Setu</span>
               </h1>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800/60 font-black tracking-wider uppercase">SOS LIVE</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-950 text-red-400 border border-red-800/60 font-black tracking-wider uppercase">SOS 3D</span>
             </div>
-            <p class="text-[11px] text-slate-400 font-hindi -mt-0.5">रक्षासेतु • आपातकालीन प्राथमिक चिकित्सा एवं आपदा तंत्र</p>
+            <p class="text-[11px] text-slate-300 font-hindi -mt-0.5 font-medium">रक्षासेतु • आपातकालीन प्राथमिक चिकित्सा एवं आपदा तंत्र</p>
           </div>
         </div>
 
         <!-- Desktop Navigation Tabs -->
-        <nav class="hidden lg:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800/80">
+        <nav class="hidden lg:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-700/80 shadow-lg">
           <button onclick="switchTab('triage')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition active-tab text-white bg-red-600 shadow-md flex items-center gap-1.5" data-tab="triage">
             <i data-lucide="stethoscope" class="w-4 h-4"></i> <span>First-Aid Triage</span>
           </button>
-          <button onclick="switchTab('cpr')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800/60 flex items-center gap-1.5" data-tab="cpr">
+          <button onclick="switchTab('cpr')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="cpr">
             <i data-lucide="heart-pulse" class="w-4 h-4 text-red-400"></i> <span>CPR Metronome</span>
           </button>
-          <button onclick="switchTab('sos')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800/60 flex items-center gap-1.5" data-tab="sos">
+          <button onclick="switchTab('sos')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="sos">
             <i data-lucide="radio" class="w-4 h-4 text-amber-400"></i> <span>GPS & SOS Beacon</span>
           </button>
-          <button onclick="switchTab('ice')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800/60 flex items-center gap-1.5" data-tab="ice">
+          <button onclick="switchTab('ice')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="ice">
             <i data-lucide="contact" class="w-4 h-4 text-sky-400"></i> <span>Medical ID (ICE)</span>
           </button>
-          <button onclick="switchTab('ai')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800/60 flex items-center gap-1.5" data-tab="ai">
+          <button onclick="switchTab('ai')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" data-tab="ai">
             <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i> <span>AI Copilot</span>
           </button>
         </nav>
 
         <!-- Emergency 112 Call Trigger -->
-        <a href="tel:112" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 active:scale-95 text-white font-extrabold text-sm shadow-xl shadow-red-900/60 flex items-center gap-2 transition animate-pulse">
+        <a href="tel:112" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 active:scale-95 text-white font-black text-sm shadow-xl shadow-red-900/60 flex items-center gap-2 transition animate-pulse">
           <i data-lucide="phone-call" class="w-4 h-4"></i>
           <span>112 SOS</span>
         </a>
@@ -652,23 +673,103 @@
 
   </div>
 
-  <!-- ================= REAL VIDEO BACKGROUND CONTROLLER SCRIPT ================= -->
+  <!-- ================= LIVE VIDEO & AMBIENT CANVAS LOGIC ================= -->
   <script>
-    // High-quality disaster background videos
-    const disasterVideos = {
-      storm: 'https://cdn.pixabay.com/video/2020/05/25/40144-425492167_large.mp4',    // Thunderstorm clouds & lightning
-      wildfire: 'https://cdn.pixabay.com/video/2021/08/25/86273-592882512_large.mp4', // Forest fire flames
-      quake: 'https://cdn.pixabay.com/video/2022/02/10/107297-676643695_large.mp4',   // Dust and debris settling
-      flood: 'https://cdn.pixabay.com/video/2021/08/18/85497-590040713_large.mp4'     // Raging flood waters
+    const VIDEO_SOURCES = {
+      storm: 'https://assets.mixkit.co/videos/preview/mixkit-thunderstorm-with-lightning-in-the-clouds-41551-large.mp4',
+      wildfire: 'https://assets.mixkit.co/videos/preview/mixkit-fire-burning-in-the-dark-43301-large.mp4',
+      waves: 'https://assets.mixkit.co/videos/preview/mixkit-waves-coming-to-the-beach-5016-large.mp4',
+      supercell: 'https://assets.mixkit.co/videos/preview/mixkit-storm-clouds-at-sunset-41552-large.mp4'
     };
 
-    function changeDisasterTheme(theme) {
-      const videoEl = document.getElementById('disaster-video');
-      if (videoEl && disasterVideos[theme]) {
-        videoEl.src = disasterVideos[theme];
-        videoEl.play().catch(e => console.log("Autoplay prevented:", e));
-      }
+    let currentVideoTheme = 'storm';
+
+    function changeLiveVideoTheme(theme) {
+      currentVideoTheme = theme;
+      const video = document.getElementById('bg-video');
+      const src = document.getElementById('video-src');
+      
+      video.style.opacity = '0';
+      setTimeout(() => {
+        src.src = VIDEO_SOURCES[theme] || VIDEO_SOURCES.storm;
+        video.load();
+        video.play().catch(e => console.log('Autoplay handled:', e));
+        video.style.opacity = '1';
+      }, 300);
     }
+
+    // Dynamic Ambient Canvas (Floating embers for wildfire, realistic lightning flashes for storm)
+    function initAmbientCanvas() {
+      const canvas = document.getElementById('ambient-canvas');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      const particles = [];
+      const particleCount = 45;
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          size: Math.random() * 2.5 + 1,
+          speedY: Math.random() * -1.5 - 0.5,
+          speedX: (Math.random() - 0.5) * 1.2,
+          opacity: Math.random() * 0.7 + 0.3,
+          hue: Math.random() * 30 + 15 // Orange-red embers
+        });
+      }
+
+      let flashOpacity = 0;
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Random realistic lightning flash for storm theme
+        if (currentVideoTheme === 'storm' && Math.random() < 0.008) {
+          flashOpacity = 0.35;
+        }
+
+        if (flashOpacity > 0) {
+          ctx.fillStyle = `rgba(180, 210, 255, ${flashOpacity})`;
+          ctx.fillRect(0, 0, w, h);
+          flashOpacity -= 0.02;
+        }
+
+        // Floating ember particles for wildfire theme
+        if (currentVideoTheme === 'wildfire') {
+          particles.forEach(p => {
+            p.y += p.speedY;
+            p.x += p.speedX;
+
+            if (p.y < 0) {
+              p.y = h + 10;
+              p.x = Math.random() * w;
+            }
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = `hsla(${p.hue}, 100%, 60%, ${p.opacity})`;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = `hsl(${p.hue}, 100%, 50%)`;
+            ctx.fill();
+          });
+        }
+
+        requestAnimationFrame(render);
+      }
+
+      render();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initAmbientCanvas();
+    });
   </script>
 
   <!-- ================= APP LOGIC SCRIPT ================= -->
@@ -709,7 +810,7 @@
         donts_hi: [
           '❌ ब्लेड से चीरा न लगाएं और मुँह से जहर चूसने की कोशिश न करें।',
           '❌ बर्फ, जड़ी-बूटी, हल्दी या केमिकल न लगाएं।',
-          '❌ तंग तार या रस्सी न बांधें, इससे अंग सड़ (Gangrene) सकता है।',
+          '❌ तंग तार या रस्सी न बांधें, इससे अंग सड़ (Gangrene) सकता है।',
           '❌ झाड़-फूंक या तांत्रिक के चक्कर में समय बर्बाद न करें।'
         ]
       },
@@ -961,7 +1062,7 @@
         if (btn.dataset.tab === tabId) {
           btn.className = 'tab-btn px-4 py-2 rounded-xl text-xs font-bold transition active-tab text-white bg-red-600 shadow-md flex items-center gap-1.5';
         } else {
-          btn.className = 'tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800/60 flex items-center gap-1.5';
+          btn.className = 'tab-btn px-4 py-2 rounded-xl text-xs font-bold transition text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5';
         }
       });
 
