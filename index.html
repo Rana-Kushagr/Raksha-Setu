@@ -579,7 +579,7 @@
           <h3 class="font-brand text-white font-bold text-lg">📲 Share RakshaSetu</h3>
           <p style="font-size:11px;color:rgba(255,255,255,0.45);">Scan QR or copy the link to share this life-saving app</p>
           <div id="qr-code-container" class="flex justify-center p-4 bg-white rounded-2xl"></div>
-          <input id="qr-url-input" type="text" readonly value="https://rana-kushagr.github.io/Raksha-Setu/" class="rs-search w-full px-3 py-2 rounded-xl text-xs text-center" onclick="this.select()">
+          <input id="qr-url-input" type="text" readonly value="https://github.com/Rana-Kushagr/Raksha-Setu" class="rs-search w-full px-3 py-2 rounded-xl text-xs text-center" onclick="this.select()">
           <div class="flex gap-2">
             <button onclick="copyShareLink()" style="flex:1;padding:10px;border-radius:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:12px;font-weight:700;cursor:pointer;">📋 Copy Link</button>
             <button onclick="document.getElementById('qr-modal').classList.add('hidden');document.getElementById('qr-modal').classList.remove('flex')" style="flex:1;padding:10px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);font-size:12px;font-weight:700;cursor:pointer;">✕ Close</button>
@@ -4912,7 +4912,7 @@
         const container = document.getElementById('qr-code-container');
         container.innerHTML = '';
         new QRCode(container, {
-          text: 'https://rana-kushagr.github.io/Raksha-Setu/',
+          text: 'https://github.com/Rana-Kushagr/Raksha-Setu',
           width: 160, height: 160,
           colorDark: '#000000', colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.H
@@ -4923,7 +4923,7 @@
       }
     }
     function copyShareLink() {
-      const url = 'https://rana-kushagr.github.io/Raksha-Setu/';
+      const url = 'https://github.com/Rana-Kushagr/Raksha-Setu';
       if (navigator.clipboard) {
         navigator.clipboard.writeText(url).then(() => showVoiceToast('✅ Link copied!', 'success', 2000));
       } else {
