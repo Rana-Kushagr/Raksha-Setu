@@ -43,7 +43,9 @@
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+  <!-- QRCode.js for Share feature -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
   <style>
     /* ================================================
        RAKSHASETU PREMIUM DESIGN SYSTEM v3.0
@@ -439,11 +441,23 @@
           </button>
         </nav>
 
-        <!-- 112 SOS CTA -->
-        <a href="tel:112" class="sos-btn shrink-0 px-5 py-2.5 rounded-xl text-white font-brand font-bold text-[13px] flex items-center gap-2">
-          <i data-lucide="phone-call" class="w-4 h-4"></i>
-          <span data-i18n="call112">112 SOS</span>
-        </a>
+        <!-- Right controls: Offline Badge + Font Size + SOS -->
+        <div class="flex items-center gap-2 shrink-0">
+          <!-- Offline Ready Badge -->
+          <span id="offline-badge" title="App works fully offline" style="font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:800;letter-spacing:0.06em;padding:4px 9px;border-radius:8px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);color:#6ee7b7;white-space:nowrap;cursor:default;">
+            📴 OFFLINE READY
+          </span>
+          <!-- Font Size Toggle -->
+          <div class="hidden sm:flex items-center gap-0.5 p-1 rounded-lg bg-white/05 border border-white/10">
+            <button onclick="adjustFontSize(-1)" title="Decrease font size" style="width:26px;height:26px;border-radius:6px;background:none;border:none;color:rgba(255,255,255,0.5);font-weight:900;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='none'">A-</button>
+            <button onclick="adjustFontSize(1)"  title="Increase font size" style="width:26px;height:26px;border-radius:6px;background:none;border:none;color:rgba(255,255,255,0.5);font-weight:900;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='none'">A+</button>
+          </div>
+          <!-- 112 SOS CTA -->
+          <a href="tel:112" class="sos-btn px-5 py-2.5 rounded-xl text-white font-brand font-bold text-[13px] flex items-center gap-2">
+            <i data-lucide="phone-call" class="w-4 h-4"></i>
+            <span data-i18n="call112">112 SOS</span>
+          </a>
+        </div>
       </div>
     </header>
 
@@ -492,6 +506,86 @@
           </div>
         </a>
       </section>
+
+      <!-- ── Recently Viewed Protocols (hidden until at least 1 viewed) ── -->
+      <div id="recently-viewed-bar" class="hidden">
+        <div class="flex items-center justify-between mb-2 px-1">
+          <span style="font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:800;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">⏱ RECENTLY VIEWED</span>
+          <button onclick="clearRecentlyViewed()" style="font-size:10px;color:rgba(255,255,255,0.25);background:none;border:none;cursor:pointer;">Clear</button>
+        </div>
+        <div id="recently-viewed-list" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+      </div>
+
+      <!-- ── India Emergency Helplines Reference Card ── -->
+      <div class="glass-card p-5 rounded-2xl">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <span style="font-size:18px;">🇮🇳</span>
+            <div>
+              <p style="font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:800;color:rgba(255,130,50,0.8);letter-spacing:0.1em;">INDIA EMERGENCY HELPLINES</p>
+              <p style="font-size:11px;color:rgba(255,255,255,0.4);">Tap any number to call instantly</p>
+            </div>
+          </div>
+          <button onclick="showQRCode()" title="Share this app" style="padding:7px 12px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
+            📲 Share App
+          </button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+          <a href="tel:112"         class="group flex flex-col items-center gap-1 p-3 rounded-xl text-center transition" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);" onmouseover="this.style.background='rgba(239,68,68,0.2)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'"><span style="font-size:18px;">🚨</span><span style="font-size:18px;font-weight:900;color:#fff;font-family:'Space Grotesk',sans-serif;line-height:1;">112</span><span style="font-size:9px;color:rgba(255,255,255,0.45);font-weight:700;">NATIONAL SOS</span></a>
+          <a href="tel:108"         class="group flex flex-col items-center gap-1 p-3 rounded-xl text-center transition" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);" onmouseover="this.style.background='rgba(245,158,11,0.2)'" onmouseout="this.style.background='rgba(245,158,11,0.1)'"><span style="font-size:18px;">🚑</span><span style="font-size:18px;font-weight:900;color:#fff;font-family:'Space Grotesk',sans-serif;line-height:1;">108</span><span style="font-size:9px;color:rgba(255,255,255,0.45);font-weight:700;">AMBULANCE</span></a>
+          <a href="tel:18001116117" class="group flex flex-col items-center gap-1 p-3 rounded-xl text-center transition" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);" onmouseover="this.style.background='rgba(16,185,129,0.2)'" onmouseout="this.style.background='rgba(16,185,129,0.1)'"><span style="font-size:18px;">☠️</span><span style="font-size:13px;font-weight:900;color:#fff;font-family:'Space Grotesk',sans-serif;line-height:1.2;">1800-116-117</span><span style="font-size:9px;color:rgba(255,255,255,0.45);font-weight:700;">POISON CONTROL</span></a>
+          <a href="tel:1097"        class="group flex flex-col items-center gap-1 p-3 rounded-xl text-center transition" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.25);" onmouseover="this.style.background='rgba(139,92,246,0.2)'" onmouseout="this.style.background='rgba(139,92,246,0.1)'"><span style="font-size:18px;">🔒</span><span style="font-size:18px;font-weight:900;color:#fff;font-family:'Space Grotesk',sans-serif;line-height:1;">1097</span><span style="font-size:9px;color:rgba(255,255,255,0.45);font-weight:700;">AIDS HELPLINE</span></a>
+          <a href="tel:181"         class="group flex flex-col items-center gap-1 p-3 rounded-xl text-center transition" style="background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.25);" onmouseover="this.style.background='rgba(236,72,153,0.2)'" onmouseout="this.style.background='rgba(236,72,153,0.1)'"><span style="font-size:18px;">👩</span><span style="font-size:18px;font-weight:900;color:#fff;font-family:'Space Grotesk',sans-serif;line-height:1;">181</span><span style="font-size:9px;color:rgba(255,255,255,0.45);font-weight:700;">WOMEN HELPLINE</span></a>
+          <a href="tel:9152987821"  class="group flex flex-col items-center gap-1 p-3 rounded-xl text-center transition" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);" onmouseover="this.style.background='rgba(59,130,246,0.2)'" onmouseout="this.style.background='rgba(59,130,246,0.1)'"><span style="font-size:18px;">🧠</span><span style="font-size:14px;font-weight:900;color:#fff;font-family:'Space Grotesk',sans-serif;line-height:1.2;">iCall</span><span style="font-size:9px;color:rgba(255,255,255,0.45);font-weight:700;">MENTAL HEALTH</span></a>
+        </div>
+      </div>
+
+      <!-- ── Emergency Contacts Setup ── -->
+      <div class="glass-card p-5 rounded-2xl">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <p style="font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:800;color:rgba(0,212,170,0.8);letter-spacing:0.1em;">👥 EMERGENCY CONTACTS</p>
+            <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">If 112 doesn't respond, these people get called / WhatsApp SOS</p>
+          </div>
+          <button onclick="saveEmergencyContacts()" style="padding:7px 14px;border-radius:10px;background:linear-gradient(135deg,#00d4aa,#009977);color:#fff;font-size:11px;font-weight:800;border:none;cursor:pointer;">💾 Save</button>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3" id="emergency-contacts-form">
+          <div>
+            <label style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;display:block;margin-bottom:4px;">Contact 1 — Name</label>
+            <input id="ec1-name" type="text" placeholder="e.g. Maa / Papa" class="rs-search w-full px-3 py-2 rounded-xl text-xs" maxlength="30">
+          </div>
+          <div>
+            <label style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;display:block;margin-bottom:4px;">Contact 1 — Phone Number</label>
+            <input id="ec1-phone" type="tel" placeholder="+91 98765 43210" class="rs-search w-full px-3 py-2 rounded-xl text-xs" maxlength="15">
+          </div>
+          <div>
+            <label style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;display:block;margin-bottom:4px;">Contact 2 — Name</label>
+            <input id="ec2-name" type="text" placeholder="e.g. Best Friend / Neighbour" class="rs-search w-full px-3 py-2 rounded-xl text-xs" maxlength="30">
+          </div>
+          <div>
+            <label style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;display:block;margin-bottom:4px;">Contact 2 — Phone Number</label>
+            <input id="ec2-phone" type="tel" placeholder="+91 98765 43210" class="rs-search w-full px-3 py-2 rounded-xl text-xs" maxlength="15">
+          </div>
+        </div>
+        <div id="ec-saved-contacts" class="hidden mt-3 pt-3 border-t border-white/08">
+          <p style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:8px;font-family:'JetBrains Mono',monospace;">SAVED — TAP TO CALL</p>
+          <div id="ec-contacts-list" class="flex flex-wrap gap-2"></div>
+        </div>
+      </div>
+
+      <!-- ── QR Code Share Modal ── -->
+      <div id="qr-modal" class="fixed inset-0 z-[60] bg-black/85 backdrop-blur-xl hidden items-center justify-center p-4">
+        <div class="glass-card max-w-xs w-full rounded-3xl p-6 space-y-4 text-center border border-white/10">
+          <h3 class="font-brand text-white font-bold text-lg">📲 Share RakshaSetu</h3>
+          <p style="font-size:11px;color:rgba(255,255,255,0.45);">Scan QR or copy the link to share this life-saving app</p>
+          <div id="qr-code-container" class="flex justify-center p-4 bg-white rounded-2xl"></div>
+          <input id="qr-url-input" type="text" readonly value="https://rana-kushagr.github.io/Raksha-Setu/" class="rs-search w-full px-3 py-2 rounded-xl text-xs text-center" onclick="this.select()">
+          <div class="flex gap-2">
+            <button onclick="copyShareLink()" style="flex:1;padding:10px;border-radius:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:12px;font-weight:700;cursor:pointer;">📋 Copy Link</button>
+            <button onclick="document.getElementById('qr-modal').classList.add('hidden');document.getElementById('qr-modal').classList.remove('flex')" style="flex:1;padding:10px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);font-size:12px;font-weight:700;cursor:pointer;">✕ Close</button>
+          </div>
+        </div>
+      </div>
 
       <!-- ================= TAB 1: FIRST-AID & EMERGENCY TRIAGE ================= -->
       <section id="tab-triage" class="tab-content space-y-6">
@@ -4661,6 +4755,185 @@
           .catch(() => {});
       });
     }
+
+    // =========================================================================
+    // FEATURE 9: OFFLINE BADGE — Live network status indicator
+    // =========================================================================
+    function updateOfflineBadge() {
+      const badge = document.getElementById('offline-badge');
+      if (!badge) return;
+      if (navigator.onLine) {
+        badge.innerHTML = '🌐 ONLINE';
+        badge.style.background = 'rgba(59,130,246,0.12)';
+        badge.style.borderColor = 'rgba(59,130,246,0.4)';
+        badge.style.color = '#93c5fd';
+      } else {
+        badge.innerHTML = '📴 OFFLINE READY';
+        badge.style.background = 'rgba(16,185,129,0.12)';
+        badge.style.borderColor = 'rgba(16,185,129,0.4)';
+        badge.style.color = '#6ee7b7';
+      }
+    }
+    window.addEventListener('online',  updateOfflineBadge);
+    window.addEventListener('offline', updateOfflineBadge);
+    updateOfflineBadge();
+
+    // =========================================================================
+    // FEATURE 10: FONT SIZE TOGGLE (A- / A+)
+    // =========================================================================
+    let fontSizeLevel = parseInt(localStorage.getItem('rs-font-size') || '0');
+    const FONT_STEPS = [-1, 0, 1, 2]; // offsets in px applied to <html>
+    function applyFontSize() {
+      const base = 16 + fontSizeLevel;
+      document.documentElement.style.fontSize = base + 'px';
+      localStorage.setItem('rs-font-size', fontSizeLevel);
+    }
+    function adjustFontSize(delta) {
+      fontSizeLevel = Math.max(-2, Math.min(3, fontSizeLevel + delta));
+      applyFontSize();
+      haptic([30]);
+      showVoiceToast(fontSizeLevel === 0 ? 'Font: Default' : `Font: ${fontSizeLevel > 0 ? '+' : ''}${fontSizeLevel}`, 'info', 1200);
+    }
+    applyFontSize(); // apply saved preference on load
+
+    // =========================================================================
+    // FEATURE 11: HAPTIC FEEDBACK on critical buttons
+    // =========================================================================
+    function haptic(pattern = [40]) {
+      if (navigator.vibrate) navigator.vibrate(pattern);
+    }
+    // Patch all critical call/SOS/emergency buttons with haptic
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('a[href^="tel:"], .sos-btn, #auto-call-modal button').forEach(el => {
+        el.addEventListener('click', () => haptic([60, 30, 60]));
+      });
+    });
+
+    // =========================================================================
+    // FEATURE 12: RECENTLY VIEWED PROTOCOLS
+    // =========================================================================
+    const MAX_RECENT = 5;
+    function addToRecentlyViewed(id) {
+      let recents = JSON.parse(localStorage.getItem('rs-recent') || '[]');
+      recents = recents.filter(r => r !== id);
+      recents.unshift(id);
+      if (recents.length > MAX_RECENT) recents = recents.slice(0, MAX_RECENT);
+      localStorage.setItem('rs-recent', JSON.stringify(recents));
+      renderRecentlyViewed();
+    }
+    function renderRecentlyViewed() {
+      const recents = JSON.parse(localStorage.getItem('rs-recent') || '[]');
+      const bar = document.getElementById('recently-viewed-bar');
+      const list = document.getElementById('recently-viewed-list');
+      if (!bar || !list || recents.length === 0) {
+        if (bar) bar.classList.add('hidden');
+        return;
+      }
+      bar.classList.remove('hidden');
+      list.innerHTML = recents.map(id => {
+        const p = EMERGENCY_PROTOCOLS.find(x => x.id === id);
+        if (!p) return '';
+        const title = currentLang === 'hi' ? p.title_hi : p.title_en;
+        const isCrit = p.severity === 'critical';
+        return `<button onclick="openProtocolModal('${id}');haptic([30])" style="flex-shrink:0;padding:7px 12px;border-radius:12px;background:${isCrit ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.08)'};border:1px solid ${isCrit ? 'rgba(239,68,68,0.3)' : 'rgba(245,158,11,0.25)'};color:rgba(255,255,255,0.75);font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;">${p.icon_emoji || '🏥'} ${title}</button>`;
+      }).join('');
+    }
+    // Patch openProtocolModal to record views
+    const _origOpenProtocol = openProtocolModal;
+    openProtocolModal = function(id) {
+      _origOpenProtocol(id);
+      addToRecentlyViewed(id);
+      haptic([40]);
+    };
+    // Add emoji shortcuts to protocols for recently viewed chips
+    EMERGENCY_PROTOCOLS.forEach(p => {
+      const emojiMap = { 'heart-attack':'❤️','stroke':'🧠','choking':'🫁','severe-bleeding':'🩸','anaphylaxis':'🐝','drowning':'🌊','burns':'🔥','fracture':'🦴','seizure':'⚡','poisoning':'☠️','head-injury':'🤕','heatstroke':'☀️','hypothermia':'❄️','electric-shock':'⚡','diabetic':'🍬','asthma':'😮‍💨','animal-bites':'🐍' };
+      p.icon_emoji = emojiMap[p.id] || '🏥';
+    });
+    renderRecentlyViewed(); // render on load
+
+    function clearRecentlyViewed() {
+      localStorage.removeItem('rs-recent');
+      renderRecentlyViewed();
+    }
+
+    // =========================================================================
+    // FEATURE 13: EMERGENCY CONTACTS (localStorage)
+    // =========================================================================
+    function saveEmergencyContacts() {
+      const ec1n = document.getElementById('ec1-name')?.value.trim();
+      const ec1p = document.getElementById('ec1-phone')?.value.trim();
+      const ec2n = document.getElementById('ec2-name')?.value.trim();
+      const ec2p = document.getElementById('ec2-phone')?.value.trim();
+      const contacts = [];
+      if (ec1n && ec1p) contacts.push({ name: ec1n, phone: ec1p });
+      if (ec2n && ec2p) contacts.push({ name: ec2n, phone: ec2p });
+      if (contacts.length === 0) { showVoiceToast('⚠️ Enter at least one contact name & number', 'warn', 2500); return; }
+      localStorage.setItem('rs-emergency-contacts', JSON.stringify(contacts));
+      haptic([50, 30, 50]);
+      showVoiceToast(`✅ ${contacts.length} contact${contacts.length > 1 ? 's' : ''} saved!`, 'success', 2000);
+      renderSavedContacts();
+    }
+    function renderSavedContacts() {
+      const saved = JSON.parse(localStorage.getItem('rs-emergency-contacts') || '[]');
+      const section = document.getElementById('ec-saved-contacts');
+      const list = document.getElementById('ec-contacts-list');
+      if (!section || !list) return;
+      if (saved.length === 0) { section.classList.add('hidden'); return; }
+      section.classList.remove('hidden');
+      list.innerHTML = saved.map(c => `
+        <a href="tel:${c.phone}" style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:12px;background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);text-decoration:none;" onclick="haptic([60,30,60])">
+          <span style="font-size:16px;">📞</span>
+          <div>
+            <p style="font-size:12px;font-weight:800;color:#6ee7b7;">${c.name}</p>
+            <p style="font-size:10px;color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;">${c.phone}</p>
+          </div>
+        </a>
+        <a href="https://wa.me/${c.phone.replace(/\D/g,'')}?text=${encodeURIComponent('🚨 EMERGENCY! I need help. Please call me immediately. — sent via RakshaSetu')}" target="_blank" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:12px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.25);text-decoration:none;" onclick="haptic([30])">
+          <span style="font-size:14px;">💬</span>
+          <span style="font-size:10px;font-weight:800;color:#86efac;">WhatsApp</span>
+        </a>
+      `).join('');
+      // Pre-fill form fields
+      if (saved[0]) { document.getElementById('ec1-name').value = saved[0].name; document.getElementById('ec1-phone').value = saved[0].phone; }
+      if (saved[1]) { document.getElementById('ec2-name').value = saved[1].name; document.getElementById('ec2-phone').value = saved[1].phone; }
+    }
+    renderSavedContacts(); // load on startup
+
+    // =========================================================================
+    // FEATURE 14: QR CODE SHARE MODAL
+    // =========================================================================
+    let qrGenerated = false;
+    function showQRCode() {
+      const modal = document.getElementById('qr-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (!qrGenerated && typeof QRCode !== 'undefined') {
+        const container = document.getElementById('qr-code-container');
+        container.innerHTML = '';
+        new QRCode(container, {
+          text: 'https://rana-kushagr.github.io/Raksha-Setu/',
+          width: 160, height: 160,
+          colorDark: '#000000', colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+        qrGenerated = true;
+      } else if (!qrGenerated) {
+        document.getElementById('qr-code-container').innerHTML = '<p style="color:#666;font-size:11px;padding:20px;">Scan the link below<br>to share the app</p>';
+      }
+    }
+    function copyShareLink() {
+      const url = 'https://rana-kushagr.github.io/Raksha-Setu/';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => showVoiceToast('✅ Link copied!', 'success', 2000));
+      } else {
+        document.getElementById('qr-url-input').select();
+        document.execCommand('copy');
+        showVoiceToast('✅ Link copied!', 'success', 2000);
+      }
+      haptic([30]);
+    }
   </script>
+
 </body>
 </html>
