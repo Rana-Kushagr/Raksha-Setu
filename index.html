@@ -405,17 +405,17 @@
       <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
 
         <!-- Brand Logo -->
-        <div class="flex items-center gap-3 shrink-0">
-          <div class="w-10 h-10 rounded-xl brand-icon-bg flex items-center justify-center shrink-0">
+        <button onclick="switchTab('triage');window.scrollTo({top:0,behavior:'smooth'})" class="flex items-center gap-3 shrink-0 cursor-pointer group" style="background:none;border:none;padding:0;" title="Go to Home">
+          <div class="w-10 h-10 rounded-xl brand-icon-bg flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
             <i data-lucide="shield-alert" class="w-5 h-5 text-white"></i>
           </div>
           <div>
-            <h1 class="font-brand text-[20px] font-bold leading-none tracking-tight">
+            <h1 class="font-brand text-[20px] font-bold leading-none tracking-tight group-hover:opacity-80 transition-opacity">
               <span class="brand-gradient">Raksha</span><span class="text-white">Setu</span>
             </h1>
             <p id="app-tagline" class="text-[9.5px] font-mono text-white/30 tracking-[0.14em] uppercase mt-0.5">रक्षासेतु • EMERGENCY AI</p>
           </div>
-        </div>
+        </button>
 
         <!-- Desktop Nav -->
         <nav class="hidden lg:flex items-center gap-0.5 p-1 rounded-xl bg-white/[0.025] border border-white/[0.055]">
