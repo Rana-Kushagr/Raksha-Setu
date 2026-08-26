@@ -5414,11 +5414,23 @@
     // =========================================================================
     // FEATURE 13: EMERGENCY CONTACTS (localStorage)
     // =========================================================================
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str.replace(/[&<>"']/g, m => {
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return map[m];
+      });
+    }
+    function sanitizePhone(str) {
+      if (!str) return '';
+      return str.replace(/[^0-9+\-\s()]/g, '');
+    }
+
     function saveEmergencyContacts() {
-      const ec1n = document.getElementById('ec1-name')?.value.trim();
-      const ec1p = document.getElementById('ec1-phone')?.value.trim();
-      const ec2n = document.getElementById('ec2-name')?.value.trim();
-      const ec2p = document.getElementById('ec2-phone')?.value.trim();
+      const ec1n = escapeHTML((document.getElementById('ec1-name')?.value || '').trim());
+      const ec1p = sanitizePhone((document.getElementById('ec1-phone')?.value || '').trim());
+      const ec2n = escapeHTML((document.getElementById('ec2-name')?.value || '').trim());
+      const ec2p = sanitizePhone((document.getElementById('ec2-phone')?.value || '').trim());
       const contacts = [];
       if (ec1n && ec1p) contacts.push({ name: ec1n, phone: ec1p });
       if (ec2n && ec2p) contacts.push({ name: ec2n, phone: ec2p });
@@ -5435,22 +5447,26 @@
       if (!section || !list) return;
       if (saved.length === 0) { section.classList.add('hidden'); return; }
       section.classList.remove('hidden');
-      list.innerHTML = saved.map(c => `
-        <a href="tel:${c.phone}" style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:12px;background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);text-decoration:none;" onclick="haptic([60,30,60])">
-          <span style="font-size:16px;">📞</span>
-          <div>
-            <p style="font-size:12px;font-weight:800;color:#6ee7b7;">${c.name}</p>
-            <p style="font-size:10px;color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;">${c.phone}</p>
-          </div>
-        </a>
-        <a href="https://wa.me/${c.phone.replace(/\D/g,'')}?text=${encodeURIComponent('🚨 EMERGENCY! I need help. Please call me immediately. — sent via RakshaSetu')}" target="_blank" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:12px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.25);text-decoration:none;" onclick="haptic([30])">
-          <span style="font-size:14px;">💬</span>
-          <span style="font-size:10px;font-weight:800;color:#86efac;">WhatsApp</span>
-        </a>
-      `).join('');
+      list.innerHTML = saved.map(c => {
+        const safeName = escapeHTML(c.name);
+        const safePhone = sanitizePhone(c.phone);
+        return `
+          <a href="tel:${safePhone}" style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:12px;background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);text-decoration:none;" onclick="haptic([60,30,60])">
+            <span style="font-size:16px;">📞</span>
+            <div>
+              <p style="font-size:12px;font-weight:800;color:#6ee7b7;">${safeName}</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;">${safePhone}</p>
+            </div>
+          </a>
+          <a href="https://wa.me/${safePhone.replace(/\D/g,'')}?text=${encodeURIComponent('🚨 EMERGENCY! I need help. Please call me immediately. — sent via RakshaSetu')}" target="_blank" style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:12px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.25);text-decoration:none;" onclick="haptic([30])">
+            <span style="font-size:14px;">💬</span>
+            <span style="font-size:10px;font-weight:800;color:#86efac;">WhatsApp</span>
+          </a>
+        `;
+      }).join('');
       // Pre-fill form fields
-      if (saved[0]) { document.getElementById('ec1-name').value = saved[0].name; document.getElementById('ec1-phone').value = saved[0].phone; }
-      if (saved[1]) { document.getElementById('ec2-name').value = saved[1].name; document.getElementById('ec2-phone').value = saved[1].phone; }
+      if (saved[0]) { document.getElementById('ec1-name').value = escapeHTML(saved[0].name); document.getElementById('ec1-phone').value = sanitizePhone(saved[0].phone); }
+      if (saved[1]) { document.getElementById('ec2-name').value = escapeHTML(saved[1].name); document.getElementById('ec2-phone').value = sanitizePhone(saved[1].phone); }
     }
     renderSavedContacts(); // load on startup
 
