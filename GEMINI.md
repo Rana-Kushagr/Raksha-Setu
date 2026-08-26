@@ -19,3 +19,13 @@ These rules govern the development, localization, and submission of features for
 ## 4. Deployment Sync
 - After modifying `index.html` or secondary files, execute a file copy to sync to the desktop shortcut path: `C:\Users\Lakshit Rana\OneDrive\Desktop\RakshaSetu-Emergency-App.html`.
 - Run the local Node sync script `push-to-github.js` immediately following a desktop sync to publish changes to the live environment.
+
+## 5. Automatic Skill Orchestration
+- **Active Scanning:** For every task or instruction provided by the user, dynamically check the list of installed workspace skills (`.agents/skills/*`) and match the intent.
+- **Auto-Activation:** Do not wait for the user to explicitly invoke slash commands (like `/review` or `/qa`). When a task calls for:
+  - Plan / Architecture changes: Auto-activate `office-hours` or `plan-eng-review`.
+  - Visual Audit / UI tweaks: Auto-activate `design-review` or `design-html`.
+  - Bug checks / Quality assurance: Auto-activate `qa` or `investigate`.
+  - Before pushing / landing changes: Auto-activate `review` or `ship`.
+- **Preemptive Reading:** When a match is found, immediately read the corresponding `SKILL.md` using `view_file` and execute the steps internally without requiring user intervention.
+
