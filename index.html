@@ -266,6 +266,57 @@
       box-shadow: 0 -6px 40px rgba(0,0,0,0.7);
     }
 
+    /* ---- Mobile More / Shortcuts Drawer (Bottom Sheet) ---- */
+    #more-drawer-backdrop {
+      position: fixed; inset: 0; z-index: 998;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    #more-drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    #more-drawer {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 999;
+      background: linear-gradient(165deg, rgba(14,18,36,0.99) 0%, rgba(6,8,18,0.99) 100%);
+      backdrop-filter: blur(40px) saturate(1.8);
+      -webkit-backdrop-filter: blur(40px) saturate(1.8);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      box-shadow: 0 -16px 80px rgba(0,0,0,0.9), 0 0 50px rgba(255,0,51,0.08);
+      padding: 18px 18px calc(24px + env(safe-area-inset-bottom, 12px)) 18px;
+      max-height: 85vh;
+      overflow-y: auto;
+      transform: translateY(105%);
+      opacity: 0;
+      transition: transform 0.32s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease;
+      pointer-events: none;
+    }
+    #more-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .more-drawer-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.78);
+      font-size: 13px; font-weight: 700;
+      transition: all 0.18s ease;
+      cursor: pointer;
+      text-align: left;
+    }
+    .more-drawer-item:hover, .more-drawer-item:active {
+      background: rgba(255,0,51,0.14);
+      border-color: rgba(255,0,51,0.35);
+      color: #fff;
+    }
+    .more-drawer-item i { width: 18px; height: 18px; flex-shrink: 0; }
+
     .pill-critical { background: rgba(255,0,51,0.12); border: 1px solid rgba(255,0,51,0.28); color: #ff6688; }
     .pill-medium   { background: rgba(255,170,0,0.12); border: 1px solid rgba(255,170,0,0.28); color: #ffcc44; }
 
@@ -290,9 +341,9 @@
     .splash-sub  { animation: splashTextIn 0.7s ease 0.6s both; }
     .splash-bar  { animation: splashTextIn 0.7s ease 0.9s both; }
 
-    /* ---- AI Symptom Checker Panel ---- */
+    /* ---- AI Symptom Checker Panel & FAB ---- */
     #ai-panel {
-      position: fixed; bottom: 85px; right: 16px; z-index: 800;
+      position: fixed; bottom: 90px; right: 24px; z-index: 800;
       width: min(420px, calc(100vw - 32px));
       background: linear-gradient(160deg, rgba(10,12,26,0.98) 0%, rgba(6,8,18,0.98) 100%);
       backdrop-filter: blur(32px);
@@ -304,7 +355,7 @@
     }
     #ai-panel.open { display: flex; }
     #ai-fab {
-      position: fixed; bottom: 85px; right: 16px; z-index: 801;
+      position: fixed; bottom: 24px; right: 24px; z-index: 801;
       width: 56px; height: 56px; border-radius: 50%;
       background: linear-gradient(135deg, #ff0033, #ff5500);
       border: none; cursor: pointer; color: white;
@@ -315,6 +366,23 @@
     }
     #ai-fab:hover { transform: scale(1.08); box-shadow: 0 12px 40px rgba(255,0,51,0.65); }
     #ai-fab.panel-open { background: linear-gradient(135deg, #333, #111); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+
+    @media (max-width: 1023px) {
+      #ai-fab {
+        bottom: calc(66px + env(safe-area-inset-bottom, 8px));
+        right: 14px;
+        width: 48px;
+        height: 48px;
+        font-size: 19px;
+      }
+      #ai-panel {
+        bottom: calc(122px + env(safe-area-inset-bottom, 8px));
+        right: 12px;
+        left: 12px;
+        width: auto;
+        max-height: 65vh;
+      }
+    }
 
     /* ---- Escalation Banner ---- */
     #escalation-banner {
@@ -384,7 +452,7 @@
             <span class="w-2 h-2 rounded-full bg-red-500 relative"></span>
           </span>
           <span class="section-label" data-i18n="liveDisaster">LIVE DISASTER</span>
-          <span id="current-disaster-name" class="text-[11px] text-white/55 font-medium">⚡ Lightning Thunderstorm &amp; Torrential Rain</span>
+          <span id="current-disaster-name" class="hidden sm:inline text-[11px] text-white/55 font-medium">⚡ Lightning Thunderstorm &amp; Torrential Rain</span>
         </div>
         
         <div class="flex items-center gap-2">
@@ -447,7 +515,7 @@
         <!-- Right controls: Offline Badge + Font Size + SOS -->
         <div class="flex items-center gap-2 shrink-0">
           <!-- Offline Ready Badge -->
-          <span id="offline-badge" title="App works fully offline" style="font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:800;letter-spacing:0.06em;padding:4px 9px;border-radius:8px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);color:#6ee7b7;white-space:nowrap;cursor:default;">
+          <span id="offline-badge" title="App works fully offline" class="hidden sm:inline-block" style="font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:800;letter-spacing:0.06em;padding:4px 9px;border-radius:8px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);color:#6ee7b7;white-space:nowrap;cursor:default;">
             📴 OFFLINE READY
           </span>
           <!-- Font Size Toggle -->
@@ -455,8 +523,14 @@
             <button onclick="adjustFontSize(-1)" title="Decrease font size" style="width:26px;height:26px;border-radius:6px;background:none;border:none;color:rgba(255,255,255,0.5);font-weight:900;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='none'">A-</button>
             <button onclick="adjustFontSize(1)"  title="Increase font size" style="width:26px;height:26px;border-radius:6px;background:none;border:none;color:rgba(255,255,255,0.5);font-weight:900;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='none'">A+</button>
           </div>
+          <!-- Mobile Quick Shortcuts Trigger Button -->
+          <button onclick="toggleMoreDrawer()" class="lg:hidden px-3 py-2 rounded-xl text-white/90 hover:text-white font-brand font-semibold text-[12px] flex items-center gap-1.5 transition" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);" title="All shortcuts and options">
+            <i data-lucide="grid-2x2" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Menu</span>
+          </button>
+
           <!-- 112 SOS CTA -->
-          <a href="tel:112" class="sos-btn px-5 py-2.5 rounded-xl text-white font-brand font-bold text-[13px] flex items-center gap-2">
+          <a href="tel:112" class="sos-btn px-4 sm:px-5 py-2.5 rounded-xl text-white font-brand font-bold text-[13px] flex items-center gap-2">
             <i data-lucide="phone-call" class="w-4 h-4"></i>
             <span data-i18n="call112">112 SOS</span>
           </a>
@@ -2253,32 +2327,183 @@
       </div>
     </div>
 
-    <!-- ================= MOBILE NAVIGATION DOCK ================= -->
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-white/08 px-2 py-2">
+    <!-- ================= MOBILE MORE / SHORTCUTS DRAWER (slide-up) ================= -->
+    <div id="more-drawer-backdrop" class="lg:hidden" onclick="toggleMoreDrawer()"></div>
+    <div id="more-drawer" class="lg:hidden">
+      <!-- Handle pull bar -->
+      <div class="w-12 h-1 rounded-full bg-white/20 mx-auto mb-3.5"></div>
+      
+      <!-- Drawer Header -->
+      <div class="flex items-center justify-between mb-4 pb-2.5 border-b border-white/08">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-amber-400 font-bold text-sm">⚡</span>
+            <h3 class="font-brand text-sm font-bold text-white tracking-wide">QUICK SHORTCUTS &amp; ALL OPTIONS</h3>
+          </div>
+          <p class="text-[10px] text-white/40 font-mono mt-0.5">तुरंत मेनू • Tap any option for instant switch</p>
+        </div>
+        <button onclick="toggleMoreDrawer()" class="w-7 h-7 rounded-lg bg-white/05 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white/50 hover:text-white transition text-xs">
+          ✕
+        </button>
+      </div>
+
+      <!-- Section 1: All 7 Main Sections / Pages -->
+      <div class="mb-4">
+        <p class="text-[9.5px] font-mono font-bold text-rs-teal uppercase tracking-widest mb-2 flex items-center gap-1.5">
+          <span>📱 APP SECTIONS (सभी मुख्य पृष्ठ)</span>
+        </p>
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="switchTab('triage')" class="more-drawer-item" data-tab="triage">
+            <i data-lucide="stethoscope" class="text-red-400"></i>
+            <div>
+              <p class="text-[12px] font-bold text-white leading-tight">Triage Guide</p>
+              <p class="text-[9.5px] text-white/40 font-normal">Emergency first-aid</p>
+            </div>
+          </button>
+          <button onclick="switchTab('allergies')" class="more-drawer-item" data-tab="allergies">
+            <i data-lucide="sparkles" class="text-amber-400"></i>
+            <div>
+              <p class="text-[12px] font-bold text-white leading-tight">Allergies &amp; Skin</p>
+              <p class="text-[9.5px] text-white/40 font-normal">PITT, hives &amp; care</p>
+            </div>
+          </button>
+          <button onclick="switchTab('wounds')" class="more-drawer-item" data-tab="wounds">
+            <i data-lucide="bandage" class="text-teal-400"></i>
+            <div>
+              <p class="text-[12px] font-bold text-white leading-tight">Wound Care</p>
+              <p class="text-[9.5px] text-white/40 font-normal">Bandages &amp; dressing</p>
+            </div>
+          </button>
+          <button onclick="switchTab('tutorials')" class="more-drawer-item" data-tab="tutorials">
+            <i data-lucide="play-circle" class="text-purple-400"></i>
+            <div>
+              <p class="text-[12px] font-bold text-white leading-tight">Visual Demos</p>
+              <p class="text-[9.5px] text-white/40 font-normal">CPR, Choking, Bleed</p>
+            </div>
+          </button>
+          <button onclick="switchTab('cpr')" class="more-drawer-item" data-tab="cpr">
+            <i data-lucide="heart-pulse" class="text-rose-400"></i>
+            <div>
+              <p class="text-[12px] font-bold text-white leading-tight">CPR Panic Guide</p>
+              <p class="text-[9.5px] text-white/40 font-normal">110 BPM visual beats</p>
+            </div>
+          </button>
+          <button onclick="switchTab('sos')" class="more-drawer-item" data-tab="sos">
+            <i data-lucide="radio" class="text-blue-400"></i>
+            <div>
+              <p class="text-[12px] font-bold text-white leading-tight">GPS SOS Alert</p>
+              <p class="text-[9.5px] text-white/40 font-normal">WhatsApp live beacon</p>
+            </div>
+          </button>
+          <button onclick="switchTab('ice')" class="more-drawer-item col-span-2" data-tab="ice">
+            <i data-lucide="contact" class="text-emerald-400"></i>
+            <div>
+              <p class="text-[12px] font-bold text-white leading-tight">Emergency Medical ID (ICE)</p>
+              <p class="text-[9.5px] text-white/40 font-normal">Blood group, allergies, contacts &amp; medical pass</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 2: 1-Tap Emergency Hotlines -->
+      <div class="mb-4">
+        <p class="text-[9.5px] font-mono font-bold text-red-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+          <span>🚨 1-TAP EMERGENCY CALL (आपातकालीन नंबर)</span>
+        </p>
+        <div class="grid grid-cols-3 gap-2">
+          <a href="tel:112" class="flex flex-col items-center justify-center p-2.5 rounded-xl text-center transition" style="background:rgba(255,0,51,0.12);border:1px solid rgba(255,0,51,0.28);" onclick="haptic([60])">
+            <span class="text-base">🚨</span>
+            <span class="font-brand font-bold text-[14px] text-white leading-tight mt-0.5">112</span>
+            <span class="text-[9px] text-white/50 font-medium">National SOS</span>
+          </a>
+          <a href="tel:108" class="flex flex-col items-center justify-center p-2.5 rounded-xl text-center transition" style="background:rgba(255,170,0,0.12);border:1px solid rgba(255,170,0,0.28);" onclick="haptic([40])">
+            <span class="text-base">🚑</span>
+            <span class="font-brand font-bold text-[14px] text-white leading-tight mt-0.5">108</span>
+            <span class="text-[9px] text-white/50 font-medium">Ambulance</span>
+          </a>
+          <a href="tel:100" class="flex flex-col items-center justify-center p-2.5 rounded-xl text-center transition" style="background:rgba(0,136,255,0.12);border:1px solid rgba(0,136,255,0.28);" onclick="haptic([40])">
+            <span class="text-base">👮</span>
+            <span class="font-brand font-bold text-[14px] text-white leading-tight mt-0.5">100</span>
+            <span class="text-[9px] text-white/50 font-medium">Police</span>
+          </a>
+          <a href="tel:101" class="flex flex-col items-center justify-center p-2.5 rounded-xl text-center transition" style="background:rgba(255,85,0,0.12);border:1px solid rgba(255,85,0,0.28);" onclick="haptic([40])">
+            <span class="text-base">🚒</span>
+            <span class="font-brand font-bold text-[14px] text-white leading-tight mt-0.5">101</span>
+            <span class="text-[9px] text-white/50 font-medium">Fire</span>
+          </a>
+          <a href="tel:18001116117" class="flex flex-col items-center justify-center p-2.5 rounded-xl text-center transition" style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.28);" onclick="haptic([40])">
+            <span class="text-base">☠️</span>
+            <span class="font-brand font-bold text-[11px] text-white leading-tight mt-0.5">Poison</span>
+            <span class="text-[8.5px] text-white/50 font-medium">Control</span>
+          </a>
+          <a href="tel:181" class="flex flex-col items-center justify-center p-2.5 rounded-xl text-center transition" style="background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.28);" onclick="haptic([40])">
+            <span class="text-base">👩</span>
+            <span class="font-brand font-bold text-[14px] text-white leading-tight mt-0.5">181</span>
+            <span class="text-[9px] text-white/50 font-medium">Women</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Section 3: Quick Tools & Settings -->
+      <div>
+        <p class="text-[9.5px] font-mono font-bold text-white/40 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+          <span>🛠️ INSTANT TOOLS (त्वरित टूल्स)</span>
+        </p>
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="toggleMoreDrawer(); toggleAIPanel()" class="flex items-center gap-2 p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] text-left transition">
+            <span class="text-base">🤖</span>
+            <div>
+              <p class="text-[11px] font-bold text-white leading-tight">AI Checker</p>
+              <p class="text-[9px] text-white/40">Symptom match</p>
+            </div>
+          </button>
+          <button onclick="toggleMoreDrawer(); showQRCode()" class="flex items-center gap-2 p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] text-left transition">
+            <span class="text-base">📲</span>
+            <div>
+              <p class="text-[11px] font-bold text-white leading-tight">Share App QR</p>
+              <p class="text-[9px] text-white/40">Offline scan</p>
+            </div>
+          </button>
+          <button onclick="toggleLanguage()" class="flex items-center gap-2 p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] text-left transition">
+            <span class="text-base">🌐</span>
+            <div>
+              <p class="text-[11px] font-bold text-white leading-tight">Language (भाषा)</p>
+              <p class="text-[9px] text-white/40">Switch Hindi / EN</p>
+            </div>
+          </button>
+          <button onclick="resetTriageTimer(); toggleMoreDrawer(); showVoiceToast('⏱ Triage timer reset', 'info', 1800)" class="flex items-center gap-2 p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] text-left transition">
+            <span class="text-base">⏱️</span>
+            <div>
+              <p class="text-[11px] font-bold text-white leading-tight">Reset Timer</p>
+              <p class="text-[9px] text-white/40">Restart session</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= MOBILE NAVIGATION DOCK (4 + More) ================= -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-white/08 px-2 py-2" style="padding-bottom:max(8px, env(safe-area-inset-bottom));">
       <div class="flex items-center justify-around text-[10px] font-bold">
         <button onclick="switchTab('triage')" class="mob-tab-btn flex flex-col items-center gap-1 text-red-500 active-mob-tab" data-tab="triage">
-          <i data-lucide="stethoscope" class="w-4 h-4"></i>
+          <i data-lucide="stethoscope" class="w-5 h-5"></i>
           <span>Triage</span>
         </button>
         <button onclick="switchTab('allergies')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="allergies">
-          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
           <span>Allergies</span>
         </button>
-        <button onclick="switchTab('wounds')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="wounds">
-          <i data-lucide="bandage" class="w-4 h-4"></i>
-          <span>Wounds</span>
-        </button>
-        <button onclick="switchTab('tutorials')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="tutorials">
-          <i data-lucide="play-circle" class="w-4 h-4"></i>
-          <span>Visuals</span>
-        </button>
         <button onclick="switchTab('cpr')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="cpr">
-          <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+          <i data-lucide="heart-pulse" class="w-5 h-5"></i>
           <span>CPR</span>
         </button>
         <button onclick="switchTab('sos')" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400" data-tab="sos">
-          <i data-lucide="radio" class="w-4 h-4"></i>
+          <i data-lucide="radio" class="w-5 h-5"></i>
           <span>SOS</span>
+        </button>
+        <button onclick="toggleMoreDrawer()" id="more-drawer-btn" class="mob-tab-btn flex flex-col items-center gap-1 text-slate-400">
+          <i data-lucide="grid-2x2" class="w-5 h-5"></i>
+          <span>More</span>
         </button>
       </div>
     </div>
@@ -3933,6 +4158,22 @@
       lucide.createIcons();
     }
 
+    // ── More Drawer Toggle ──
+    function toggleMoreDrawer() {
+      const drawer = document.getElementById('more-drawer');
+      const backdrop = document.getElementById('more-drawer-backdrop');
+      if (!drawer || !backdrop) return;
+      const isOpen = drawer.classList.contains('open');
+      if (isOpen) {
+        drawer.classList.remove('open');
+        backdrop.classList.remove('open');
+      } else {
+        drawer.classList.add('open');
+        backdrop.classList.add('open');
+        lucide.createIcons();
+      }
+    }
+
     function switchTab(tabId) {
       currentTab = tabId;
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -3947,8 +4188,27 @@
         }
       });
 
+      // Close the More drawer on any tab switch
+      const drawer = document.getElementById('more-drawer');
+      const backdrop = document.getElementById('more-drawer-backdrop');
+      if (drawer) drawer.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('open');
+
+      // Highlight More button if a drawer tab is active
+      const drawerTabs = ['wounds', 'tutorials', 'ice'];
+      const moreBtn = document.getElementById('more-drawer-btn');
+
       document.querySelectorAll('.mob-tab-btn').forEach(btn => {
-        if (btn.dataset.tab === tabId) {
+        if (btn.id === 'more-drawer-btn') {
+          // Highlight More btn if the active tab is inside the drawer
+          if (drawerTabs.includes(tabId)) {
+            btn.classList.add('text-red-500');
+            btn.classList.remove('text-slate-400');
+          } else {
+            btn.classList.remove('text-red-500');
+            btn.classList.add('text-slate-400');
+          }
+        } else if (btn.dataset.tab === tabId) {
           btn.classList.add('text-red-500');
           btn.classList.remove('text-slate-400');
         } else {
@@ -3957,6 +4217,20 @@
         }
       });
 
+      // Highlight More drawer items
+      document.querySelectorAll('.more-drawer-item').forEach(item => {
+        if (item.dataset.tab === tabId) {
+          item.style.background = 'rgba(255,0,51,0.15)';
+          item.style.borderColor = 'rgba(255,0,51,0.35)';
+          item.style.color = '#fff';
+        } else {
+          item.style.background = 'rgba(255,255,255,0.04)';
+          item.style.borderColor = 'rgba(255,255,255,0.07)';
+          item.style.color = 'rgba(255,255,255,0.7)';
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       lucide.createIcons();
     }
 
