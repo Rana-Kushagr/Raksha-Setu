@@ -65,24 +65,24 @@
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--rs-bg);
-      background-image:
-        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(255,0,51,0.055) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0,136,255,0.03) 0%, transparent 60%);
+      background: #020b18; /* Calm deep ocean base */
+      background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 119, 182, 0.15) 0%, transparent 70%);
+      background-attachment: fixed;
     }
 
     #disaster-live-canvas {
       position: fixed; top: 0; left: 0;
       width: 100vw; height: 100vh;
       z-index: 0; pointer-events: none;
+      opacity: 0.85;
     }
 
     .glass-card {
-      background: linear-gradient(135deg, rgba(12,16,32,0.95) 0%, rgba(8,10,20,0.92) 100%);
-      backdrop-filter: blur(32px) saturate(1.5);
-      -webkit-backdrop-filter: blur(32px) saturate(1.5);
-      border: 1px solid rgba(255,255,255,0.07);
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.03) inset, 0 24px 64px rgba(0,0,0,0.7);
+      background: rgba(4, 18, 38, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.03) inset, 0 12px 32px rgba(0,0,0,0.55);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .glass-card:hover {
@@ -91,16 +91,16 @@
     }
 
     .glass-header {
-      background: rgba(2,3,8,0.90);
-      backdrop-filter: blur(40px) saturate(1.8);
-      -webkit-backdrop-filter: blur(40px) saturate(1.8);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 1px 0 rgba(255,0,51,0.12), 0 8px 40px rgba(0,0,0,0.6);
+      background: rgba(4, 15, 32, 0.95);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 4px 28px rgba(0,0,0,0.6);
     }
 
     .protocol-card {
-      background: linear-gradient(160deg, rgba(13,17,35,0.96) 0%, rgba(8,10,20,0.94) 100%);
-      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(5, 20, 42, 0.85);
+      border: 1px solid rgba(255,255,255,0.08);
       transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), border-color 0.2s, box-shadow 0.2s;
       position: relative; overflow: hidden;
     }
@@ -279,10 +279,10 @@
 
     #more-drawer {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 999;
-      background: linear-gradient(165deg, rgba(14,18,36,0.99) 0%, rgba(6,8,18,0.99) 100%);
-      backdrop-filter: blur(40px) saturate(1.8);
-      -webkit-backdrop-filter: blur(40px) saturate(1.8);
-      border-top: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(165deg, rgba(6,22,48,0.98) 0%, rgba(3,11,24,0.99) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(0,212,170,0.2);
       border-top-left-radius: 28px;
       border-top-right-radius: 28px;
       box-shadow: 0 -16px 80px rgba(0,0,0,0.9), 0 0 50px rgba(255,0,51,0.08);
@@ -419,7 +419,7 @@
     .ai-match-card:hover { border-color: rgba(255,0,51,0.4); cursor: pointer; }
   </style>
 </head>
-<body class="bg-[#020307] text-slate-100 min-h-screen font-sans selection:bg-red-600/50 selection:text-white pb-24 md:pb-4 relative overflow-x-hidden">
+<body class="bg-[#020b18] text-slate-100 min-h-screen font-sans selection:bg-red-600/50 selection:text-white pb-32 lg:pb-8 relative overflow-x-hidden">
 
   <!-- ================= ONBOARDING SPLASH SCREEN ================= -->
   <div id="rs-splash" onclick="dismissSplash()">
@@ -431,38 +431,40 @@
     </h1>
     <p class="splash-sub font-hindi text-white/60 text-center mt-2 text-sm">रक्षासेतु — India's Panic-Proof Emergency First-Aid Guide</p>
     <div class="splash-bar mt-8 flex items-center gap-2">
-      <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
       <span class="font-mono text-[10px] text-white/40 uppercase tracking-widest">Instant Offline Emergency Engine Ready</span>
     </div>
     <p class="splash-bar font-mono text-[10px] text-white/30 mt-4 uppercase tracking-widest border border-white/10 px-3 py-1 rounded-full cursor-pointer hover:bg-white/10 transition">Tap anywhere to enter</p>
   </div>
 
-  <!-- ================= REAL 3D LIVE DISASTER CANVAS ================= -->
+  <!-- ================= CALM OCEAN BACKGROUND CANVAS ================= -->
   <canvas id="disaster-live-canvas"></canvas>
 
   <!-- Content Layer -->
   <div class="relative z-10">
 
-    <!-- ================= TOP STATUS BAR ================= -->
-    <div class="live-bar w-full px-4 py-1.5">
+    <!-- ================= TOP STATUS BAR (Calm Ocean & Offline Ready) ================= -->
+    <div class="live-bar w-full px-4 py-1.5" style="background: rgba(2, 11, 24, 0.92); border-bottom: 1px solid rgba(0, 119, 182, 0.15);">
       <div class="flex items-center gap-3 max-w-7xl mx-auto w-full justify-between">
         <div class="flex items-center gap-2.5">
           <span class="relative flex">
-            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping absolute opacity-75"></span>
-            <span class="w-2 h-2 rounded-full bg-red-500 relative"></span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse absolute opacity-75"></span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400 relative"></span>
           </span>
-          <span class="section-label" data-i18n="liveDisaster">LIVE DISASTER</span>
-          <span id="current-disaster-name" class="hidden sm:inline text-[11px] text-white/55 font-medium">⚡ Lightning Thunderstorm &amp; Torrential Rain</span>
+          <span class="section-label text-emerald-400 font-mono tracking-wider text-[10px]">READY</span>
+          <span id="current-disaster-name" class="text-[11px] text-teal-200/80 font-medium flex items-center gap-1.5">
+            <span>🌊 Calm Ocean Mode</span>
+            <span class="hidden sm:inline text-white/30">•</span>
+            <span class="hidden sm:inline text-white/50 text-[10px]">Zero-Lag Emergency Engine</span>
+          </span>
         </div>
         
         <div class="flex items-center gap-2">
-          <select id="disaster-select" onchange="changeDisasterScene(this.value)" class="text-[11px] font-semibold px-2 py-1 rounded-lg border border-white/10 text-white/60 outline-none cursor-pointer transition" style="background:#0d1020; color:rgba(255,255,255,0.65);">
-            <option value="storm" style="background:#0d1020;color:#fff;" data-i18n="sceneStorm">⚡ Lightning Storm</option>
-            <option value="wildfire" style="background:#0d1020;color:#fff;" data-i18n="sceneWildfire">🔥 Wildfire</option>
-            <option value="tsunami" style="background:#0d1020;color:#fff;" data-i18n="sceneTsunami">🌊 Tsunami</option>
-            <option value="volcano" style="background:#0d1020;color:#fff;" data-i18n="sceneVolcano">🌋 Volcano</option>
-          </select>
-          <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3 py-1 rounded-lg border border-white/10 hover:border-rs-red/40 text-white/50 hover:text-white text-[11px] font-semibold flex items-center gap-1.5 transition">
+          <!-- Offline indicator badge visible on mobile -->
+          <span id="mobile-top-offline-badge" class="px-2 py-0.5 rounded-md text-[9.5px] font-mono font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">
+            📴 OFFLINE
+          </span>
+          <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-2.5 py-1 rounded-lg border border-white/10 hover:border-rs-red/40 text-white/70 hover:text-white text-[11px] font-semibold flex items-center gap-1.5 transition" style="background: rgba(255,255,255,0.05);">
             <i data-lucide="languages" class="w-3 h-3"></i>
             <span id="lang-label">हिंदी</span>
           </button>
@@ -537,6 +539,50 @@
         </div>
       </div>
     </header>
+
+    <!-- ================= MOBILE NAVIGATION & SHORTCUT DROPBOX (Mobile/Tablet View) ================= -->
+    <div class="lg:hidden w-full px-3.5 py-2.5 border-b border-white/[0.08]" style="background: rgba(3, 14, 30, 0.95); backdrop-filter: blur(14px);">
+      <div class="flex items-center gap-2">
+        <label for="mobile-nav-select" class="text-[11px] font-bold uppercase tracking-wider text-teal-300 shrink-0 flex items-center gap-1.5 font-mono">
+          <i data-lucide="compass" class="w-3.5 h-3.5 text-teal-400"></i>
+          <span>JUMP:</span>
+        </label>
+        <!-- The Mobile Dropbox Menu (All Pages & Shortcuts) -->
+        <select id="mobile-nav-select" onchange="handleMobileNavSelect(this.value)" class="flex-1 text-xs font-semibold px-3 py-2 rounded-xl border border-teal-500/30 text-white outline-none cursor-pointer shadow-inner" style="background: #061e3d; color: #ffffff;">
+          <optgroup label="📋 Primary Emergency Guides" style="background:#061e3d; color:#94a3b8;">
+            <option value="triage">⚡ Emergency First-Aid Triage</option>
+            <option value="allergies">🌿 Allergies &amp; Skin Care Guide</option>
+            <option value="wounds">🩹 Wound Care &amp; Dressings</option>
+            <option value="tutorials">🎬 Visual Step-by-Step Demos</option>
+            <option value="cpr">🫀 CPR Panic Guide &amp; Metronome</option>
+            <option value="sos">📡 GPS SOS &amp; Live Location</option>
+            <option value="ice">🆔 Medical ID (ICE Emergency Card)</option>
+          </optgroup>
+          <optgroup label="⚡ Quick Tools &amp; Actions" style="background:#061e3d; color:#94a3b8;">
+            <option value="action:ai">🤖 AI Symptom Checker Doctor</option>
+            <option value="action:helplines">📞 India Emergency Helplines</option>
+            <option value="action:contacts">👥 Emergency Contacts Setup</option>
+            <option value="action:share">📲 Share RakshaSetu QR</option>
+            <option value="action:cprvoice">🗣️ CPR Voice Coach</option>
+          </optgroup>
+        </select>
+        <button onclick="toggleMoreDrawer()" class="px-2.5 py-2 rounded-xl bg-white/[0.06] border border-white/[0.12] text-white/90 hover:text-white flex items-center justify-center shrink-0" title="Open Full Menu">
+          <i data-lucide="grid-2x2" class="w-4 h-4 text-amber-400"></i>
+        </button>
+      </div>
+      
+      <!-- Horizontal Scrollable Quick-Pill Shortcuts for 1-Tap Tab Switching on Mobile -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 text-[11px] font-semibold whitespace-nowrap">
+        <button onclick="switchTab('triage')" class="mob-pill px-3 py-1 rounded-lg bg-teal-500/25 border border-teal-500/50 text-teal-300 font-bold active-pill" data-tab-pill="triage">⚡ Triage</button>
+        <button onclick="switchTab('allergies')" class="mob-pill px-3 py-1 rounded-lg bg-white/[0.06] border border-white/10 text-white/80 hover:bg-white/10" data-tab-pill="allergies">🌿 Allergies</button>
+        <button onclick="switchTab('wounds')" class="mob-pill px-3 py-1 rounded-lg bg-white/[0.06] border border-white/10 text-white/80 hover:bg-white/10" data-tab-pill="wounds">🩹 Wounds</button>
+        <button onclick="switchTab('tutorials')" class="mob-pill px-3 py-1 rounded-lg bg-white/[0.06] border border-white/10 text-white/80 hover:bg-white/10" data-tab-pill="tutorials">🎬 Visuals</button>
+        <button onclick="switchTab('cpr')" class="mob-pill px-3 py-1 rounded-lg bg-white/[0.06] border border-white/10 text-white/80 hover:bg-white/10" data-tab-pill="cpr">🫀 CPR</button>
+        <button onclick="switchTab('sos')" class="mob-pill px-3 py-1 rounded-lg bg-white/[0.06] border border-white/10 text-white/80 hover:bg-white/10" data-tab-pill="sos">📡 SOS</button>
+        <button onclick="switchTab('ice')" class="mob-pill px-3 py-1 rounded-lg bg-white/[0.06] border border-white/10 text-white/80 hover:bg-white/10" data-tab-pill="ice">🆔 ID</button>
+        <button onclick="toggleAIPanel()" class="mob-pill px-3 py-1 rounded-lg bg-red-500/20 border border-red-500/40 text-red-200 hover:bg-red-500/30">🤖 AI</button>
+      </div>
+    </div>
 
     <!-- ================= MAIN APP CONTAINER ================= -->
     <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -2483,7 +2529,7 @@
     </div>
 
     <!-- ================= MOBILE NAVIGATION DOCK (4 + More) ================= -->
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-white/08 px-2 py-2" style="padding-bottom:max(8px, env(safe-area-inset-bottom));">
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 backdrop-blur-md px-2 py-2" style="background: rgba(3, 13, 28, 0.96); border-top: 1px solid rgba(0, 150, 255, 0.18); box-shadow: 0 -4px 20px rgba(0,0,0,0.6); padding-bottom:max(8px, env(safe-area-inset-bottom));">
       <div class="flex items-center justify-around text-[10px] font-bold">
         <button onclick="switchTab('triage')" class="mob-tab-btn flex flex-col items-center gap-1 text-red-500 active-mob-tab" data-tab="triage">
           <i data-lucide="stethoscope" class="w-5 h-5"></i>
@@ -3139,295 +3185,92 @@
     }
   </script>
 
-  <!-- ================= REAL LIVE 3D DISASTER VISUAL ENGINE ================= -->
+  <!-- ================= CALM OPTIMIZED OCEAN CANVAS ENGINE ================= -->
   <script>
-    let activeScene = 'storm';
-    const sceneNames = {
-      storm: '⚡ Lightning Thunderstorm & Torrential Rain',
-      wildfire: '🔥 Raging Jungle Wildfire & Firestorm',
-      tsunami: '🌊 Surging Ocean Tsunami Waves',
-      volcano: '🌋 Volcano Lava Eruption & Smoke'
-    };
-
+    // Calm Ocean Engine: 3 backgrounds removed, locked to single serene ocean with zero lag
+    const activeScene = 'ocean';
     function changeDisasterScene(val) {
-      activeScene = val;
-      document.getElementById('current-disaster-name').innerText = sceneNames[val] || sceneNames.storm;
+      // Background switcher removed for emergency stability
+      const el = document.getElementById('current-disaster-name');
+      if (el) el.innerText = '🌊 Calm Ocean Mode';
     }
 
     function initLiveDisasterCanvas() {
       const canvas = document.getElementById('disaster-live-canvas');
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       let w = canvas.width = window.innerWidth;
       let h = canvas.height = window.innerHeight;
 
+      // Debounce window resize to avoid jank on mobile address bar scroll
+      let resizeTimer;
       window.addEventListener('resize', () => {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-      });
-
-      const rainDrops = [];
-      for (let i = 0; i < 180; i++) {
-        rainDrops.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          len: Math.random() * 25 + 15,
-          speed: Math.random() * 15 + 20,
-          opacity: Math.random() * 0.4 + 0.3
-        });
-      }
-
-      const fireFlames = [];
-      for (let i = 0; i < 70; i++) {
-        fireFlames.push({
-          x: Math.random() * w,
-          y: h + Math.random() * 50,
-          radius: Math.random() * 40 + 20,
-          speedY: Math.random() * 3 + 2,
-          speedX: (Math.random() - 0.5) * 2,
-          life: 1,
-          decay: Math.random() * 0.02 + 0.01,
-          hue: Math.random() * 35 + 10
-        });
-      }
-
-      const embers = [];
-      for (let i = 0; i < 90; i++) {
-        embers.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          radius: Math.random() * 3 + 1,
-          speedY: Math.random() * -3 - 1,
-          speedX: (Math.random() - 0.5) * 2.5,
-          opacity: Math.random() * 0.8 + 0.2
-        });
-      }
-
-      let lightningPoints = [];
-      let lightningTimer = 0;
-      let lightningAlpha = 0;
-
-      function createLightning() {
-        lightningPoints = [];
-        let startX = Math.random() * w * 0.8 + w * 0.1;
-        let startY = 0;
-        lightningPoints.push({ x: startX, y: startY });
-
-        while (startY < h * 0.85) {
-          startX += (Math.random() - 0.5) * 60;
-          startY += Math.random() * 35 + 20;
-          lightningPoints.push({ x: startX, y: startY });
-        }
-        lightningAlpha = 1;
-      }
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          w = canvas.width = window.innerWidth;
+          h = canvas.height = window.innerHeight;
+        }, 120);
+      }, { passive: true });
 
       let waveOffset = 0;
+      let lastFrameTime = 0;
+      const targetFps = 30; // 30 FPS cap saves significant battery and CPU/GPU on mobile
+      const frameInterval = 1000 / targetFps;
 
-      function render() {
+      function render(now) {
+        requestAnimationFrame(render);
+
+        if (now - lastFrameTime < frameInterval) return;
+        lastFrameTime = now;
+
+        waveOffset += 0.012; // Gentle, tranquil ocean drift
+
         ctx.clearRect(0, 0, w, h);
 
-        if (activeScene === 'storm') {
-          const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
-          skyGrad.addColorStop(0, '#040714');
-          skyGrad.addColorStop(0.5, '#0a1026');
-          skyGrad.addColorStop(1, '#02050e');
-          ctx.fillStyle = skyGrad;
-          ctx.fillRect(0, 0, w, h);
+        // 1. Deep calm ocean gradient
+        const oceanSky = ctx.createLinearGradient(0, 0, 0, h);
+        oceanSky.addColorStop(0, '#020b18');
+        oceanSky.addColorStop(0.5, '#051833');
+        oceanSky.addColorStop(1, '#020a16');
+        ctx.fillStyle = oceanSky;
+        ctx.fillRect(0, 0, w, h);
 
-          ctx.fillStyle = 'rgba(20, 30, 55, 0.4)';
-          for (let i = 0; i < 5; i++) {
-            ctx.beginPath();
-            ctx.arc((w / 4) * i + Math.sin(Date.now() * 0.0005 + i) * 30, 80, 220, 0, Math.PI * 2);
-            ctx.fill();
-          }
+        // 2. Soft top ambient bloom
+        const ambientBloom = ctx.createRadialGradient(w * 0.5, 0, 20, w * 0.5, 0, Math.max(w * 0.6, 280));
+        ambientBloom.addColorStop(0, 'rgba(0, 119, 182, 0.12)');
+        ambientBloom.addColorStop(1, 'transparent');
+        ctx.fillStyle = ambientBloom;
+        ctx.fillRect(0, 0, w, h * 0.65);
 
-          lightningTimer++;
-          if (lightningTimer > 160 && Math.random() < 0.04) {
-            createLightning();
-            lightningTimer = 0;
-          }
-
-          if (lightningAlpha > 0) {
-            ctx.fillStyle = `rgba(225, 240, 255, ${lightningAlpha * 0.45})`;
-            ctx.fillRect(0, 0, w, h);
-
-            ctx.strokeStyle = `rgba(255, 255, 255, ${lightningAlpha})`;
-            ctx.lineWidth = 3.5;
-            ctx.shadowBlur = 25;
-            ctx.shadowColor = '#60a5fa';
-            ctx.beginPath();
-            if (lightningPoints.length > 0) {
-              ctx.moveTo(lightningPoints[0].x, lightningPoints[0].y);
-              for (let pt of lightningPoints) {
-                ctx.lineTo(pt.x, pt.y);
-              }
-              ctx.stroke();
-            }
-            ctx.shadowBlur = 0;
-            lightningAlpha -= 0.04;
-          }
-
-          ctx.strokeStyle = 'rgba(180, 215, 255, 0.6)';
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          for (let drop of rainDrops) {
-            ctx.moveTo(drop.x, drop.y);
-            ctx.lineTo(drop.x - 3, drop.y + drop.len);
-            drop.y += drop.speed;
-            drop.x -= 1.5;
-            if (drop.y > h) {
-              drop.y = -drop.len;
-              drop.x = Math.random() * w;
-            }
-          }
-          ctx.stroke();
+        // 3. Gentle calm ocean swells at bottom (lightweight calculation with step = 30)
+        // Back calm wave
+        ctx.fillStyle = 'rgba(5, 25, 55, 0.35)';
+        ctx.beginPath();
+        ctx.moveTo(0, h);
+        const yBase1 = h * 0.88;
+        for (let x = 0; x <= w; x += 30) {
+          const y = yBase1 + Math.sin(x * 0.003 + waveOffset) * 14;
+          ctx.lineTo(x, y);
         }
+        ctx.lineTo(w, h);
+        ctx.closePath();
+        ctx.fill();
 
-        else if (activeScene === 'wildfire') {
-          const fireSky = ctx.createLinearGradient(0, 0, 0, h);
-          fireSky.addColorStop(0, '#1a0505');
-          fireSky.addColorStop(0.6, '#3d0c04');
-          fireSky.addColorStop(1, '#1f0402');
-          ctx.fillStyle = fireSky;
-          ctx.fillRect(0, 0, w, h);
-
-          ctx.fillStyle = '#0a0202';
-          for (let i = 0; i < w; i += 45) {
-            ctx.fillRect(i, h - 160, 16, 160);
-            ctx.beginPath();
-            ctx.arc(i + 8, h - 180, 30, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          for (let flame of fireFlames) {
-            flame.y -= flame.speedY;
-            flame.x += flame.speedX;
-            flame.life -= flame.decay;
-
-            if (flame.life <= 0 || flame.y < h * 0.4) {
-              flame.y = h + Math.random() * 20;
-              flame.x = Math.random() * w;
-              flame.life = 1;
-              flame.radius = Math.random() * 40 + 20;
-            }
-
-            const radGrad = ctx.createRadialGradient(flame.x, flame.y, 0, flame.x, flame.y, flame.radius * flame.life);
-            radGrad.addColorStop(0, `hsla(${flame.hue + 25}, 100%, 80%, ${flame.life * 0.8})`);
-            radGrad.addColorStop(0.5, `hsla(${flame.hue}, 100%, 55%, ${flame.life * 0.6})`);
-            radGrad.addColorStop(1, 'transparent');
-
-            ctx.fillStyle = radGrad;
-            ctx.beginPath();
-            ctx.arc(flame.x, flame.y, flame.radius * flame.life, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          for (let ember of embers) {
-            ember.y += ember.speedY;
-            ember.x += ember.speedX;
-            if (ember.y < 0) {
-              ember.y = h + 10;
-              ember.x = Math.random() * w;
-            }
-            ctx.fillStyle = `rgba(255, 140, 0, ${ember.opacity})`;
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = '#ff4500';
-            ctx.beginPath();
-            ctx.arc(ember.x, ember.y, ember.radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-          }
+        // Front calm swell
+        ctx.fillStyle = 'rgba(8, 38, 75, 0.25)';
+        ctx.beginPath();
+        ctx.moveTo(0, h);
+        const yBase2 = h * 0.92;
+        for (let x = 0; x <= w; x += 30) {
+          const y = yBase2 + Math.cos(x * 0.004 - waveOffset * 0.8) * 10;
+          ctx.lineTo(x, y);
         }
-
-        else if (activeScene === 'tsunami') {
-          const oceanSky = ctx.createLinearGradient(0, 0, 0, h);
-          oceanSky.addColorStop(0, '#030814');
-          oceanSky.addColorStop(0.5, '#08172e');
-          oceanSky.addColorStop(1, '#020b18');
-          ctx.fillStyle = oceanSky;
-          ctx.fillRect(0, 0, w, h);
-
-          waveOffset += 0.03;
-
-          for (let layer = 0; layer < 4; layer++) {
-            ctx.fillStyle = `rgba(${5 + layer * 5}, ${25 + layer * 15}, ${55 + layer * 25}, ${0.55 + layer * 0.15})`;
-            ctx.beginPath();
-            ctx.moveTo(0, h);
-            for (let x = 0; x <= w; x += 15) {
-              const y = h * (0.55 + layer * 0.1) + Math.sin(x * 0.006 + waveOffset + layer * 1.5) * (35 + layer * 15) + Math.cos(x * 0.015 - waveOffset) * 20;
-              ctx.lineTo(x, y);
-            }
-            ctx.lineTo(w, h);
-            ctx.closePath();
-            ctx.fill();
-
-            ctx.strokeStyle = `rgba(180, 230, 255, ${0.4 + layer * 0.15})`;
-            ctx.lineWidth = 3;
-            ctx.stroke();
-          }
-
-          ctx.strokeStyle = 'rgba(200, 235, 255, 0.4)';
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          for (let drop of rainDrops) {
-            ctx.moveTo(drop.x, drop.y);
-            ctx.lineTo(drop.x - 6, drop.y + drop.len * 0.8);
-            drop.y += drop.speed * 1.2;
-            drop.x -= 4;
-            if (drop.y > h) {
-              drop.y = -drop.len;
-              drop.x = Math.random() * w;
-            }
-          }
-          ctx.stroke();
-        }
-
-        else if (activeScene === 'volcano') {
-          const volkSky = ctx.createLinearGradient(0, 0, 0, h);
-          volkSky.addColorStop(0, '#100305');
-          volkSky.addColorStop(0.5, '#2e0a0a');
-          volkSky.addColorStop(1, '#0a0203');
-          ctx.fillStyle = volkSky;
-          ctx.fillRect(0, 0, w, h);
-
-          ctx.fillStyle = '#0d0405';
-          ctx.beginPath();
-          ctx.moveTo(0, h);
-          ctx.lineTo(w * 0.35, h * 0.45);
-          ctx.lineTo(w * 0.65, h * 0.45);
-          ctx.lineTo(w, h);
-          ctx.closePath();
-          ctx.fill();
-
-          const lavaGrad = ctx.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.45, 120);
-          lavaGrad.addColorStop(0, '#fff');
-          lavaGrad.addColorStop(0.4, '#ff3300');
-          lavaGrad.addColorStop(1, 'transparent');
-          ctx.fillStyle = lavaGrad;
-          ctx.beginPath();
-          ctx.arc(w * 0.5, h * 0.45, 120, 0, Math.PI * 2);
-          ctx.fill();
-
-          for (let ember of embers) {
-            ember.y += ember.speedY * 1.5;
-            ember.x += ember.speedX * 2;
-            if (ember.y < 0) {
-              ember.y = h * 0.45;
-              ember.x = w * 0.5 + (Math.random() - 0.5) * 80;
-            }
-            ctx.fillStyle = '#ff6600';
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = '#ff2200';
-            ctx.beginPath();
-            ctx.arc(ember.x, ember.y, ember.radius * 1.5, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-          }
-        }
-
-        requestAnimationFrame(render);
+        ctx.lineTo(w, h);
+        ctx.closePath();
+        ctx.fill();
       }
 
-      render();
+      requestAnimationFrame(render);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -4230,8 +4073,52 @@
         }
       });
 
+      // Sync Mobile Dropbox Select
+      const mobSelect = document.getElementById('mobile-nav-select');
+      if (mobSelect) {
+        mobSelect.value = tabId;
+      }
+
+      // Sync Mobile Shortcut Pills
+      document.querySelectorAll('.mob-pill').forEach(pill => {
+        if (pill.dataset.tabPill === tabId) {
+          pill.className = 'mob-pill px-3 py-1 rounded-lg bg-teal-500/25 border border-teal-500/50 text-teal-300 font-bold active-pill';
+        } else if (pill.dataset.tabPill) {
+          pill.className = 'mob-pill px-3 py-1 rounded-lg bg-white/[0.06] border border-white/10 text-white/80 hover:bg-white/10';
+        }
+      });
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
       lucide.createIcons();
+    }
+
+    // ── Mobile Dropbox Select Action Handler ──
+    function handleMobileNavSelect(val) {
+      if (!val) return;
+      if (val.startsWith('action:')) {
+        const action = val.replace('action:', '');
+        if (action === 'ai') {
+          toggleAIPanel();
+        } else if (action === 'helplines') {
+          switchTab('triage');
+          setTimeout(() => {
+            const el = document.getElementById('recently-viewed-bar');
+            if (el && el.nextElementSibling) el.nextElementSibling.scrollIntoView({ behavior: 'smooth' });
+          }, 150);
+        } else if (action === 'contacts') {
+          switchTab('triage');
+          setTimeout(() => {
+            const form = document.getElementById('emergency-contacts-form');
+            if (form) form.scrollIntoView({ behavior: 'smooth' });
+          }, 150);
+        } else if (action === 'share') {
+          showQRCode();
+        } else if (action === 'cprvoice') {
+          speakCPRPanicGuide('hi');
+        }
+      } else {
+        switchTab(val);
+      }
     }
 
     // ── Fuzzy Search Helpers ────────────────────────────────────────────────
